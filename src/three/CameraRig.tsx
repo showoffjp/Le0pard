@@ -1,0 +1,31 @@
+import { useFrame, useThree } from '@react-three/fiber'
+import { MathUtils } from 'three'
+import { useExperience } from '../store/useExperience'
+
+/**
+ * Choreographs the camera along the scroll: a slow dolly toward the core that
+ * rises and arcs, with a subtle pointer-driven parallax layered on top.
+ */
+export function CameraRig() {
+  const { camera } = useThree()
+
+  useFrame((state, delta) => {
+    const { progress, pointer } = useExperience.getState()
+    const dt = Math.min(delta, 0.05)
+    const t = state.clock.elapsedTime
+
+    const targetZ = 9 - progress * 3.4
+    const targetY = 0.3 + progress * 1.7 + Math.sin(t * 0.2) * 0.08
+    const targetX = Math.sin(progress * Math.PI) * 1.3
+
+    const px = pointer.x * 0.85
+    const py = -pointer.y * 0.55
+
+    camera.position.x = MathUtils.damp(camera.position.x, targetX + px, 2.4, dt)
+    camera.position.y = MathUtils.damp(camera.position.y, targetY + py, 2.4, dt)
+    camera.position.z = MathUtils.damp(camera.position.z, targetZ, 2.4, dt)
+    camera.lookAt(0, 0.3 + progress * 0.6, 0)
+  })
+
+  return null
+}
