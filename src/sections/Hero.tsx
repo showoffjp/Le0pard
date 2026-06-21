@@ -66,7 +66,7 @@ export function Hero() {
           className="gradient-cool font-display font-black uppercase leading-[0.82] tracking-tight text-[clamp(3.6rem,18vw,15rem)]"
           style={{
             textShadow:
-              '2px 0 rgba(34,211,238,.45), -2px 0 rgba(226,59,255,.45), 0 0 52px rgba(124,58,237,.5)',
+              '2px 0 rgba(34,211,238,.42), -2px 0 rgba(168,85,247,.5), 0 0 52px rgba(124,58,237,.55)',
             filter:
               'drop-shadow(0 0 34px rgba(168,85,247,.4)) drop-shadow(0 0 64px rgba(255,90,0,.16))',
           }}

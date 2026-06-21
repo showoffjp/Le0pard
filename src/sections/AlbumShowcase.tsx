@@ -1,4 +1,5 @@
 import { useExperience } from '../store/useExperience'
+import { useAudio } from '../store/useAudio'
 import { site } from '../data/site'
 import { dystopia, albumRuntime } from '../data/music'
 import { SectionHeading } from '../components/ui/SectionHeading'
@@ -9,6 +10,7 @@ import { MagicLayer } from '../components/ui/MagicLayer'
 
 export function AlbumShowcase() {
   const scrollTo = useExperience((s) => s.scrollTo)
+  const play = useAudio((s) => s.play)
   const runtime = albumRuntime(dystopia)
 
   const stats = [
@@ -69,8 +71,8 @@ export function AlbumShowcase() {
             </div>
 
             <div className="mt-9 flex flex-wrap gap-4">
-              <NeonButton variant="ember" onClick={() => scrollTo('#listen')}>
-                ▶ Play the Album
+              <NeonButton variant="ember" onClick={() => play(0)}>
+                ▶ Play Visualizer
               </NeonButton>
               <NeonButton variant="ghost" onClick={() => scrollTo('#tracks')}>
                 View Tracklist

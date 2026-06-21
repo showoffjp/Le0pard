@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { Float, Edges } from '@react-three/drei'
 import { Group, MathUtils, AdditiveBlending } from 'three'
 import { useExperience } from '../store/useExperience'
+import { signal } from '../lib/audioSignal'
 
 type Shard = {
   pos: [number, number, number]
@@ -24,7 +25,7 @@ function mulberry32(seed: number) {
   }
 }
 
-const EDGES = ['#a855f7', '#22d3ee', '#3b82f6', '#e23bff', '#ff6a00']
+const EDGES = ['#a855f7', '#22d3ee', '#3b82f6', '#8b5cf6', '#ff6a00']
 
 /**
  * Canva "Magic Layers" in 3D: holographic panels floating at varied depths
@@ -62,9 +63,10 @@ export function Shards({ lowPower }: { lowPower: boolean }) {
     const dt = Math.min(delta, 0.05)
     group.current.rotation.y = MathUtils.damp(group.current.rotation.y, pointer.x * 0.3, 2.5, dt)
     group.current.rotation.x = MathUtils.damp(group.current.rotation.x, pointer.y * 0.18, 2.5, dt)
-    // spread outward + drift forward as the world decays
-    const spread = 1 + progress * 0.22
-    group.current.scale.setScalar(MathUtils.damp(group.current.scale.x, spread, 2, dt))
+    group.current.rotation.z += dt * signal.energy * 0.35
+    // spread outward + drift forward as the world decays, and breathe with the beat
+    const spread = 1 + progress * 0.22 + signal.bass * 0.14
+    group.current.scale.setScalar(MathUtils.damp(group.current.scale.x, spread, 3, dt))
   })
 
   return (

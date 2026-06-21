@@ -59,7 +59,7 @@ export function Loader() {
 
         <div className="mt-8 h-px w-64 overflow-hidden bg-white/10">
           <div
-            className="h-full bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-magenta transition-[width] duration-200 ease-out"
+            className="h-full bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-purple transition-[width] duration-200 ease-out"
             style={{ width: `${pct}%` }}
           />
         </div>

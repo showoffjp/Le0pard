@@ -42,7 +42,7 @@ export function ScrollHud() {
       <div className="relative h-44 w-px overflow-hidden bg-white/10">
         <div
           ref={barRef}
-          className="absolute left-0 top-0 w-full bg-gradient-to-b from-neon-cyan via-neon-purple to-neon-magenta"
+          className="absolute left-0 top-0 w-full bg-gradient-to-b from-neon-cyan via-neon-blue to-neon-purple"
           style={{ height: '0%' }}
         />
       </div>

@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Points, BufferGeometry, Float32BufferAttribute, AdditiveBlending, PointsMaterial } from 'three'
 import { useExperience } from '../store/useExperience'
+import { signal } from '../lib/audioSignal'
 
 function makeGeometry(count: number, spread: number, height: number) {
   const positions = new Float32Array(count * 3)
@@ -33,14 +34,15 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     const t = state.clock.elapsedTime
 
     if (dustRef.current) {
-      dustRef.current.rotation.y = t * 0.012
+      dustRef.current.rotation.y = t * (0.012 + signal.energy * 0.05)
     }
 
     if (emberRef.current) {
       const arr = emberGeo.getAttribute('position') as Float32BufferAttribute
       const a = arr.array as Float32Array
+      const rise = 1.1 + signal.energy * 2.2
       for (let i = 0; i < a.length; i += 3) {
-        a[i + 1] += dt * (1.1 + (i % 7) * 0.12)
+        a[i + 1] += dt * (rise + (i % 7) * 0.12)
         a[i] += Math.sin(t * 0.6 + i) * dt * 0.25
         if (a[i + 1] > 11) a[i + 1] = -11
       }
@@ -48,9 +50,9 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     }
 
     if (emberMat.current) {
-      // embers fade in across the second half of the journey
-      emberMat.current.opacity = Math.max(0, progress - 0.18) * 1.1
-      emberMat.current.size = 0.05 + progress * 0.05
+      // embers fade in across the second half of the journey + surge with the beat
+      emberMat.current.opacity = Math.max(0, progress - 0.18) * 1.1 + signal.energy * 0.45
+      emberMat.current.size = 0.05 + progress * 0.05 + signal.bass * 0.045
     }
   })
 

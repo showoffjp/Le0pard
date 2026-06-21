@@ -4,6 +4,7 @@ import { MeshDistortMaterial } from '@react-three/drei'
 import { Mesh, MathUtils, MeshBasicMaterial } from 'three'
 import { useExperience } from '../store/useExperience'
 import { samplePalette, makePalette } from '../lib/palette'
+import { signal } from '../lib/audioSignal'
 
 /**
  * The album "core": a molten, distorting icosahedron caged in a neon
@@ -28,18 +29,23 @@ export function Core({ lowPower }: { lowPower: boolean }) {
     if (matRef.current) {
       matRef.current.color.lerp(p.coreColor, 0.08)
       matRef.current.emissive.lerp(p.coreEmissive, 0.08)
-      matRef.current.distort = MathUtils.damp(matRef.current.distort ?? 0.3, p.distort, 3, dt)
+      matRef.current.distort = MathUtils.damp(
+        matRef.current.distort ?? 0.3,
+        p.distort + signal.treble * 0.18,
+        3,
+        dt,
+      )
       matRef.current.emissiveIntensity = MathUtils.damp(
         matRef.current.emissiveIntensity ?? 1,
-        1.05 + progress * 1.5,
-        3,
+        1.05 + progress * 1.5 + signal.energy * 1.1,
+        4,
         dt,
       )
     }
     if (coreRef.current) {
-      coreRef.current.rotation.y += dt * 0.12
+      coreRef.current.rotation.y += dt * (0.12 + signal.energy * 0.5)
       coreRef.current.rotation.x = Math.sin(t * 0.22) * 0.16
-      const s = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12
+      const s = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12 + signal.bass * 0.16 + signal.beat * 0.1
       coreRef.current.scale.setScalar(s)
     }
     if (shellRef.current) {

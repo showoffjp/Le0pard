@@ -9,6 +9,7 @@ import {
 } from '@react-three/postprocessing'
 import { Vector2, MathUtils } from 'three'
 import { useExperience } from '../store/useExperience'
+import { signal } from '../lib/audioSignal'
 
 /**
  * Postprocessing stack. Bloom is the soul of the neon look; its intensity
@@ -21,8 +22,8 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
   useFrame((_, dt) => {
     const { progress } = useExperience.getState()
     if (bloomRef.current) {
-      const target = 0.8 + progress * 0.85
-      bloomRef.current.intensity = MathUtils.damp(bloomRef.current.intensity, target, 3, dt)
+      const target = 0.8 + progress * 0.85 + signal.beat * 0.5 + signal.energy * 0.35
+      bloomRef.current.intensity = MathUtils.damp(bloomRef.current.intensity, target, 6, dt)
     }
   })
 

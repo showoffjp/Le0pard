@@ -1,6 +1,7 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { MathUtils } from 'three'
 import { useExperience } from '../store/useExperience'
+import { signal } from '../lib/audioSignal'
 
 /**
  * Choreographs the camera along the scroll: a slow dolly toward the core that
@@ -14,8 +15,8 @@ export function CameraRig() {
     const dt = Math.min(delta, 0.05)
     const t = state.clock.elapsedTime
 
-    const targetZ = 9 - progress * 3.4
-    const targetY = 0.3 + progress * 1.7 + Math.sin(t * 0.2) * 0.08
+    const targetZ = 9 - progress * 3.4 - signal.beat * 0.22
+    const targetY = 0.3 + progress * 1.7 + Math.sin(t * 0.2) * 0.08 + signal.bass * 0.06
     const targetX = Math.sin(progress * Math.PI) * 1.3
 
     const px = pointer.x * 0.85
