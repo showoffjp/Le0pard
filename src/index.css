@@ -24,9 +24,10 @@
     margin: 0;
     overflow-x: hidden;
     background:
-      radial-gradient(1200px 800px at 80% -10%, rgba(124, 58, 237, 0.18), transparent 60%),
-      radial-gradient(900px 700px at -10% 20%, rgba(59, 130, 246, 0.14), transparent 55%),
-      #04050a;
+      radial-gradient(1200px 820px at 78% -12%, rgba(124, 58, 237, 0.24), transparent 60%),
+      radial-gradient(900px 700px at -8% 18%, rgba(59, 130, 246, 0.13), transparent 55%),
+      radial-gradient(760px 620px at 50% 118%, rgba(109, 40, 217, 0.14), transparent 60%),
+      #050409;
   }
 
   ::selection {
@@ -93,6 +94,15 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+  /* Living, flowing neon text */
+  .gradient-flow {
+    background: linear-gradient(100deg, #22d3ee, #3b82f6 28%, #7c5cff 56%, #a855f7 82%, #3b82f6);
+    background-size: 230% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 9s linear infinite;
   }
 
   .hud-grid {

@@ -25,7 +25,7 @@ export function SectionHeading({
       <h2
         className={cn(
           'mt-4 font-display text-4xl font-black uppercase leading-[0.95] tracking-tight md:text-6xl',
-          accent === 'heat' ? 'gradient-heat' : 'gradient-cool',
+          accent === 'heat' ? 'gradient-heat' : 'gradient-flow',
         )}
       >
         {title}

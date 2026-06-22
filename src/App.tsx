@@ -9,6 +9,7 @@ import { NowPlaying } from './components/layout/NowPlaying'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { Hero } from './sections/Hero'
 import { Manifesto } from './sections/Manifesto'
+import { Descent } from './sections/Descent'
 import { AlbumShowcase } from './sections/AlbumShowcase'
 import { TrackList } from './sections/TrackList'
 import { Listen } from './sections/Listen'
@@ -34,6 +35,7 @@ export default function App() {
       <main className="relative z-10">
         <Hero />
         <Manifesto />
+        <Descent />
         <AlbumShowcase />
         <TrackList />
         <Listen />

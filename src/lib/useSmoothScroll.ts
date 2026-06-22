@@ -1,10 +1,15 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useExperience } from '../store/useExperience'
 
+gsap.registerPlugin(ScrollTrigger)
+
 /**
- * Owns the page's smooth scrolling (Lenis) and feeds global scroll progress +
- * a scrollTo() into the experience store. The 3D scene and HUD read from there.
+ * Owns smooth scrolling (Lenis) and wires it to GSAP ScrollTrigger so we can
+ * scrub cinematic, layered animations to scroll. Also feeds global scroll
+ * progress + scrollTo() into the experience store for the 3D scene + HUD.
  */
 export function useSmoothScroll() {
   const setProgress = useExperience((s) => s.setProgress)
@@ -22,6 +27,7 @@ export function useSmoothScroll() {
 
     const onScroll = (e: { progress: number }) => {
       setProgress(Number.isFinite(e.progress) ? e.progress : 0)
+      ScrollTrigger.update()
     }
     lenis.on('scroll', onScroll)
 
@@ -34,15 +40,20 @@ export function useSmoothScroll() {
       })
     })
 
-    let raf = 0
-    const loop = (time: number) => {
-      lenis.raf(time)
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
+    const tick = (time: number) => lenis.raf(time * 1000)
+    gsap.ticker.add(tick)
+    gsap.ticker.lagSmoothing(0)
+
+    // Make ScrollTrigger measure correctly once fonts/layout settle.
+    const refresh = () => ScrollTrigger.refresh()
+    const refreshId = window.setTimeout(refresh, 350)
+    window.addEventListener('load', refresh)
 
     return () => {
-      cancelAnimationFrame(raf)
+      window.clearTimeout(refreshId)
+      window.removeEventListener('load', refresh)
+      gsap.ticker.remove(tick)
+      lenis.off('scroll', onScroll)
       lenis.destroy()
       setScrollTo(() => {})
     }

@@ -7,6 +7,7 @@ import { TechFrame } from '../components/ui/TechFrame'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { MagicLayer } from '../components/ui/MagicLayer'
+import { Parallax } from '../components/ui/Parallax'
 
 export function AlbumShowcase() {
   const scrollTo = useExperience((s) => s.scrollTo)
@@ -27,7 +28,8 @@ export function AlbumShowcase() {
 
       <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
         <Reveal>
-          <MagicLayer depth={16}>
+          <Parallax speed={16}>
+            <MagicLayer depth={16}>
             <div className="relative">
               <div className="absolute -inset-6 -z-10 animate-pulse-glow rounded-full bg-gradient-to-tr from-neon-purple/30 via-neon-blue/20 to-neon-ember/20" />
               <TechFrame glow="mix" padded={false}>
@@ -41,7 +43,8 @@ export function AlbumShowcase() {
                 />
               </TechFrame>
             </div>
-          </MagicLayer>
+            </MagicLayer>
+          </Parallax>
         </Reveal>
 
         <Reveal delay={120}>

@@ -33,23 +33,23 @@ const utopia = {
 }
 
 const transition = {
-  fog: c('#0f0a2c'),
+  fog: c('#0d0a2e'),
   background: c('#05050c'),
-  coreColor: c('#1a0f3a'),
-  coreEmissive: c('#8b5cf6'),
-  lightA: c('#8b5cf6'),
+  coreColor: c('#170f38'),
+  coreEmissive: c('#7c5cff'),
+  lightA: c('#7c5cff'),
   lightB: c('#3b82f6'),
-  ember: 0.35,
+  ember: 0.3,
   distort: 0.4,
   bloom: 1.15,
 }
 
 const dystopia = {
-  fog: c('#140a2e'),
+  fog: c('#120a30'),
   background: c('#060209'),
-  coreColor: c('#250a42'),
-  coreEmissive: c('#a855f7'),
-  lightA: c('#a855f7'),
+  coreColor: c('#1f0c44'),
+  coreEmissive: c('#9b5cff'),
+  lightA: c('#7c3aed'),
   lightB: c('#ff6a00'),
   ember: 1,
   distort: 0.62,

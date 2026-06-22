@@ -15,7 +15,7 @@ export default {
           indigo: '#6366f1',
           blue: '#3b82f6',
           cyan: '#22d3ee',
-          magenta: '#e23bff',
+          magenta: '#9b5cff',
           ember: '#ff6a00',
           flame: '#ff2d00',
         },
