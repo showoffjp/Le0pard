@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --p: 168 85 247;   /* neon purple */
+  --b: 59 130 246;   /* neon blue   */
+  --c: 34 211 238;   /* neon cyan   */
+  --e: 255 106 0;    /* ember       */
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis owns smoothing */
+  }
+
+  body {
+    @apply bg-void text-slate-200 font-sans antialiased;
+    margin: 0;
+    overflow-x: hidden;
+    background:
+      radial-gradient(1200px 820px at 78% -12%, rgba(124, 58, 237, 0.24), transparent 60%),
+      radial-gradient(900px 700px at -8% 18%, rgba(59, 130, 246, 0.13), transparent 55%),
+      radial-gradient(760px 620px at 50% 118%, rgba(109, 40, 217, 0.14), transparent 60%),
+      #050409;
+  }
+
+  ::selection {
+    background: rgba(168, 85, 247, 0.35);
+    color: #fff;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #04050a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #7c3aed, #3b82f6);
+    border-radius: 999px;
+    border: 2px solid #04050a;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  /* Angular "tech frame" corners from the album art */
+  .clip-tech {
+    clip-path: polygon(
+      18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px),
+      calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px
+    );
+  }
+  .clip-tech-sm {
+    clip-path: polygon(
+      10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px),
+      calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px
+    );
+  }
+  .clip-slant {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  }
+
+  .neon-purple { text-shadow: 0 0 6px rgba(168,85,247,.9), 0 0 22px rgba(168,85,247,.55); }
+  .neon-blue   { text-shadow: 0 0 6px rgba(59,130,246,.9), 0 0 22px rgba(59,130,246,.55); }
+  .neon-cyan   { text-shadow: 0 0 6px rgba(34,211,238,.9), 0 0 22px rgba(34,211,238,.5); }
+  .neon-ember  { text-shadow: 0 0 8px rgba(255,106,0,.95), 0 0 26px rgba(255,45,0,.6); }
+
+  .gradient-cool {
+    background: linear-gradient(100deg, #22d3ee, #3b82f6 38%, #8b5cf6 70%, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gradient-heat {
+    background: linear-gradient(100deg, #ffd000, #ff7a00 48%, #ff2d00 92%, #ff5e3a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gradient-text-anim {
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Living, flowing neon text */
+  .gradient-flow {
+    background: linear-gradient(100deg, #22d3ee, #3b82f6 28%, #7c5cff 56%, #a855f7 82%, #3b82f6);
+    background-size: 230% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 9s linear infinite;
+  }
+
+  /* Living "aurora" text — green → cyan → blue → violet → purple, rippling across
+     the words. Pair with <AuroraText> for the cursor-follow spotlight + hover. */
+  .aurora-text {
+    background: linear-gradient(
+      110deg,
+      #34d399, #22d3ee 20%, #3b82f6 42%, #7c5cff 62%, #a855f7 80%, #22d3ee
+    );
+    background-size: 240% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: aurora 9s ease-in-out infinite;
+  }
+  /* Brighter, green-forward hotspots within an aurora sentence. */
+  .aurora-accent {
+    background: linear-gradient(110deg, #5eead4, #34d399 28%, #22d3ee 62%, #a855f7);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    filter: drop-shadow(0 0 12px rgba(52, 211, 153, 0.5));
+    animation: aurora 6s ease-in-out infinite;
+  }
+
+  .hud-grid {
+    background-image:
+      linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  .glass {
+    background: linear-gradient(160deg, rgba(17, 20, 38, 0.72), rgba(4, 5, 10, 0.78));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .text-balance { text-wrap: balance; }
+
+  /* Scroll-reveal primitive (toggled by data-revealed) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(42px);
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; }
+  .aurora-text,
+  .aurora-accent,
+  .animate-float,
+  .animate-float-slow,
+  .animate-flicker,
+  .animate-scan,
+  .animate-marquee,
+  .animate-shimmer,
+  .animate-pulse-glow,
+  .animate-spin-slow { animation: none !important; }
+}
