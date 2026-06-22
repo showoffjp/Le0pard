@@ -130,6 +130,53 @@
     animation: aurora 6s ease-in-out infinite;
   }
 
+  /* ── Reactive bus: elements that respond to the playing song (see
+     useSignalVars). All idle at scale/scale-1 + no glow when nothing plays. ── */
+  .react-pop {
+    transform: scale(calc(1 + var(--s-beat, 0) * 0.05 + var(--s-drop, 0) * 0.14));
+    will-change: transform;
+  }
+  .react-pop-soft {
+    transform: scale(calc(1 + var(--s-beat, 0) * 0.03 + var(--s-drop, 0) * 0.07));
+    transform-origin: left center;
+    will-change: transform;
+  }
+  .react-bop {
+    transform: translateY(calc(var(--s-beat, 0) * -5px - var(--s-drop, 0) * 12px));
+    will-change: transform;
+  }
+  .react-glow {
+    filter: drop-shadow(
+      0 0 calc(6px + var(--s-energy, 0) * 26px + var(--s-drop, 0) * 46px)
+        rgba(124, 92, 255, calc(0.2 + var(--s-energy, 0) * 0.5))
+    );
+  }
+  /* Full-bleed background that morphs with the music. */
+  .react-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: calc(0.35 + var(--s-level, 0) * 0.65);
+    background:
+      radial-gradient(
+        120% 80% at 50% 0%,
+        rgba(124, 58, 237, calc(0.05 + var(--s-energy, 0) * 0.13 + var(--s-buildup, 0) * 0.18)),
+        transparent 60%
+      ),
+      radial-gradient(
+        100% 70% at 50% 100%,
+        rgba(34, 211, 238, calc(0.04 + var(--s-bass, 0) * 0.14)),
+        transparent 55%
+      ),
+      radial-gradient(
+        90% 90% at calc(50% + var(--s-mid, 0) * 16%) 50%,
+        rgba(255, 106, 0, calc(var(--s-drop, 0) * 0.16)),
+        transparent 60%
+      );
+  }
+
   .hud-grid {
     background-image:
       linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px),
@@ -181,8 +228,24 @@
   100% { background-position: 0% 50%; }
 }
 
+/* Reactive-bus defaults so calc() is valid before the first JS frame. */
+:root {
+  --s-level: 0;
+  --s-beat: 0;
+  --s-bass: 0;
+  --s-mid: 0;
+  --s-treble: 0;
+  --s-energy: 0;
+  --s-drop: 0;
+  --s-buildup: 0;
+  --s-impact: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
+  .react-pop,
+  .react-pop-soft,
+  .react-bop { transform: none !important; }
   .aurora-text,
   .aurora-accent,
   .animate-float,

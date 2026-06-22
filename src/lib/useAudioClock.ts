@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { useAudio } from '../store/useAudio'
 import { tickSignal } from './audioSignal'
+import { isLive, tickLive } from './audioReactor'
 
 /**
  * Single requestAnimationFrame loop that advances the audio-reactive signal.
- * Runs for the whole app lifetime; idles to zero when nothing is playing.
+ * Uses the LIVE analyser when Reactive Mode is on, otherwise the synthetic
+ * beat. Runs for the whole app lifetime; idles to zero when nothing is playing.
  */
 export function useAudioClock() {
   useEffect(() => {
@@ -13,8 +15,12 @@ export function useAudioClock() {
     const loop = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000)
       last = now
-      const { playing, trackIndex } = useAudio.getState()
-      tickSignal(now / 1000, dt, playing, trackIndex)
+      if (isLive()) {
+        tickLive(now / 1000, dt)
+      } else {
+        const { playing, trackIndex } = useAudio.getState()
+        tickSignal(now / 1000, dt, playing, trackIndex)
+      }
       raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)

@@ -15,8 +15,9 @@ export function BeatPulse() {
       if (el) {
         const b = signal.beat
         const e = signal.energy
-        el.style.opacity = String(0.03 + e * 0.12)
-        el.style.boxShadow = `inset 0 0 ${90 + b * 170}px rgba(124,58,237,${0.1 + b * 0.28}), inset 0 0 ${40 + b * 60}px rgba(34,211,238,${0.04 + b * 0.12})`
+        const d = signal.drop
+        el.style.opacity = String(0.03 + e * 0.12 + d * 0.5)
+        el.style.boxShadow = `inset 0 0 ${90 + b * 170 + d * 280}px rgba(124,58,237,${0.1 + b * 0.28 + d * 0.5}), inset 0 0 ${40 + b * 60 + d * 120}px rgba(34,211,238,${0.04 + b * 0.12 + d * 0.32})`
       }
       raf = requestAnimationFrame(loop)
     }

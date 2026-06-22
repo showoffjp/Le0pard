@@ -18,9 +18,15 @@ export function NowPlaying() {
   const toggle = useAudio((s) => s.toggle)
   const next = useAudio((s) => s.next)
   const prev = useAudio((s) => s.prev)
+  const reactiveStatus = useAudio((s) => s.reactiveStatus)
+  const enableReactive = useAudio((s) => s.enableReactive)
+  const disableReactive = useAudio((s) => s.disableReactive)
   const scrollTo = useExperience((s) => s.scrollTo)
   const track = dystopia.tracks[trackIndex]
   const barsRef = useRef<HTMLDivElement>(null)
+
+  const live = reactiveStatus === 'on'
+  const connecting = reactiveStatus === 'connecting'
 
   useEffect(() => {
     let raf = 0
@@ -74,14 +80,41 @@ export function NowPlaying() {
 
         <div className="hidden min-w-[140px] text-right sm:block">
           <div className="font-mono text-[0.55rem] uppercase tracking-widest2 text-neon-cyan/70">
-            {playing ? 'Reactive Visualizer' : 'Visualizer · Paused'}
+            {live ? 'Live Sync · Real Audio' : playing ? 'Reactive Visualizer' : 'Visualizer · Paused'}
           </div>
           <div className="truncate font-display text-sm font-bold uppercase tracking-wide text-white">
-            {String(track.n).padStart(2, '0')} · {track.title}
+            {live ? 'Reacting to your sound' : `${String(track.n).padStart(2, '0')} · ${track.title}`}
           </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            aria-label={live ? 'Stop reactive sync' : 'Sync visuals to your real audio'}
+            title={
+              reactiveStatus === 'unsupported'
+                ? 'Live capture is not supported in this browser'
+                : reactiveStatus === 'denied'
+                  ? 'Click to retry — share the playing tab and tick “share tab audio”'
+                  : live
+                    ? 'Live: the whole site is reacting to your real audio'
+                    : 'Sync to whatever is actually playing (you’ll pick a tab + “share tab audio”)'
+            }
+            onClick={() => (live ? disableReactive() : enableReactive())}
+            className={cn(
+              'flex h-9 items-center gap-1.5 rounded-full border px-3 font-display text-[0.58rem] uppercase tracking-widest2 transition',
+              live
+                ? 'border-neon-cyan/60 bg-neon-cyan/15 text-neon-cyan shadow-[0_0_16px_rgba(34,211,238,.4)]'
+                : 'border-white/15 bg-white/[0.04] text-slate-200 hover:border-neon-purple/70 hover:text-white',
+            )}
+          >
+            <span
+              className={cn(
+                'h-1.5 w-1.5 rounded-full',
+                live ? 'animate-pulse bg-neon-cyan' : connecting ? 'animate-pulse bg-neon-purple' : 'bg-slate-400',
+              )}
+            />
+            {connecting ? 'Syncing' : live ? 'Live' : 'Sync'}
+          </button>
           <button aria-label="Previous track" onClick={prev} className={btn}>
             ⟪
           </button>

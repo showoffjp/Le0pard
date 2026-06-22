@@ -11,7 +11,7 @@ type Props = {
 }
 
 const base =
-  'group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 font-display text-[0.7rem] font-bold uppercase tracking-widest2 clip-tech-sm transition-all duration-300 active:scale-[0.98]'
+  'react-pop group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 font-display text-[0.7rem] font-bold uppercase tracking-widest2 clip-tech-sm transition-[background,box-shadow,color,filter,border-color] duration-300'
 
 const variants = {
   primary:

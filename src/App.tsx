@@ -1,5 +1,6 @@
 import { useSmoothScroll, usePointerTracking } from './lib/useSmoothScroll'
 import { useAudioClock } from './lib/useAudioClock'
+import { useSignalVars } from './lib/useSignalVars'
 import { Experience } from './three/Experience'
 import { Loader } from './components/layout/Loader'
 import { Navbar } from './components/layout/Navbar'
@@ -8,6 +9,7 @@ import { ScrollHud } from './components/layout/ScrollHud'
 import { NowPlaying } from './components/layout/NowPlaying'
 import { NeonCursor } from './components/layout/NeonCursor'
 import { BeatPulse } from './components/effects/BeatPulse'
+import { DropFlash } from './components/effects/DropFlash'
 import { SeamDivider } from './components/ui/SeamDivider'
 import { Hero } from './sections/Hero'
 import { Manifesto } from './sections/Manifesto'
@@ -25,18 +27,21 @@ export default function App() {
   useSmoothScroll()
   usePointerTracking()
   useAudioClock()
+  useSignalVars()
 
   return (
     <>
       <Loader />
       <Experience />
+      <div className="react-bg" aria-hidden="true" />
       <BeatPulse />
+      <DropFlash />
       <NeonCursor />
       <Navbar />
       <ScrollHud />
       <NowPlaying />
 
-      <main className="relative z-10">
+      <main id="experience-content" className="relative z-10">
         <Hero />
         <Manifesto />
         <Descent />
