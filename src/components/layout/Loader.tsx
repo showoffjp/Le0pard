@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useExperience } from '../../store/useExperience'
+import { GoggleMark } from '../ui/GoggleMark'
 
 /** Cinematic boot sequence that hands off to the experience once ready. */
 export function Loader() {
@@ -47,6 +48,10 @@ export function Loader() {
       <div className="scanlines pointer-events-none absolute inset-0" />
 
       <div className="relative flex flex-col items-center px-6">
+        <GoggleMark
+          className="mb-5 h-9 w-auto animate-pulse"
+          style={{ filter: 'drop-shadow(0 0 14px rgba(124,92,255,.65))' }}
+        />
         <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-widest3 text-neon-cyan/70">
           Booting experience
         </div>

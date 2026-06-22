@@ -5,6 +5,7 @@ import { site } from '../data/site'
 import { dystopia } from '../data/music'
 import { NeonButton } from '../components/ui/NeonButton'
 import { MagicLayer } from '../components/ui/MagicLayer'
+import { GoggleMark } from '../components/ui/GoggleMark'
 
 export function Hero() {
   const ready = useExperience((s) => s.ready)
@@ -25,10 +26,13 @@ export function Hero() {
         duration: 1.2,
         ease: 'power3.out',
       })
+        // power-on flicker
+        .to('[data-hero-title]', { opacity: 0.45, duration: 0.05, repeat: 5, yoyo: true, ease: 'none' }, '-=0.15')
+        .set('[data-hero-title]', { opacity: 1 })
         .to(
           '[data-hero]',
           { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.12 },
-          '-=0.9',
+          '-=0.7',
         )
     }, root)
     return () => ctx.revert()
@@ -39,6 +43,15 @@ export function Hero() {
       ref={root}
       className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-5 pb-24 pt-28 text-center md:px-8"
     >
+      <MagicLayer depth={14}>
+        <div data-hero className="mb-5 flex justify-center">
+          <GoggleMark
+            className="h-7 w-auto opacity-70"
+            style={{ filter: 'drop-shadow(0 0 12px rgba(124,92,255,.6))' }}
+          />
+        </div>
+      </MagicLayer>
+
       <MagicLayer depth={10}>
         <div
           data-hero

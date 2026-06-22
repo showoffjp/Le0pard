@@ -6,7 +6,9 @@ import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ScrollHud } from './components/layout/ScrollHud'
 import { NowPlaying } from './components/layout/NowPlaying'
+import { NeonCursor } from './components/layout/NeonCursor'
 import { BeatPulse } from './components/effects/BeatPulse'
+import { SeamDivider } from './components/ui/SeamDivider'
 import { Hero } from './sections/Hero'
 import { Manifesto } from './sections/Manifesto'
 import { Descent } from './sections/Descent'
@@ -28,6 +30,7 @@ export default function App() {
       <Loader />
       <Experience />
       <BeatPulse />
+      <NeonCursor />
       <Navbar />
       <ScrollHud />
       <NowPlaying />
@@ -39,9 +42,12 @@ export default function App() {
         <AlbumShowcase />
         <TrackList />
         <Listen />
+        <SeamDivider label="Visuals" />
         <VideoSection />
         <Discography />
+        <SeamDivider label="Dispatch" />
         <Posts />
+        <SeamDivider label="The Artist" />
         <About />
       </main>
 
