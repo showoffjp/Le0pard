@@ -14,6 +14,7 @@ import { TrackList } from './sections/TrackList'
 import { Listen } from './sections/Listen'
 import { VideoSection } from './sections/VideoSection'
 import { Discography } from './sections/Discography'
+import { Posts } from './sections/Posts'
 import { About } from './sections/About'
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
         <Listen />
         <VideoSection />
         <Discography />
+        <Posts />
         <About />
       </main>
 

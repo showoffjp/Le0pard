@@ -9,6 +9,7 @@ const LINKS = [
   { label: 'Tracks', id: '#tracks' },
   { label: 'Listen', id: '#listen' },
   { label: 'Video', id: '#video' },
+  { label: 'News', id: '#posts' },
   { label: 'About', id: '#about' },
 ]
 

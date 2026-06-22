@@ -43,6 +43,7 @@ export function Footer() {
                 ['Tracks', '#tracks'],
                 ['Listen', '#listen'],
                 ['Video', '#video'],
+                ['News', '#posts'],
                 ['About', '#about'],
               ].map(([label, id]) => (
                 <li key={id}>
