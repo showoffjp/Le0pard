@@ -5,6 +5,7 @@ import { samplePalette, makePalette } from '../lib/palette'
 import { useExperience } from '../store/useExperience'
 import { signal } from '../lib/audioSignal'
 import { NeonGrid } from './NeonGrid'
+import { DataStream } from './DataStream'
 import { Core } from './Core'
 import { Rings } from './Rings'
 import { Shards } from './Shards'
@@ -58,6 +59,7 @@ export function Scene({ lowPower }: { lowPower: boolean }) {
       <SceneEnv />
       <Lights />
       <CameraRig />
+      <DataStream lowPower={lowPower} />
       <Core lowPower={lowPower} />
       <Rings />
       <Shards lowPower={lowPower} />

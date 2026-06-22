@@ -1,5 +1,6 @@
 import { Reveal } from '../components/ui/Reveal'
 import { MaskReveal } from '../components/ui/MaskReveal'
+import { AuroraText } from '../components/ui/AuroraText'
 
 export function Manifesto() {
   return (
@@ -10,13 +11,15 @@ export function Manifesto() {
         </div>
       </Reveal>
       <MaskReveal delay={0.1}>
-        <blockquote className="mt-8 text-balance font-display text-2xl font-bold leading-tight tracking-tight text-slate-100 md:text-4xl lg:text-5xl">
-          Massive cinematic horns and strings smashing straight into those{' '}
-          <span className="gradient-cool">heavy 808s</span> and sharp trap beats — soaked in
-          hard-hitting melodies that feel like{' '}
-          <span className="gradient-heat">ancient war drums</span> pounding through a{' '}
-          <span className="gradient-heat">burning future.</span>
-        </blockquote>
+        <AuroraText className="mt-8 inline-block cursor-default">
+          <blockquote className="aurora-text text-balance font-display text-2xl font-bold leading-tight tracking-tight transition-[transform,filter] duration-500 will-change-transform group-hover:scale-[1.015] group-hover:[animation-duration:4s] md:text-4xl lg:text-5xl">
+            Massive cinematic horns and strings smashing straight into those{' '}
+            <span className="aurora-accent">heavy 808s</span> and sharp trap beats — soaked in
+            hard-hitting melodies that feel like{' '}
+            <span className="aurora-accent">ancient war drums</span> pounding through a{' '}
+            <span className="aurora-accent">burning future.</span>
+          </blockquote>
+        </AuroraText>
       </MaskReveal>
       <Reveal delay={240}>
         <div className="mt-10 flex items-center justify-center gap-4 font-mono text-[0.65rem] uppercase tracking-widest2 text-slate-500">

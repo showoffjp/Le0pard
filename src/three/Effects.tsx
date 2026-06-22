@@ -22,7 +22,7 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
   useFrame((_, dt) => {
     const { progress } = useExperience.getState()
     if (bloomRef.current) {
-      const target = 0.8 + progress * 0.85 + signal.beat * 0.5 + signal.energy * 0.35
+      const target = 0.95 + progress * 1.0 + signal.beat * 0.6 + signal.energy * 0.4
       bloomRef.current.intensity = MathUtils.damp(bloomRef.current.intensity, target, 6, dt)
     }
   })
@@ -31,11 +31,11 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
     <EffectComposer enableNormalPass={false} multisampling={lowPower ? 0 : 4}>
       <Bloom
         ref={bloomRef as never}
-        intensity={0.85}
-        luminanceThreshold={0.18}
+        intensity={0.95}
+        luminanceThreshold={0.16}
         luminanceSmoothing={0.85}
         mipmapBlur
-        radius={0.72}
+        radius={0.8}
       />
       <ChromaticAberration offset={offset} radialModulation={false} modulationOffset={0} />
       <Vignette offset={0.2} darkness={0.92} />

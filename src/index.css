@@ -105,6 +105,31 @@
     animation: shimmer 9s linear infinite;
   }
 
+  /* Living "aurora" text — green → cyan → blue → violet → purple, rippling across
+     the words. Pair with <AuroraText> for the cursor-follow spotlight + hover. */
+  .aurora-text {
+    background: linear-gradient(
+      110deg,
+      #34d399, #22d3ee 20%, #3b82f6 42%, #7c5cff 62%, #a855f7 80%, #22d3ee
+    );
+    background-size: 240% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: aurora 9s ease-in-out infinite;
+  }
+  /* Brighter, green-forward hotspots within an aurora sentence. */
+  .aurora-accent {
+    background: linear-gradient(110deg, #5eead4, #34d399 28%, #22d3ee 62%, #a855f7);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    filter: drop-shadow(0 0 12px rgba(52, 211, 153, 0.5));
+    animation: aurora 6s ease-in-out infinite;
+  }
+
   .hud-grid {
     background-image:
       linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px),
@@ -150,8 +175,16 @@
   }
 }
 
+@keyframes aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
+  .aurora-text,
+  .aurora-accent,
   .animate-float,
   .animate-float-slow,
   .animate-flicker,

@@ -17,6 +17,7 @@ import { TrackList } from './sections/TrackList'
 import { Listen } from './sections/Listen'
 import { VideoSection } from './sections/VideoSection'
 import { Discography } from './sections/Discography'
+import { Store } from './sections/Store'
 import { Posts } from './sections/Posts'
 import { About } from './sections/About'
 
@@ -45,6 +46,8 @@ export default function App() {
         <SeamDivider label="Visuals" />
         <VideoSection />
         <Discography />
+        <SeamDivider label="Store" />
+        <Store />
         <SeamDivider label="Dispatch" />
         <Posts />
         <SeamDivider label="The Artist" />

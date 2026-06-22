@@ -1,10 +1,18 @@
+import { useMemo, useState } from 'react'
 import { useAudio } from '../store/useAudio'
 import { dystopia } from '../data/music'
 import type { Track } from '../data/music'
 import { SectionHeading } from '../components/ui/SectionHeading'
+import { TechFrame } from '../components/ui/TechFrame'
+import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { Marquee } from '../components/ui/Marquee'
 import { cn } from '../lib/cn'
+
+/** Bandcamp album embed cued to a 1-based track number — same player as Listen. */
+const buildEmbed = (track: number) =>
+  `https://bandcamp.com/EmbeddedPlayer/album=${dystopia.bandcampEmbedId}` +
+  `/size=large/bgcol=04050a/linkcol=a855f7/artwork=small/tracklist=true/transparent=true/t=${track}/`
 
 function EqIcon() {
   return (
@@ -69,35 +77,67 @@ function TrackRow({ track, active, onPlay }: { track: Track; active: boolean; on
 
 export function TrackList() {
   const play = useAudio((s) => s.play)
-  const playing = useAudio((s) => s.playing)
-  const trackIndex = useAudio((s) => s.trackIndex)
+  // 1-based track number currently cued in the player.
+  const [active, setActive] = useState(1)
 
-  const half = Math.ceil(dystopia.tracks.length / 2)
-  const left = dystopia.tracks.slice(0, half)
-  const right = dystopia.tracks.slice(half)
-  const isActive = (t: Track) => playing && trackIndex === t.n - 1
+  const embedSrc = useMemo(() => buildEmbed(active), [active])
+  const activeTrack = dystopia.tracks[active - 1]
+
+  const onSelect = (t: Track) => {
+    setActive(t.n)
+    // Drive the Now Playing dock + reactive 3D world, exactly like elsewhere.
+    play(t.n - 1)
+  }
 
   return (
     <section id="tracks" className="relative z-10 scroll-mt-24 py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <Reveal>
-          <SectionHeading index="02" kicker="20 Movements" title="Tracklist" />
+          <SectionHeading index="02" kicker="20 Movements · Tap to Play" title="Tracklist" />
         </Reveal>
 
-        <Reveal delay={80}>
-          <div className="grid gap-x-12 gap-y-0 md:grid-cols-2">
-            <div>
-              {left.map((t) => (
-                <TrackRow key={t.n} track={t} active={isActive(t)} onPlay={() => play(t.n - 1)} />
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start">
+          {/* Player — cues whichever track you tap */}
+          <Reveal>
+            <div className="lg:sticky lg:top-24">
+              <TechFrame glow="purple" padded={false} className="overflow-hidden">
+                <div className="scanlines relative">
+                  <iframe
+                    key={active}
+                    title={`DYSTØPIA — ${activeTrack?.title ?? 'track'} — Bandcamp player`}
+                    src={embedSrc}
+                    className="block h-[440px] w-full"
+                    style={{ border: 0 }}
+                    seamless
+                    loading="lazy"
+                    allow="autoplay *; encrypted-media *; fullscreen *"
+                  >
+                    <a href={dystopia.bandcampUrl}>DYSTØPIA by LEOPARDØ</a>
+                  </iframe>
+                </div>
+              </TechFrame>
+
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <p className="font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-500">
+                  <span className="text-neon-cyan">Cued</span> ·{' '}
+                  {String(active).padStart(2, '0')} {activeTrack?.title}
+                </p>
+                <NeonButton href={dystopia.bandcampUrl} variant="ghost" newTab className="px-4 py-2">
+                  Buy FLAC
+                </NeonButton>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Playlist — tap any title to load it above */}
+          <Reveal delay={80}>
+            <div className="grid sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-1 xl:grid-cols-2">
+              {dystopia.tracks.map((t) => (
+                <TrackRow key={t.n} track={t} active={active === t.n} onPlay={() => onSelect(t)} />
               ))}
             </div>
-            <div>
-              {right.map((t) => (
-                <TrackRow key={t.n} track={t} active={isActive(t)} onPlay={() => play(t.n - 1)} />
-              ))}
-            </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
 
       <Marquee
