@@ -2,7 +2,7 @@ import { useAudio } from '../store/useAudio'
 import { site } from '../data/site'
 import { dystopia, albumRuntime, type Track } from '../data/music'
 import { SectionHeading } from '../components/ui/SectionHeading'
-import { TechFrame } from '../components/ui/TechFrame'
+import { Visualizer } from '../components/Visualizer'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { MagicLayer } from '../components/ui/MagicLayer'
@@ -132,27 +132,18 @@ export function Album() {
             <MagicLayer depth={14}>
               <div className="relative">
                 <div className="absolute -inset-6 -z-10 animate-pulse-glow rounded-full bg-gradient-to-tr from-neon-purple/30 via-neon-blue/20 to-neon-ember/20" />
-                <TechFrame glow="mix" padded={false}>
-                  <div className="relative">
-                    <img
-                      src={dystopia.cover}
-                      srcSet={`${dystopia.coverSmall} 700w, ${dystopia.cover} 1200w`}
-                      sizes="(max-width: 768px) 90vw, 540px"
-                      alt="DYSTØPIA album cover by LEOPARDØ"
-                      className="aspect-square w-full object-cover"
-                      loading="lazy"
-                    />
-                    <button
-                      aria-label={playing ? 'Pause' : 'Play'}
-                      onClick={() => (started ? toggle() : play(0))}
-                      className="absolute inset-0 grid place-items-center bg-void/0 transition hover:bg-void/30"
-                    >
-                      <span className="react-pop grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue text-2xl text-white shadow-[0_0_44px_rgba(124,58,237,.7)] transition group-hover:scale-105">
-                        {playing ? '❚❚' : '▶'}
-                      </span>
-                    </button>
-                  </div>
-                </TechFrame>
+                <div className="relative aspect-square overflow-hidden clip-tech">
+                  <Visualizer className="absolute inset-0 h-full w-full" />
+                  <button
+                    aria-label={playing ? 'Pause' : 'Play'}
+                    onClick={() => (started ? toggle() : play(0))}
+                    className="absolute inset-0 grid place-items-center"
+                  >
+                    <span className="react-pop grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue text-xl text-white shadow-[0_0_44px_rgba(124,58,237,.7)] transition hover:scale-110">
+                      {playing ? '❚❚' : '▶'}
+                    </span>
+                  </button>
+                </div>
 
                 {/* now playing + scrubber */}
                 <div className="mt-4">

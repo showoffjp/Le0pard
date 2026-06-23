@@ -28,6 +28,24 @@ export function tickLive(_elapsed: number, dt: number) {
   if (analyser && data) tickLiveFromAnalyser(analyser, data, dt)
 }
 
+/** Fill `out` with the current byte frequency spectrum (for the canvas visualizer). */
+export function sampleFrequency(out: Uint8Array): boolean {
+  if (!analyser) return false
+  analyser.getByteFrequencyData(out as Uint8Array<ArrayBuffer>)
+  return true
+}
+
+/** Fill `out` with the current time-domain waveform. */
+export function sampleWaveform(out: Uint8Array): boolean {
+  if (!analyser) return false
+  analyser.getByteTimeDomainData(out as Uint8Array<ArrayBuffer>)
+  return true
+}
+
+export function analyserSampleRate(): number {
+  return analyser?.context.sampleRate ?? 48000
+}
+
 function AudioCtor(): typeof AudioContext | null {
   if (typeof window === 'undefined') return null
   return window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext || null
