@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { MeshDistortMaterial } from '@react-three/drei'
-import { Mesh, MathUtils, MeshBasicMaterial, Color } from 'three'
+import { Mesh, MathUtils, MeshBasicMaterial, Color, AdditiveBlending, BackSide, FrontSide } from 'three'
 import { useExperience } from '../store/useExperience'
 import { samplePalette, makePalette } from '../lib/palette'
 import { signal } from '../lib/audioSignal'
@@ -37,11 +37,38 @@ function seededMutation(seed: number): Mutation {
   }
 }
 
+// Fresnel glow — bright at grazing angles, gives the blob neon volume + a rim.
+const FRES_VERT = /* glsl */ `
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    vec4 wp = modelMatrix * vec4(position, 1.0);
+    vN = normalize(mat3(modelMatrix) * normal);
+    vV = normalize(cameraPosition - wp.xyz);
+    gl_Position = projectionMatrix * viewMatrix * wp;
+  }
+`
+const FRES_FRAG = /* glsl */ `
+  uniform vec3 uColor;
+  uniform float uPower;
+  uniform float uIntensity;
+  uniform float uBias;
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    float d = clamp(dot(normalize(vN), normalize(vV)), 0.0, 1.0);
+    float f = uBias + (1.0 - uBias) * pow(1.0 - d, uPower);
+    gl_FragColor = vec4(uColor * f * uIntensity, f);
+  }
+`
+
 /**
- * The album "core": a molten, distorting icosahedron caged in a neon wireframe
- * shell + orbiting rings. It tracks the UTØPIA → DYSTØPIA scroll arc — and on a
- * bass DROP it violently splats (squash + flare), then peels into a unique,
- * seeded mutation (anisotropic morphing + tumbling) before re-forming.
+ * The album "core": a molten, distorting icosahedron wrapped in a Fresnel rim
+ * glow + atmospheric corona, caged in a neon wireframe shell + orbiting rings.
+ * It tracks the UTØPIA → DYSTØPIA scroll arc — and on a bass DROP it violently
+ * splats (squash + flare), then peels into a unique, seeded mutation
+ * (anisotropic morphing + tumbling) before re-forming. The rim color is
+ * palette- and melody-driven, so the surface shimmers with the music.
  */
 export function Core({ lowPower }: { lowPower: boolean }) {
   const matRef = useRef<any>(null)
@@ -50,6 +77,22 @@ export function Core({ lowPower }: { lowPower: boolean }) {
   const ringRef = useRef<Mesh>(null)
   const ring2Ref = useRef<Mesh>(null)
   const pal = useRef(makePalette())
+
+  // Fresnel uniforms (stable objects mutated each frame — no re-renders).
+  const rimU = useRef({
+    uColor: { value: new Color('#7c5cff') },
+    uPower: { value: 2.7 },
+    uIntensity: { value: 1 },
+    uBias: { value: 0.05 },
+  })
+  const coronaU = useRef({
+    uColor: { value: new Color('#22d3ee') },
+    uPower: { value: 1.7 },
+    uIntensity: { value: 0.4 },
+    uBias: { value: 0.0 },
+  })
+  const rimColor = useRef(new Color('#7c5cff'))
+  const coronaColor = useRef(new Color('#22d3ee'))
 
   const lastDropId = useRef(0)
   const splat = useRef(0)
@@ -85,13 +128,40 @@ export function Core({ lowPower }: { lowPower: boolean }) {
         dt,
       )
       matRef.current.speed = MathUtils.damp(matRef.current.speed ?? 1.7, 1.7 + imp * m.speed * 1.4, 3, dt)
+      // Lower, form-preserving baseline so the metal catches the colored lights
+      // instead of washing out to a flat emissive blob; still flares on the splat.
       matRef.current.emissiveIntensity = MathUtils.damp(
         matRef.current.emissiveIntensity ?? 1,
-        1.05 + progress * 1.5 + signal.energy * 1.4 + sp * 5.5,
+        0.86 + progress * 0.7 + signal.energy * 1.15 + sp * 4.6,
         5,
         dt,
       )
     }
+
+    // ── Fresnel rim + corona: neon volume that shimmers with the music ──
+    // Rim hue drifts between the palette's emissive and accent with the treble/mids,
+    // giving an iridescent "living" surface; intensity rides energy + drops.
+    rimColor.current.copy(p.coreEmissive).lerp(p.lightA, 0.28 + signal.treble * 0.45 + signal.mid * 0.18)
+    if (imp > 0.01) rimColor.current.lerp(m.tint, 0.25 * imp)
+    rimU.current.uColor.value.lerp(rimColor.current, 0.12)
+    // gentle idle "breathing" so the orb feels alive even with no music playing
+    const breathe = 0.13 + Math.sin(t * 0.8) * 0.13
+    rimU.current.uIntensity.value = MathUtils.damp(
+      rimU.current.uIntensity.value,
+      0.92 + breathe + progress * 0.35 + signal.energy * 1.6 + signal.drop * 3.4 + sp * 3.5 + imp * 0.8,
+      6,
+      dt,
+    )
+    rimU.current.uPower.value = 2.7 - signal.drop * 1.1 // edge fattens on the drop
+
+    coronaColor.current.copy(p.lightA).lerp(p.lightB, 0.4 + signal.bass * 0.35)
+    coronaU.current.uColor.value.lerp(coronaColor.current, 0.1)
+    coronaU.current.uIntensity.value = MathUtils.damp(
+      coronaU.current.uIntensity.value,
+      0.32 + breathe * 0.5 + progress * 0.18 + signal.energy * 0.55 + signal.drop * 1.4 + sp * 1.6,
+      6,
+      dt,
+    )
 
     if (coreRef.current) {
       coreRef.current.rotation.y += dt * (0.12 + signal.energy * 0.5 + m.spin * imp)
@@ -139,12 +209,40 @@ export function Core({ lowPower }: { lowPower: boolean }) {
           ref={matRef}
           color="#0a2342"
           emissive="#2bd4ff"
-          emissiveIntensity={1.05}
-          roughness={0.18}
-          metalness={0.85}
+          emissiveIntensity={0.7}
+          roughness={0.14}
+          metalness={0.9}
           distort={0.28}
           speed={1.7}
         />
+
+        {/* Fresnel rim glow (inherits the core's squash/spin → sells the splat) */}
+        <mesh scale={1.09}>
+          <icosahedronGeometry args={[1.7, lowPower ? 3 : 5]} />
+          <shaderMaterial
+            vertexShader={FRES_VERT}
+            fragmentShader={FRES_FRAG}
+            uniforms={rimU.current}
+            transparent
+            depthWrite={false}
+            blending={AdditiveBlending}
+            side={FrontSide}
+          />
+        </mesh>
+
+        {/* Atmospheric corona — a soft outer bloom halo */}
+        <mesh scale={1.28}>
+          <icosahedronGeometry args={[1.7, lowPower ? 3 : 4]} />
+          <shaderMaterial
+            vertexShader={FRES_VERT}
+            fragmentShader={FRES_FRAG}
+            uniforms={coronaU.current}
+            transparent
+            depthWrite={false}
+            blending={AdditiveBlending}
+            side={BackSide}
+          />
+        </mesh>
       </mesh>
 
       <mesh ref={shellRef}>
