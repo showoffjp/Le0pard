@@ -48,7 +48,7 @@ function TrackRow({
       onClick={onPlay}
       className={cn(
         'group flex w-full items-center gap-4 border-b border-white/5 py-3.5 text-left transition-colors hover:bg-white/[0.025]',
-        active && 'bg-neon-purple/[0.06]',
+        active && 'react-jolt bg-neon-purple/[0.06]',
       )}
     >
       <span
