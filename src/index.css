@@ -173,16 +173,16 @@
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
-    opacity: calc(0.4 + var(--s-level, 0) * 0.6 + var(--s-drop, 0) * 0.5);
+    opacity: calc((0.1 + var(--s-intensity, 0) * 0.7 + var(--s-drop, 0) * 0.3) * var(--s-level, 0));
     background:
       radial-gradient(
         120% 80% at 50% 0%,
-        rgba(124, 58, 237, calc(0.06 + var(--s-energy, 0) * 0.2 + var(--s-buildup, 0) * 0.26 + var(--s-drop, 0) * 0.3)),
+        rgba(124, 58, 237, calc(0.04 + var(--s-intensity, 0) * 0.3 + var(--s-drop, 0) * 0.3)),
         transparent 60%
       ),
       radial-gradient(
         100% 70% at 50% 100%,
-        rgba(34, 211, 238, calc(0.05 + var(--s-bass, 0) * 0.22 + var(--s-drop, 0) * 0.2)),
+        rgba(34, 211, 238, calc(0.03 + var(--s-intensity, 0) * 0.22 + var(--s-drop, 0) * 0.2)),
         transparent 55%
       ),
       radial-gradient(
@@ -254,6 +254,7 @@
   --s-drop: 0;
   --s-buildup: 0;
   --s-impact: 0;
+  --s-intensity: 0;
   --s-hue: 0;
 }
 

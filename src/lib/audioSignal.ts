@@ -24,6 +24,10 @@ export type Signal = {
   drop: number // 0..1 sharp impulse at the drop (the splat trigger)
   impact: number // 0..1 slower aftermath (drives the mutation phase)
   dropId: number // increments on every drop — unique mutation seed
+  /** Macro-dynamics: how loud NOW is vs the song's recent baseline. ~0 during
+   *  steady playback (even loud), spikes only on real build-ups/drops/surges.
+   *  Everything "big" (background, page motion, flashes) is gated by this. */
+  intensity: number
 }
 
 export const signal: Signal = {
@@ -37,6 +41,7 @@ export const signal: Signal = {
   drop: 0,
   impact: 0,
   dropId: 0,
+  intensity: 0,
 }
 
 /**
@@ -135,6 +140,8 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
 let liveSince = 0
 let bassRef = 0 // valley follower (onset baseline)
 let bassSlow = 0 // slow average (build-up)
+let macroAvg = 0 // ~0.7s loudness
+let baseAvg = 0 // ~11s loudness baseline
 
 /** LIVE source — real frequency analysis with onset-based drop detection. */
 export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, dt: number) {
@@ -170,6 +177,17 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   signal.energy = damp(signal.energy, energy, 24, dt)
   signal.beat = damp(signal.beat, bass, 36, dt)
 
+  // Macro-dynamics: current loudness vs the song's ~11s baseline. Near 0 during
+  // steady playback (even when loud); only build-ups / drops / big surges push it
+  // up. The whole-page "big" reactions are gated by this so the site stays calm.
+  const full = clamp01(bass * 0.45 + mid * 0.35 + treble * 0.2)
+  macroAvg += (full - macroAvg) * (1 - Math.exp(-0.33 * dt)) // ~3s phrase loudness
+  baseAvg += (full - baseAvg) * (1 - Math.exp(-0.04 * dt)) // ~25s section baseline
+  // SECTION-level surge: this phrase vs the last ~25s. ~0 during steady playback
+  // (even loud + beat-heavy, since the 3s window averages over the kicks), and
+  // only spikes when a section genuinely jumps louder — a drop / huge increase.
+  signal.intensity = damp(signal.intensity, clamp01((macroAvg - baseAvg - 0.03) / 0.12), 4, dt)
+
   // Valley-relative onset on ABSOLUTE bass; strength scales with the onset AND
   // the absolute level, so a quiet groove gives tiny pops while a real loud drop
   // explodes. (Validated on the real audio: catches UTØPIA's 0:46 drop.)
@@ -177,10 +195,11 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   bassSlow += (bass - bassSlow) * (1 - Math.exp(-0.4 * dt))
   signal.buildup = damp(signal.buildup, clamp01((bass - bassSlow) * 2.2), 5, dt)
   const onset = bass - bassRef
-  if (liveSince > 0.18 && bass > 0.45 && onset > 0.1) {
-    // modest onset term (regular kicks = moderate pops) + a strong bonus when
-    // the absolute level is high (only real loud drops fully explode)
-    emitDrop(clamp01(onset * 1.8 + Math.max(0, bass - 0.62) * 2.2))
+  // Drops fire on the bass hits, but ONLY while the section is already intense (a
+  // real drop section) — so shocks sync to the kick during the big moments and
+  // never fire during calm/steady playback.
+  if (liveSince > 0.25 && signal.intensity > 0.2 && bass > 0.5 && onset > 0.1) {
+    emitDrop(clamp01(0.55 + onset * 1.6 + signal.intensity * 0.3))
     liveSince = 0
   }
   if (bass < bassRef) bassRef = bass

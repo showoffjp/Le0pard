@@ -24,6 +24,7 @@ export function useSignalVars() {
       set('--s-drop', signal.drop)
       set('--s-buildup', signal.buildup)
       set('--s-impact', signal.impact)
+      set('--s-intensity', signal.intensity)
       // derived: trippy hue swing that spikes on drops
       set('--s-hue', signal.drop * 60 + signal.energy * 16)
       raf = requestAnimationFrame(loop)

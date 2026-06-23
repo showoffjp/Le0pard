@@ -75,6 +75,7 @@ export function Visualizer({ className }: { className?: string }) {
       const bass = signal.bass
       const drop = signal.drop
       const energy = signal.energy
+      const I = signal.intensity
 
       // motion-trail fade
       ctx.globalCompositeOperation = 'source-over'
@@ -92,7 +93,7 @@ export function Visualizer({ className }: { className?: string }) {
       for (let i = 0; i <= 160; i++) {
         const a = (i / 160) * Math.PI * 2
         const wv = (wave[(i * 3) % wave.length] - 128) / 128
-        const rr = artR * 1.08 + wv * maxLen * (0.42 + drop * 0.5)
+        const rr = artR * 1.08 + wv * maxLen * (0.15 + I * 0.45 + drop * 0.5)
         const x = cx + Math.cos(a) * rr
         const y = cy + Math.sin(a) * rr
         if (i === 0) ctx.moveTo(x, y)
@@ -110,7 +111,7 @@ export function Visualizer({ className }: { className?: string }) {
       const barW = Math.max(1.4 * d, (Math.PI * artR) / BARS * 0.55)
       for (let i = 0; i < BARS; i++) {
         const mag = bars[i]
-        const len = (0.04 + mag) * maxLen * (1 + bass * 0.6) + drop * maxLen * 1.15
+        const len = (0.04 + mag) * maxLen * (0.35 + I * 0.95 + bass * 0.3) + drop * maxLen * 1.0
         const col = neonColor(i / BARS, 0.9)
         const glow = neonColor(i / BARS, 0.16)
         for (const sgn of [1, -1]) {

@@ -28,7 +28,6 @@ export function BackgroundVisualizer() {
     const wave = new Uint8Array(512)
     const bars = new Float32Array(BARS)
     const barAvg = new Float32Array(BARS)
-    let energyAvg = 0
     let raf = 0
 
     const dpr = () => Math.min(1, window.devicePixelRatio || 1)
@@ -70,26 +69,31 @@ export function BackgroundVisualizer() {
 
       const drop = signal.drop
       const impact = signal.impact
-      const energy = signal.energy
-      energyAvg += (energy - energyAvg) * 0.012
-      const pulse = Math.max(0, energy - energyAvg) // "punch" above the steady level
+      const I = signal.intensity
 
-      // Readability gate: near-invisible when the music is steady; only ramps
-      // toward full on real swells + drops.
-      canvas.style.opacity = String(Math.min(0.85, 0.08 + pulse * 2.8 + impact * 0.85))
+      // Gate the ENTIRE layer by macro-dynamics: fully invisible during steady
+      // playback (even loud), blooms only on real surges/drops. This is what
+      // keeps the site readable the rest of the time.
+      canvas.style.opacity = String(Math.min(0.82, I * 0.95))
+      if (I < 0.02 && drop < 0.02) {
+        ctx.clearRect(0, 0, w, h)
+        raf = requestAnimationFrame(loop)
+        return
+      }
+      const vis = Math.min(1, I * 1.4 + drop) // drawing-magnitude ramp
 
-      // fade previous frame toward transparent (trails; keeps the 3D visible)
+      // fade previous frame fast so additive draws can't pile into a wall
       ctx.globalCompositeOperation = 'destination-out'
-      ctx.fillStyle = `rgba(0,0,0,${0.16 + drop * 0.12})`
+      ctx.fillStyle = `rgba(0,0,0,${0.3 + drop * 0.2})`
       ctx.fillRect(0, 0, w, h)
       ctx.globalCompositeOperation = 'lighter'
 
-      const maxH = h * 0.16
+      const maxH = h * 0.14
       const bw = w / BARS
       for (let i = 0; i < BARS; i++) {
         // only the beat content (how far this band is above its recent average)
         const rel = Math.min(1, Math.max(0, bars[i] - barAvg[i] * 0.96) * 3.2)
-        const bh = rel * maxH + drop * maxH * 0.7
+        const bh = (rel * 0.8 + drop * 0.6) * maxH * vis
         if (bh < 0.6) continue
         const x = i * bw
         ctx.fillStyle = neonColor(i / BARS, 0.06)
@@ -100,9 +104,9 @@ export function BackgroundVisualizer() {
         ctx.fillRect(x, 0, bw * 0.9, bh)
       }
 
-      // center oscilloscope — amplitude follows the punch, not the constant level
+      // center oscilloscope — only present on surges/drops
       const mid = h / 2
-      const amp = (0.006 + pulse * 1.7 + impact * 0.5 + drop * 0.4) * h * 0.4
+      const amp = (0.02 + drop * 0.5) * h * 0.4 * vis
       const SEG = 256
       const step = Math.max(1, Math.floor(wave.length / SEG))
       ctx.beginPath()
@@ -114,7 +118,7 @@ export function BackgroundVisualizer() {
         else ctx.lineTo(x, y)
       }
       ctx.lineWidth = (1.3 + impact * 2) * d
-      ctx.strokeStyle = neonColor(0.28, 0.18 + impact * 0.4)
+      ctx.strokeStyle = neonColor(0.28, (0.18 + impact * 0.4) * vis)
       ctx.stroke()
 
       // screen-wide shockwave on the drop only
