@@ -2,32 +2,9 @@ import { useEffect, useRef } from 'react'
 import { dystopia } from '../data/music'
 import { signal } from '../lib/audioSignal'
 import { sampleFrequency, sampleWaveform, analyserSampleRate } from '../lib/audioReactor'
+import { neonColor } from '../lib/neon'
 
 const BARS = 96
-
-// Neon color stops (cyan → violet → purple → ember) sampled by bar position.
-const STOPS: [number, [number, number, number]][] = [
-  [0.0, [34, 211, 238]],
-  [0.4, [124, 92, 255]],
-  [0.72, [168, 85, 247]],
-  [1.0, [255, 106, 0]],
-]
-function colorAt(t: number, a: number): string {
-  let lo = STOPS[0]
-  let hi = STOPS[STOPS.length - 1]
-  for (let i = 0; i < STOPS.length - 1; i++) {
-    if (t >= STOPS[i][0] && t <= STOPS[i + 1][0]) {
-      lo = STOPS[i]
-      hi = STOPS[i + 1]
-      break
-    }
-  }
-  const f = hi[0] === lo[0] ? 0 : (t - lo[0]) / (hi[0] - lo[0])
-  const r = Math.round(lo[1][0] + (hi[1][0] - lo[1][0]) * f)
-  const g = Math.round(lo[1][1] + (hi[1][1] - lo[1][1]) * f)
-  const b = Math.round(lo[1][2] + (hi[1][2] - lo[1][2]) * f)
-  return `rgba(${r},${g},${b},${a})`
-}
 
 /**
  * God-tier audio visualizer: a Specterr-style radial frequency spectrum wrapped
@@ -106,33 +83,36 @@ export function Visualizer({ className }: { className?: string }) {
       ctx.globalCompositeOperation = 'lighter'
 
       const radius = Math.min(w, h) * 0.27
-      const artR = radius * (1 + bass * 0.06 + drop * 0.16)
+      const artR = radius * (1 + bass * 0.06 + drop * 0.24)
       const maxLen = Math.min(w, h) * 0.2
-      rot += 0.0016 + energy * 0.004 + drop * 0.03
+      rot += 0.0016 + energy * 0.004 + drop * 0.05
 
-      // waveform halo
+      // oscilloscope waveform halo (traces the live wave around the art)
       ctx.beginPath()
-      for (let i = 0; i <= 90; i++) {
-        const a = (i / 90) * Math.PI * 2
-        const wv = (wave[(i * 5) % wave.length] - 128) / 128
-        const rr = artR * 1.06 + wv * maxLen * 0.32
+      for (let i = 0; i <= 160; i++) {
+        const a = (i / 160) * Math.PI * 2
+        const wv = (wave[(i * 3) % wave.length] - 128) / 128
+        const rr = artR * 1.08 + wv * maxLen * (0.42 + drop * 0.5)
         const x = cx + Math.cos(a) * rr
         const y = cy + Math.sin(a) * rr
         if (i === 0) ctx.moveTo(x, y)
         else ctx.lineTo(x, y)
       }
       ctx.closePath()
-      ctx.lineWidth = 1.5 * d
-      ctx.strokeStyle = `rgba(34,211,238,${0.18 + energy * 0.4})`
+      ctx.lineWidth = 3 * d
+      ctx.strokeStyle = `rgba(34,211,238,${0.1 + energy * 0.24})`
+      ctx.stroke()
+      ctx.lineWidth = 1.4 * d
+      ctx.strokeStyle = `rgba(130,232,255,${0.4 + energy * 0.5})`
       ctx.stroke()
 
       // radial spectrum bars (mirrored both sides → symmetric)
       const barW = Math.max(1.4 * d, (Math.PI * artR) / BARS * 0.55)
       for (let i = 0; i < BARS; i++) {
         const mag = bars[i]
-        const len = (0.05 + mag) * maxLen + drop * maxLen * 0.5
-        const col = colorAt(i / BARS, 0.9)
-        const glow = colorAt(i / BARS, 0.16)
+        const len = (0.05 + mag) * maxLen + drop * maxLen * 1.15
+        const col = neonColor(i / BARS, 0.9)
+        const glow = neonColor(i / BARS, 0.16)
         for (const sgn of [1, -1]) {
           const ang = -Math.PI / 2 + sgn * ((i / BARS) * Math.PI) + rot * sgn
           const ca = Math.cos(ang)
@@ -176,19 +156,26 @@ export function Visualizer({ className }: { className?: string }) {
         ctx.globalCompositeOperation = 'lighter'
         ctx.beginPath()
         ctx.arc(cx, cy, artR, 0, Math.PI * 2)
-        ctx.lineWidth = (2 + bass * 3) * d
-        ctx.strokeStyle = `rgba(124,92,255,${0.45 + energy * 0.5})`
+        ctx.lineWidth = (2 + bass * 3 + drop * 6) * d
+        ctx.strokeStyle = `rgba(124,92,255,${0.45 + energy * 0.5 + drop * 0.5})`
         ctx.stroke()
       }
 
-      // shockwave ring on the drop
+      // shockwave + flash on the drop
       if (drop > 0.01) {
         ctx.globalCompositeOperation = 'lighter'
         ctx.beginPath()
-        ctx.arc(cx, cy, artR + maxLen * (1.4 - drop) + 8 * d, 0, Math.PI * 2)
-        ctx.lineWidth = (1 + drop * 7) * d
-        ctx.strokeStyle = `rgba(34,211,238,${drop * 0.8})`
+        ctx.arc(cx, cy, artR + maxLen * (1.6 - drop) + 8 * d, 0, Math.PI * 2)
+        ctx.lineWidth = (1 + drop * 11) * d
+        ctx.strokeStyle = `rgba(34,211,238,${drop * 0.95})`
         ctx.stroke()
+        ctx.beginPath()
+        ctx.arc(cx, cy, artR + maxLen * (2.6 - drop * 2) + 8 * d, 0, Math.PI * 2)
+        ctx.lineWidth = (1 + drop * 6) * d
+        ctx.strokeStyle = `rgba(168,85,247,${drop * 0.7})`
+        ctx.stroke()
+        ctx.fillStyle = `rgba(150,90,255,${drop * 0.32})`
+        ctx.fillRect(0, 0, w, h)
       }
 
       raf = requestAnimationFrame(loop)

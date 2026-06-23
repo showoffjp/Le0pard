@@ -81,9 +81,9 @@ export function emitDrop(strength = 1) {
 
 /** Decay the one-shot transients every frame (shared by every signal source). */
 function decayTransients(dt: number) {
-  signal.drop = damp(signal.drop, 0, 6, dt)
+  signal.drop = damp(signal.drop, 0, 5, dt)
   // impact lingers longer so the post-drop explosion/mutation is felt
-  signal.impact = damp(signal.impact, 0, 0.85, dt)
+  signal.impact = damp(signal.impact, 0, 0.8, dt)
 }
 
 let lastPhrase = -1
@@ -134,6 +134,7 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
 
 let liveBassAvg = 0
 let liveSince = 0
+let livePrevBass = 0
 
 /** LIVE source — real frequency analysis with onset-based drop detection. */
 export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, dt: number) {
@@ -162,11 +163,14 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   signal.energy = damp(signal.energy, energy, 14, dt)
   signal.beat = damp(signal.beat, bass, 28, dt)
 
-  // Onset-based drop detection: a sharp surge in low-end above its moving avg.
+  // Drop detection: a sharp bass transient (positive flux) OR a surge over the
+  // moving average. Tuned to fire hard on the song's actual drops/hits.
   liveSince += dt
+  const flux = Math.max(0, bass - livePrevBass)
+  livePrevBass = bass
   signal.buildup = damp(signal.buildup, clamp01((bass - liveBassAvg) * 3.2), 5, dt)
-  if (bass > 0.42 && bass > liveBassAvg * 1.3 && liveSince > 0.26) {
-    emitDrop(clamp01(0.82 + (bass - liveBassAvg) * 1.4))
+  if (liveSince > 0.34 && (flux > 0.14 || (bass > 0.5 && bass > liveBassAvg * 1.26))) {
+    emitDrop(clamp01(0.85 + flux * 2.4 + (bass - liveBassAvg)))
     liveSince = 0
   }
   liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-2.4 * dt))

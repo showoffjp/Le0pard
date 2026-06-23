@@ -10,6 +10,7 @@ import { NowPlaying } from './components/layout/NowPlaying'
 import { NeonCursor } from './components/layout/NeonCursor'
 import { AudioEngine } from './components/AudioEngine'
 import { BeatPulse } from './components/effects/BeatPulse'
+import { BackgroundVisualizer } from './components/effects/BackgroundVisualizer'
 import { DropFlash } from './components/effects/DropFlash'
 import { SeamDivider } from './components/ui/SeamDivider'
 import { Hero } from './sections/Hero'
@@ -33,6 +34,7 @@ export default function App() {
       <Loader />
       <Experience />
       <AudioEngine />
+      <BackgroundVisualizer />
       <div className="react-bg" aria-hidden="true" />
       <BeatPulse />
       <DropFlash />
