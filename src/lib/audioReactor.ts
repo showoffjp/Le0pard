@@ -54,8 +54,8 @@ function AudioCtor(): typeof AudioContext | null {
 function buildAnalyser(srcNode: AudioNode) {
   const a = ctx!.createAnalyser()
   a.fftSize = 1024
-  // Low smoothing so bass transients/drops aren't flattened out.
-  a.smoothingTimeConstant = 0.35
+  // Low smoothing so bass transients/drops aren't flattened out (snappy + in-time).
+  a.smoothingTimeConstant = 0.28
   // Wide dB window spanning the real bass range (~-58..-6 dBFS) so a hot master
   // isn't clipped flat at max — preserves the dynamics drop detection needs.
   a.minDecibels = -58

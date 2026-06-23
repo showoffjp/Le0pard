@@ -22,8 +22,8 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
   const emberRef = useRef<Points>(null)
   const emberMat = useRef<PointsMaterial>(null)
 
-  const dustCount = lowPower ? 700 : 1800
-  const emberCount = lowPower ? 140 : 340
+  const dustCount = lowPower ? 600 : 1100
+  const emberCount = lowPower ? 120 : 220
 
   const dustGeo = useMemo(() => makeGeometry(dustCount, 60, 36), [dustCount])
   const emberGeo = useMemo(() => makeGeometry(emberCount, 34, 22), [emberCount])

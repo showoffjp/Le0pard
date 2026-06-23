@@ -4,7 +4,7 @@ import { sampleFrequency, sampleWaveform, analyserSampleRate } from '../../lib/a
 import { neonColor } from '../../lib/neon'
 import { useExperience } from '../../store/useExperience'
 
-const BARS = 128
+const BARS = 72
 
 /**
  * Full-screen, behind-everything audio visualizer — the WHOLE background reacts.
@@ -31,7 +31,7 @@ export function BackgroundVisualizer() {
     let energyAvg = 0
     let raf = 0
 
-    const dpr = () => Math.min(1.5, window.devicePixelRatio || 1)
+    const dpr = () => Math.min(1, window.devicePixelRatio || 1)
     const resize = () => {
       canvas.width = Math.max(1, Math.floor(window.innerWidth * dpr()))
       canvas.height = Math.max(1, Math.floor(window.innerHeight * dpr()))
@@ -76,7 +76,7 @@ export function BackgroundVisualizer() {
 
       // Readability gate: near-invisible when the music is steady; only ramps
       // toward full on real swells + drops.
-      canvas.style.opacity = String(Math.min(0.82, 0.03 + pulse * 2.4 + impact * 0.7))
+      canvas.style.opacity = String(Math.min(0.85, 0.08 + pulse * 2.8 + impact * 0.85))
 
       // fade previous frame toward transparent (trails; keeps the 3D visible)
       ctx.globalCompositeOperation = 'destination-out'

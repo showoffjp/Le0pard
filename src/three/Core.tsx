@@ -98,7 +98,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
       coreRef.current.rotation.x = Math.sin(t * 0.22) * 0.16 + m.spin * imp * Math.sin(t * 1.3) * 0.3
       coreRef.current.rotation.z += dt * m.spin * imp * 0.6
 
-      const base = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12 + signal.bass * 0.24 + signal.beat * 0.14
+      const base = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12 + signal.bass * 0.42 + signal.beat * 0.22
       // anisotropic morph during the mutation phase → a distinct shape each drop
       const ox = 1 + Math.sin(t * m.fx * 3) * m.ax * imp * 1.3
       const oy = 1 + Math.sin(t * m.fy * 3 + 2.1) * m.ay * imp * 1.3
@@ -134,7 +134,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
   return (
     <group>
       <mesh ref={coreRef}>
-        <icosahedronGeometry args={[1.7, lowPower ? 8 : 18]} />
+        <icosahedronGeometry args={[1.7, lowPower ? 6 : 12]} />
         <MeshDistortMaterial
           ref={matRef}
           color="#0a2342"

@@ -164,11 +164,11 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   const energy = clamp01(bass * 0.9 + mid * 0.06 + treble * 0.04)
 
   signal.level = damp(signal.level, energy > 0.06 ? 1 : 0, 3, dt)
-  signal.bass = damp(signal.bass, bass, 22, dt)
-  signal.mid = damp(signal.mid, mid, 16, dt)
-  signal.treble = damp(signal.treble, treble, 22, dt)
-  signal.energy = damp(signal.energy, energy, 16, dt)
-  signal.beat = damp(signal.beat, bass, 26, dt)
+  signal.bass = damp(signal.bass, bass, 32, dt)
+  signal.mid = damp(signal.mid, mid, 18, dt)
+  signal.treble = damp(signal.treble, treble, 24, dt)
+  signal.energy = damp(signal.energy, energy, 24, dt)
+  signal.beat = damp(signal.beat, bass, 36, dt)
 
   // Valley-relative onset on ABSOLUTE bass; strength scales with the onset AND
   // the absolute level, so a quiet groove gives tiny pops while a real loud drop

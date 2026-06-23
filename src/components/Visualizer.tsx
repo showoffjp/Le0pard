@@ -82,10 +82,10 @@ export function Visualizer({ className }: { className?: string }) {
       ctx.fillRect(0, 0, w, h)
       ctx.globalCompositeOperation = 'lighter'
 
-      const radius = Math.min(w, h) * 0.27
-      const artR = radius * (1 + bass * 0.06 + drop * 0.24)
-      const maxLen = Math.min(w, h) * 0.2
-      rot += 0.0016 + energy * 0.004 + drop * 0.05
+      const radius = Math.min(w, h) * 0.26
+      const artR = radius * (1 + bass * 0.13 + drop * 0.26)
+      const maxLen = Math.min(w, h) * 0.27
+      rot += 0.0016 + energy * 0.006 + drop * 0.05
 
       // oscilloscope waveform halo (traces the live wave around the art)
       ctx.beginPath()
@@ -110,7 +110,7 @@ export function Visualizer({ className }: { className?: string }) {
       const barW = Math.max(1.4 * d, (Math.PI * artR) / BARS * 0.55)
       for (let i = 0; i < BARS; i++) {
         const mag = bars[i]
-        const len = (0.05 + mag) * maxLen + drop * maxLen * 1.15
+        const len = (0.04 + mag) * maxLen * (1 + bass * 0.6) + drop * maxLen * 1.15
         const col = neonColor(i / BARS, 0.9)
         const glow = neonColor(i / BARS, 0.16)
         for (const sgn of [1, -1]) {

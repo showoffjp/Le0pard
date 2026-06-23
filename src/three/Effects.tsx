@@ -1,12 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import {
-  EffectComposer,
-  Bloom,
-  ChromaticAberration,
-  Vignette,
-  Noise,
-} from '@react-three/postprocessing'
+import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing'
 import { Vector2, MathUtils } from 'three'
 import { useExperience } from '../store/useExperience'
 import { signal } from '../lib/audioSignal'
@@ -36,18 +30,17 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
   })
 
   return (
-    <EffectComposer enableNormalPass={false} multisampling={lowPower ? 0 : 4}>
+    <EffectComposer enableNormalPass={false} multisampling={0}>
       <Bloom
         ref={bloomRef as never}
         intensity={0.95}
         luminanceThreshold={0.16}
         luminanceSmoothing={0.85}
         mipmapBlur
-        radius={0.8}
+        radius={0.75}
       />
       <ChromaticAberration ref={caRef as never} offset={offset} radialModulation={false} modulationOffset={0} />
-      <Vignette offset={0.2} darkness={0.92} />
-      <Noise premultiply opacity={lowPower ? 0 : 0.04} />
+      <Vignette offset={0.2} darkness={0.9} />
     </EffectComposer>
   )
 }
