@@ -36,7 +36,7 @@ function AudioCtor(): typeof AudioContext | null {
 function buildAnalyser(srcNode: AudioNode) {
   const a = ctx!.createAnalyser()
   a.fftSize = 1024
-  a.smoothingTimeConstant = 0.72
+  a.smoothingTimeConstant = 0.6
   srcNode.connect(a)
   source = srcNode
   analyser = a

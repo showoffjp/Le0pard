@@ -34,13 +34,13 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     const t = state.clock.elapsedTime
 
     if (dustRef.current) {
-      dustRef.current.rotation.y = t * (0.012 + signal.energy * 0.05)
+      dustRef.current.rotation.y = t * (0.012 + signal.energy * 0.12 + signal.drop * 0.4)
     }
 
     if (emberRef.current) {
       const arr = emberGeo.getAttribute('position') as Float32BufferAttribute
       const a = arr.array as Float32Array
-      const rise = 1.1 + signal.energy * 2.2
+      const rise = 1.1 + signal.energy * 2.6 + signal.drop * 6
       for (let i = 0; i < a.length; i += 3) {
         a[i + 1] += dt * (rise + (i % 7) * 0.12)
         a[i] += Math.sin(t * 0.6 + i) * dt * 0.25
@@ -50,9 +50,9 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     }
 
     if (emberMat.current) {
-      // embers fade in across the second half of the journey + surge with the beat
-      emberMat.current.opacity = Math.max(0, progress - 0.18) * 1.1 + signal.energy * 0.45
-      emberMat.current.size = 0.05 + progress * 0.05 + signal.bass * 0.045
+      // embers fade in across the second half of the journey + erupt on the drop
+      emberMat.current.opacity = Math.max(0, progress - 0.18) * 1.1 + signal.energy * 0.5 + signal.drop * 0.9
+      emberMat.current.size = 0.05 + progress * 0.05 + signal.bass * 0.06 + signal.drop * 0.06
     }
   })
 

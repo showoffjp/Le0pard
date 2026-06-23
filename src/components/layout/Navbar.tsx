@@ -46,7 +46,7 @@ export function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-8">
           <button
             onClick={() => go(0)}
-            className="font-display text-lg font-black uppercase tracking-widest2 text-white transition hover:text-neon-purple"
+            className="react-pop-soft font-display text-lg font-black uppercase tracking-widest2 text-white transition hover:text-neon-purple"
           >
             LEOPARD<span className="text-neon-purple neon-purple">Ø</span>
           </button>

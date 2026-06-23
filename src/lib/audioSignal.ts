@@ -39,6 +39,14 @@ export const signal: Signal = {
   dropId: 0,
 }
 
+/**
+ * Per-bar frequency spectrum for an accurate equalizer. Filled straight from the
+ * live FFT (log-spaced bands, fast attack / slower release) so the dock bars
+ * mirror exactly what's playing. Idles to 0 in synthetic mode / when silent.
+ */
+export const BAR_COUNT = 28
+export const spectrum = new Float32Array(BAR_COUNT)
+
 function hash(n: number) {
   let x = (n + 1) * 2654435761
   x = (x ^ (x >>> 15)) >>> 0
@@ -73,8 +81,9 @@ export function emitDrop(strength = 1) {
 
 /** Decay the one-shot transients every frame (shared by every signal source). */
 function decayTransients(dt: number) {
-  signal.drop = damp(signal.drop, 0, 7, dt)
-  signal.impact = damp(signal.impact, 0, 1.25, dt)
+  signal.drop = damp(signal.drop, 0, 6, dt)
+  // impact lingers longer so the post-drop explosion/mutation is felt
+  signal.impact = damp(signal.impact, 0, 0.85, dt)
 }
 
 let lastPhrase = -1
@@ -139,26 +148,46 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   }
 
   // fftSize 1024 → 512 bins (~46 Hz/bin @ 48k): sub/bass, mids, highs.
-  const bass = clamp01(band(1, 8) * 1.45)
-  const mid = clamp01(band(9, 60) * 1.1)
-  const treble = clamp01(band(61, 200) * 1.25)
-  const energy = clamp01(bass * 0.55 + mid * 0.25 + treble * 0.2)
+  const bass = clamp01(band(1, 8) * 1.7)
+  const mid = clamp01(band(9, 60) * 1.15)
+  const treble = clamp01(band(61, 200) * 1.3)
+  const energy = clamp01((bass * 0.6 + mid * 0.24 + treble * 0.2) * 1.18)
 
-  signal.level = damp(signal.level, energy > 0.035 ? 1 : 0, 3, dt)
-  signal.bass = damp(signal.bass, bass, 18, dt)
-  signal.mid = damp(signal.mid, mid, 14, dt)
-  signal.treble = damp(signal.treble, treble, 22, dt)
-  signal.energy = damp(signal.energy, energy, 12, dt)
-  signal.beat = damp(signal.beat, bass, 24, dt)
+  signal.level = damp(signal.level, energy > 0.03 ? 1 : 0, 3, dt)
+  signal.bass = damp(signal.bass, bass, 24, dt)
+  signal.mid = damp(signal.mid, mid, 16, dt)
+  signal.treble = damp(signal.treble, treble, 26, dt)
+  signal.energy = damp(signal.energy, energy, 14, dt)
+  signal.beat = damp(signal.beat, bass, 28, dt)
 
   // Onset-based drop detection: a sharp surge in low-end above its moving avg.
   liveSince += dt
-  signal.buildup = damp(signal.buildup, clamp01((bass - liveBassAvg) * 3), 5, dt)
-  if (bass > 0.5 && bass > liveBassAvg * 1.45 && liveSince > 0.32) {
-    emitDrop(clamp01(0.7 + (bass - liveBassAvg)))
+  signal.buildup = damp(signal.buildup, clamp01((bass - liveBassAvg) * 3.2), 5, dt)
+  if (bass > 0.42 && bass > liveBassAvg * 1.3 && liveSince > 0.26) {
+    emitDrop(clamp01(0.82 + (bass - liveBassAvg) * 1.4))
     liveSince = 0
   }
-  liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-2.2 * dt))
+  liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-2.4 * dt))
+
+  // Accurate equalizer: log-spaced bars across the real FFT.
+  const loBin = 1
+  const hiBin = Math.max(loBin + 1, Math.floor(n * 0.66))
+  const ratio = hiBin / loBin
+  const release = 1 - Math.exp(-9 * dt)
+  for (let b = 0; b < BAR_COUNT; b++) {
+    const f0 = Math.floor(loBin * Math.pow(ratio, b / BAR_COUNT))
+    const f1 = Math.max(f0 + 1, Math.floor(loBin * Math.pow(ratio, (b + 1) / BAR_COUNT)))
+    let sum = 0
+    let cnt = 0
+    for (let i = f0; i < f1 && i < n; i++) {
+      sum += data[i]
+      cnt++
+    }
+    // gentle high-frequency tilt so quieter highs still register
+    const target = clamp01((cnt ? sum / cnt / 255 : 0) * (1 + (b / BAR_COUNT) * 0.9))
+    const prev = spectrum[b]
+    spectrum[b] = target > prev ? target : prev + (target - prev) * release
+  }
 
   decayTransients(dt)
 }

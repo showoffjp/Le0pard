@@ -35,7 +35,7 @@ export function TechFrame({
 }) {
   return (
     <div
-      className={cn('relative', className)}
+      className={cn('react-frame relative', className)}
       style={{ filter: `drop-shadow(0 0 22px ${GLOWS[glow]})` }}
     >
       <div className={cn('clip-tech bg-gradient-to-br p-[1.5px]', BORDERS[glow])}>

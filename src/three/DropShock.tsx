@@ -13,8 +13,8 @@ import { samplePalette, makePalette } from '../lib/palette'
 import { useExperience } from '../store/useExperience'
 import { signal } from '../lib/audioSignal'
 
-const SPARKS = 140
-const LIFETIME = 0.85 // seconds
+const SPARKS = 220
+const LIFETIME = 0.9 // seconds
 
 /**
  * The shockwave: on every bass DROP, an expanding neon ring detonates out of
@@ -33,7 +33,7 @@ export function DropShock({ lowPower }: { lowPower: boolean }) {
   const lastId = useRef(0)
   const life = useRef(1)
 
-  const sparkCount = lowPower ? 70 : SPARKS
+  const sparkCount = lowPower ? 110 : SPARKS
   const vel = useMemo(() => new Float32Array(sparkCount * 3), [sparkCount])
   const sparkGeo = useMemo(() => {
     const g = new BufferGeometry()
@@ -59,7 +59,7 @@ export function DropShock({ lowPower }: { lowPower: boolean }) {
         // random direction on a sphere, varied speed
         const theta = Math.random() * Math.PI * 2
         const phi = Math.acos(2 * Math.random() - 1)
-        const speed = 5 + Math.random() * 9
+        const speed = 7 + Math.random() * 13
         vel[i3] = Math.sin(phi) * Math.cos(theta) * speed
         vel[i3 + 1] = Math.sin(phi) * Math.sin(theta) * speed
         vel[i3 + 2] = Math.cos(phi) * speed
@@ -72,13 +72,13 @@ export function DropShock({ lowPower }: { lowPower: boolean }) {
     const fade = 1 - l
 
     if (ringRef.current && ringMat.current) {
-      ringRef.current.scale.setScalar(0.2 + l * 7)
-      ringMat.current.opacity = fade * fade * 0.85
+      ringRef.current.scale.setScalar(0.2 + l * 9.5)
+      ringMat.current.opacity = fade * fade * 0.95
       ringMat.current.color.lerp(pal.current.lightA, 0.2)
     }
     if (ring2Ref.current && ring2Mat.current) {
-      ring2Ref.current.scale.setScalar(0.2 + l * 4.4)
-      ring2Mat.current.opacity = fade * 0.6
+      ring2Ref.current.scale.setScalar(0.2 + l * 6)
+      ring2Mat.current.opacity = fade * 0.7
       ring2Mat.current.color.lerp(pal.current.coreEmissive, 0.2)
     }
 

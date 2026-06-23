@@ -80,14 +80,14 @@ export function Core({ lowPower }: { lowPower: boolean }) {
       if (imp > 0.01) matRef.current.emissive.lerp(m.tint, 0.04 * imp)
       matRef.current.distort = MathUtils.damp(
         matRef.current.distort ?? 0.3,
-        p.distort + signal.treble * 0.18 + sp * 1.1 + imp * m.distort,
+        p.distort + signal.treble * 0.18 + sp * 1.7 + imp * m.distort,
         4,
         dt,
       )
-      matRef.current.speed = MathUtils.damp(matRef.current.speed ?? 1.7, 1.7 + imp * m.speed, 3, dt)
+      matRef.current.speed = MathUtils.damp(matRef.current.speed ?? 1.7, 1.7 + imp * m.speed * 1.4, 3, dt)
       matRef.current.emissiveIntensity = MathUtils.damp(
         matRef.current.emissiveIntensity ?? 1,
-        1.05 + progress * 1.5 + signal.energy * 1.1 + sp * 3.2,
+        1.05 + progress * 1.5 + signal.energy * 1.4 + sp * 5.5,
         5,
         dt,
       )
@@ -98,16 +98,16 @@ export function Core({ lowPower }: { lowPower: boolean }) {
       coreRef.current.rotation.x = Math.sin(t * 0.22) * 0.16 + m.spin * imp * Math.sin(t * 1.3) * 0.3
       coreRef.current.rotation.z += dt * m.spin * imp * 0.6
 
-      const base = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12 + signal.bass * 0.16 + signal.beat * 0.1
+      const base = 1 + Math.sin(t * 1.1) * 0.02 + progress * 0.12 + signal.bass * 0.24 + signal.beat * 0.14
       // anisotropic morph during the mutation phase → a distinct shape each drop
-      const ox = 1 + Math.sin(t * m.fx * 3) * m.ax * imp
-      const oy = 1 + Math.sin(t * m.fy * 3 + 2.1) * m.ay * imp
-      const oz = 1 + Math.sin(t * m.fz * 3 + 4.2) * m.az * imp
+      const ox = 1 + Math.sin(t * m.fx * 3) * m.ax * imp * 1.3
+      const oy = 1 + Math.sin(t * m.fy * 3 + 2.1) * m.ay * imp * 1.3
+      const oz = 1 + Math.sin(t * m.fz * 3 + 4.2) * m.az * imp * 1.3
       // splat: pancake on the Y axis, bulge out on X/Z, then spring back
       coreRef.current.scale.set(
-        base * ox * (1 + 0.55 * sp),
-        base * oy * (1 - 0.62 * sp),
-        base * oz * (1 + 0.55 * sp),
+        base * ox * (1 + 0.9 * sp),
+        base * oy * (1 - 0.72 * sp),
+        base * oz * (1 + 0.9 * sp),
       )
     }
 

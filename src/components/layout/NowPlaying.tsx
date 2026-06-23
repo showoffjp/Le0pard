@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useAudio } from '../../store/useAudio'
 import { useExperience } from '../../store/useExperience'
 import { dystopia } from '../../data/music'
-import { signal } from '../../lib/audioSignal'
+import { spectrum, BAR_COUNT } from '../../lib/audioSignal'
 import { cn } from '../../lib/cn'
 
-const BARS = 20
+const BARS = BAR_COUNT
 
 /**
  * Floating "Now Playing" dock — the persistent transport for the on-site
@@ -32,13 +32,10 @@ export function NowPlaying() {
       const bars = barsRef.current
       if (bars) {
         const children = bars.children
-        const now = performance.now()
         for (let i = 0; i < children.length; i++) {
           const el = children[i] as HTMLElement
-          const t = i / BARS
-          const band = t < 0.4 ? signal.bass : t < 0.72 ? signal.mid : signal.treble
-          const wobble = 0.4 + 0.6 * Math.abs(Math.sin(i * 1.3 + now / 220))
-          el.style.transform = `scaleY(${Math.max(0.06, band * wobble)})`
+          // straight from the real FFT — an accurate spectrum of what's playing
+          el.style.transform = `scaleY(${Math.max(0.04, spectrum[i])})`
         }
       }
       raf = requestAnimationFrame(loop)
