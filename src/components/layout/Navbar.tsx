@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useExperience } from '../../store/useExperience'
-import { site } from '../../data/site'
+import { useAudio } from '../../store/useAudio'
 import { NeonButton } from '../ui/NeonButton'
 import { cn } from '../../lib/cn'
 
 const LINKS = [
   { label: 'Album', id: '#album' },
-  { label: 'Tracks', id: '#tracks' },
-  { label: 'Listen', id: '#listen' },
   { label: 'Video', id: '#video' },
   { label: 'Store', id: '#store' },
   { label: 'News', id: '#posts' },
@@ -16,6 +14,7 @@ const LINKS = [
 
 export function Navbar() {
   const scrollTo = useExperience((s) => s.scrollTo)
+  const play = useAudio((s) => s.play)
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -66,9 +65,7 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:block">
-            <NeonButton href={site.links.bandcamp} newTab>
-              Stream Now
-            </NeonButton>
+            <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play</NeonButton>
           </div>
 
           <button
@@ -111,9 +108,7 @@ export function Navbar() {
           </button>
         ))}
         <div className="relative mt-4">
-          <NeonButton href={site.links.bandcamp} newTab>
-            Stream DYSTØPIA
-          </NeonButton>
+          <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play DYSTØPIA</NeonButton>
         </div>
       </div>
     </>

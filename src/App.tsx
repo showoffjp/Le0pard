@@ -8,15 +8,14 @@ import { Footer } from './components/layout/Footer'
 import { ScrollHud } from './components/layout/ScrollHud'
 import { NowPlaying } from './components/layout/NowPlaying'
 import { NeonCursor } from './components/layout/NeonCursor'
+import { AudioEngine } from './components/AudioEngine'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { DropFlash } from './components/effects/DropFlash'
 import { SeamDivider } from './components/ui/SeamDivider'
 import { Hero } from './sections/Hero'
 import { Manifesto } from './sections/Manifesto'
 import { Descent } from './sections/Descent'
-import { AlbumShowcase } from './sections/AlbumShowcase'
-import { TrackList } from './sections/TrackList'
-import { Listen } from './sections/Listen'
+import { Album } from './sections/Album'
 import { VideoSection } from './sections/VideoSection'
 import { Discography } from './sections/Discography'
 import { Store } from './sections/Store'
@@ -33,6 +32,7 @@ export default function App() {
     <>
       <Loader />
       <Experience />
+      <AudioEngine />
       <div className="react-bg" aria-hidden="true" />
       <BeatPulse />
       <DropFlash />
@@ -45,9 +45,7 @@ export default function App() {
         <Hero />
         <Manifesto />
         <Descent />
-        <AlbumShowcase />
-        <TrackList />
-        <Listen />
+        <Album />
         <SeamDivider label="Visuals" />
         <VideoSection />
         <Discography />

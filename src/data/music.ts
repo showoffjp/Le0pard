@@ -80,3 +80,8 @@ export function albumRuntime(album: Album): { minutes: number; label: string } {
   const minutes = Math.round(seconds / 60)
   return { minutes, label: `${minutes} min` }
 }
+
+/** Self-hosted audio path for a track (in /public/audio, numbered by order). */
+export function trackAudioUrl(track: Track): string {
+  return `/audio/${String(track.n).padStart(2, '0')}.wav`
+}
