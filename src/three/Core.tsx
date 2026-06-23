@@ -141,7 +141,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
     // ── Fresnel rim + corona: neon volume that shimmers with the music ──
     // Rim hue drifts between the palette's emissive and accent with the treble/mids,
     // giving an iridescent "living" surface; intensity rides energy + drops.
-    rimColor.current.copy(p.coreEmissive).lerp(p.lightA, 0.28 + signal.treble * 0.45 + signal.mid * 0.18)
+    rimColor.current.copy(p.coreEmissive).lerp(p.lightA, 0.18 + signal.tone * 0.6)
     if (imp > 0.01) rimColor.current.lerp(m.tint, 0.25 * imp)
     rimU.current.uColor.value.lerp(rimColor.current, 0.12)
     // gentle idle "breathing" so the orb feels alive even with no music playing

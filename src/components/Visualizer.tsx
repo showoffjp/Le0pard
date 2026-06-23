@@ -101,10 +101,10 @@ export function Visualizer({ className }: { className?: string }) {
       }
       ctx.closePath()
       ctx.lineWidth = 3 * d
-      ctx.strokeStyle = `rgba(34,211,238,${0.1 + energy * 0.24})`
+      ctx.strokeStyle = neonColor(Math.min(0.7, signal.tone), 0.1 + energy * 0.24)
       ctx.stroke()
       ctx.lineWidth = 1.4 * d
-      ctx.strokeStyle = `rgba(130,232,255,${0.4 + energy * 0.5})`
+      ctx.strokeStyle = neonColor(Math.min(0.72, signal.tone + 0.12), 0.4 + energy * 0.5)
       ctx.stroke()
 
       // radial spectrum bars (mirrored both sides → symmetric)

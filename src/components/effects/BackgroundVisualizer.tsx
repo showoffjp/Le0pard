@@ -86,7 +86,7 @@ export function BackgroundVisualizer() {
 
       // Flowing horizontal neon gradient — drifts slowly on its own and shifts
       // with the track's energy so the whole strip's color moves with the sound.
-      const shift = (performance.now() * 0.00004 + signal.energy * 0.5) % 1
+      const shift = (performance.now() * 0.00004 + signal.energy * 0.35 + signal.tone * 0.4) % 1
       const core = ctx.createLinearGradient(0, 0, w, 0)
       const glow = ctx.createLinearGradient(0, 0, w, 0)
       for (let s = 0; s <= 6; s++) {

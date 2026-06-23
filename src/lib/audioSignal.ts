@@ -28,6 +28,9 @@ export type Signal = {
    *  steady playback (even loud), spikes only on real build-ups/drops/surges.
    *  Everything "big" (background, page motion, flashes) is gated by this. */
   intensity: number
+  /** Spectral brightness 0..1 — where the energy sits (dark/bassy → bright/airy).
+   *  Tracks the *melody* moving, so colors can shimmer with the tune. Idles 0.5. */
+  tone: number
 }
 
 export const signal: Signal = {
@@ -42,6 +45,7 @@ export const signal: Signal = {
   impact: 0,
   dropId: 0,
   intensity: 0,
+  tone: 0.5,
 }
 
 /**
@@ -133,6 +137,7 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
   signal.mid = damp(signal.mid, mid * L, 12, dt)
   signal.treble = damp(signal.treble, treble * L, 22, dt)
   signal.energy = damp(signal.energy, energy * L, 10, dt)
+  signal.tone = damp(signal.tone, L > 0.1 ? clamp01(0.34 + treble * 0.5 - bass * 0.12) : 0.5, 3, dt)
 
   decayTransients(dt)
 }
@@ -236,6 +241,17 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
     const prev = spectrum[b]
     spectrum[b] = target > prev ? target : prev + (target - prev) * release
   }
+
+  // Spectral brightness (centroid in log-band space → perceptually even). High
+  // when the melody/airy highs lead, low when it's all sub-bass; follows the tune.
+  let cNum = 0
+  let cDen = 0
+  for (let b = 0; b < BAR_COUNT; b++) {
+    cNum += b * spectrum[b]
+    cDen += spectrum[b]
+  }
+  const toneRaw = cDen > 0.001 ? cNum / cDen / (BAR_COUNT - 1) : 0.5
+  signal.tone = damp(signal.tone, lev > 0.1 ? clamp01(toneRaw) : 0.5, 3, dt)
 
   decayTransients(dt)
 }
