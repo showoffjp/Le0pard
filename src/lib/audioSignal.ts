@@ -181,12 +181,20 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   // steady playback (even when loud); only build-ups / drops / big surges push it
   // up. The whole-page "big" reactions are gated by this so the site stays calm.
   const full = clamp01(bass * 0.45 + mid * 0.35 + treble * 0.2)
-  macroAvg += (full - macroAvg) * (1 - Math.exp(-0.33 * dt)) // ~3s phrase loudness
-  baseAvg += (full - baseAvg) * (1 - Math.exp(-0.04 * dt)) // ~25s section baseline
-  // SECTION-level surge: this phrase vs the last ~25s. ~0 during steady playback
-  // (even loud + beat-heavy, since the 3s window averages over the kicks), and
-  // only spikes when a section genuinely jumps louder — a drop / huge increase.
-  signal.intensity = damp(signal.intensity, clamp01((macroAvg - baseAvg - 0.03) / 0.12), 4, dt)
+  // While not fully playing (incl. the first ~second after pressing play) keep the
+  // averages GLUED to the current level so there is no cold-start surge — that
+  // false jump from zero was making it explode a second into the song.
+  const lev = signal.level
+  if (lev < 0.6) {
+    macroAvg = full
+    baseAvg = full
+  } else {
+    macroAvg += (full - macroAvg) * (1 - Math.exp(-0.33 * dt)) // ~3s phrase loudness
+    baseAvg += (full - baseAvg) * (1 - Math.exp(-0.04 * dt)) // ~25s section baseline
+  }
+  // SECTION-level surge with a gentle knee → nuanced + gradual; only a genuinely
+  // big jump above the recent baseline reaches full. Zeroed until truly playing.
+  signal.intensity = damp(signal.intensity, clamp01((macroAvg - baseAvg - 0.04) / 0.2) * lev, 4, dt)
 
   // Valley-relative onset on ABSOLUTE bass; strength scales with the onset AND
   // the absolute level, so a quiet groove gives tiny pops while a real loud drop
