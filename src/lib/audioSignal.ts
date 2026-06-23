@@ -132,8 +132,9 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
   decayTransients(dt)
 }
 
-let liveBassAvg = 0
 let liveSince = 0
+let bassRef = 0 // valley follower (onset baseline)
+let bassSlow = 0 // slow average (build-up)
 
 /** LIVE source — real frequency analysis with onset-based drop detection. */
 export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, dt: number) {
@@ -147,32 +148,43 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
     return s / ((b - a + 1) * 255)
   }
 
-  // fftSize 1024 → 512 bins (~46 Hz/bin @ 48k): sub/bass, mids, highs.
-  const bass = clamp01(band(1, 8) * 1.7)
-  const mid = clamp01(band(9, 60) * 1.15)
-  const treble = clamp01(band(61, 200) * 1.3)
-  // Overall "energy" is intentionally ~90% bass-weighted: the mix is bass-led,
-  // so the whole reactive site punches on the low end, not muddy mids/highs.
-  const energy = clamp01((bass * 0.9 + mid * 0.06 + treble * 0.04) * 1.12)
+  const bandMax = (lo: number, hi: number) => {
+    const a = Math.max(0, lo)
+    const b = Math.min(n - 1, hi)
+    let m = 0
+    for (let i = a; i <= b; i++) if (data[i] > m) m = data[i]
+    return m / 255
+  }
 
-  signal.level = damp(signal.level, energy > 0.03 ? 1 : 0, 3, dt)
-  signal.bass = damp(signal.bass, bass, 24, dt)
+  // Peak SUB-bass (where the kick/drop lives) — punchy and absolute (no AGC) so
+  // quiet parts stay quiet and loud drops genuinely stand out.
+  const bass = clamp01(bandMax(1, 5) * 1.25)
+  const mid = clamp01(band(9, 60) * 1.1)
+  const treble = clamp01(band(61, 200) * 1.2)
+  const energy = clamp01(bass * 0.9 + mid * 0.06 + treble * 0.04)
+
+  signal.level = damp(signal.level, energy > 0.06 ? 1 : 0, 3, dt)
+  signal.bass = damp(signal.bass, bass, 22, dt)
   signal.mid = damp(signal.mid, mid, 16, dt)
-  signal.treble = damp(signal.treble, treble, 26, dt)
-  signal.energy = damp(signal.energy, energy, 14, dt)
-  signal.beat = damp(signal.beat, bass, 28, dt)
+  signal.treble = damp(signal.treble, treble, 22, dt)
+  signal.energy = damp(signal.energy, energy, 16, dt)
+  signal.beat = damp(signal.beat, bass, 26, dt)
 
-  // Drop detection — reserved for the most intense moments only. Bass must be
-  // high AND surging well above its slow moving average; strength scales with
-  // the size of the surge, so only a HUGE drop reaches full intensity.
+  // Valley-relative onset on ABSOLUTE bass; strength scales with the onset AND
+  // the absolute level, so a quiet groove gives tiny pops while a real loud drop
+  // explodes. (Validated on the real audio: catches UTØPIA's 0:46 drop.)
   liveSince += dt
-  const over = bass - liveBassAvg
-  signal.buildup = damp(signal.buildup, clamp01(over * 3.2), 5, dt)
-  if (liveSince > 0.6 && bass > 0.6 && over > 0.22) {
-    emitDrop(clamp01((over - 0.18) * 3.0))
+  bassSlow += (bass - bassSlow) * (1 - Math.exp(-0.4 * dt))
+  signal.buildup = damp(signal.buildup, clamp01((bass - bassSlow) * 2.2), 5, dt)
+  const onset = bass - bassRef
+  if (liveSince > 0.18 && bass > 0.45 && onset > 0.1) {
+    // modest onset term (regular kicks = moderate pops) + a strong bonus when
+    // the absolute level is high (only real loud drops fully explode)
+    emitDrop(clamp01(onset * 1.8 + Math.max(0, bass - 0.62) * 2.2))
     liveSince = 0
   }
-  liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-1.8 * dt))
+  if (bass < bassRef) bassRef = bass
+  else bassRef += (bass - bassRef) * (1 - Math.exp(-1.0 * dt))
 
   // Accurate equalizer: log-spaced bars across the *content* range. The source
   // tops out ~8 kHz, so map ~40 Hz–9 kHz to keep every bar alive + punchy.
