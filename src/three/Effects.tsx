@@ -25,12 +25,12 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
     if (bloomRef.current) {
       // bloom flares hard on the drop, climbs across the journey
       const target =
-        0.95 + progress * 1.0 + signal.beat * 0.7 + signal.energy * 0.5 + signal.drop * 2.8 + signal.impact * 0.7
+        0.8 + progress * 0.9 + signal.beat * 0.3 + signal.energy * 0.25 + signal.drop * 1.7 + signal.impact * 0.5
       bloomRef.current.intensity = MathUtils.damp(bloomRef.current.intensity, target, 8, dt)
     }
     if (caRef.current) {
-      // chromatic aberration smears hard on impact
-      const amt = 0.0006 + signal.energy * 0.0018 + signal.drop * 0.022
+      // chromatic aberration smears on the drop
+      const amt = 0.0006 + signal.energy * 0.0012 + signal.drop * 0.014
       caRef.current.offset.set(amt, amt * 1.3)
     }
   })

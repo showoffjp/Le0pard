@@ -134,7 +134,6 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
 
 let liveBassAvg = 0
 let liveSince = 0
-let livePrevBass = 0
 
 /** LIVE source — real frequency analysis with onset-based drop detection. */
 export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, dt: number) {
@@ -163,17 +162,17 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   signal.energy = damp(signal.energy, energy, 14, dt)
   signal.beat = damp(signal.beat, bass, 28, dt)
 
-  // Drop detection: a sharp bass transient (positive flux) OR a surge over the
-  // moving average. Tuned to fire hard on the song's actual drops/hits.
+  // Drop detection — reserved for the most intense moments only. Bass must be
+  // high AND surging well above its slow moving average; strength scales with
+  // the size of the surge, so only a HUGE drop reaches full intensity.
   liveSince += dt
-  const flux = Math.max(0, bass - livePrevBass)
-  livePrevBass = bass
-  signal.buildup = damp(signal.buildup, clamp01((bass - liveBassAvg) * 3.2), 5, dt)
-  if (liveSince > 0.34 && (flux > 0.14 || (bass > 0.5 && bass > liveBassAvg * 1.26))) {
-    emitDrop(clamp01(0.85 + flux * 2.4 + (bass - liveBassAvg)))
+  const over = bass - liveBassAvg
+  signal.buildup = damp(signal.buildup, clamp01(over * 3.2), 5, dt)
+  if (liveSince > 0.6 && bass > 0.6 && over > 0.22) {
+    emitDrop(clamp01((over - 0.18) * 3.0))
     liveSince = 0
   }
-  liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-2.4 * dt))
+  liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-1.8 * dt))
 
   // Accurate equalizer: log-spaced bars across the *content* range. The source
   // tops out ~8 kHz, so map ~40 Hz–9 kHz to keep every bar alive + punchy.

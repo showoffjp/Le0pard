@@ -15,12 +15,13 @@ export function DropFlash() {
     let raf = 0
     const main = document.getElementById('experience-content')
     let moving = false
+    let energyAvg = 0
 
     const loop = () => {
       const d = signal.drop
       const reduced = useExperience.getState().reducedMotion
       const el = ref.current
-      if (el) el.style.opacity = String(Math.min(0.85, d * 0.85))
+      if (el) el.style.opacity = String(Math.min(0.5, d * 0.5))
 
       if (main) {
         if (reduced) {
@@ -30,17 +31,18 @@ export function DropFlash() {
           }
         } else {
           const tm = performance.now()
-          const beat = signal.beat
-          const bass = signal.bass
-          // continuous bounce to the beat + bass sway (the site moves with the music)
-          const bob = -(beat * 11 + bass * 6)
-          const sway = Math.sin(tm * 0.0013) * bass * 6
-          // explosive shake + scale punch on the drop
-          const shx = Math.sin(tm * 0.13) * 16 * d
-          const shy = Math.cos(tm * 0.11) * 13 * d
+          const energy = signal.energy
+          energyAvg += (energy - energyAvg) * 0.012
+          const pulse = Math.max(0, energy - energyAvg)
+          // motion tracks transients + drops, NOT the constant loudness — the
+          // page sits still while reading and only moves on real hits.
+          const bob = -(pulse * 34 + d * 6)
+          const sway = Math.sin(tm * 0.0013) * pulse * 16
+          const shx = Math.sin(tm * 0.13) * 13 * d
+          const shy = Math.cos(tm * 0.11) * 11 * d
           const x = sway + shx
           const y = bob + shy
-          const s = 1 + bass * 0.012 + d * 0.05
+          const s = 1 + pulse * 0.02 + d * 0.05
           if (Math.abs(x) + Math.abs(y) > 0.12 || s > 1.001) {
             main.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${s.toFixed(4)})`
             moving = true

@@ -27,6 +27,8 @@ export function BackgroundVisualizer() {
     const freq = new Uint8Array(512)
     const wave = new Uint8Array(512)
     const bars = new Float32Array(BARS)
+    const barAvg = new Float32Array(BARS)
+    let energyAvg = 0
     let raf = 0
 
     const dpr = () => Math.min(1.5, window.devicePixelRatio || 1)
@@ -59,36 +61,48 @@ export function BackgroundVisualizer() {
           s += freq[j]
           c++
         }
-        const v = Math.pow(Math.min(1, (c ? s / c / 255 : 0) * (1 + (i / BARS) * 0.6)), 0.85)
-        bars[i] = v > bars[i] ? v : bars[i] + (v - bars[i]) * 0.16
+        const v = Math.min(1, c ? s / c / 255 : 0)
+        bars[i] = v > bars[i] ? v : bars[i] + (v - bars[i]) * 0.2
+        // slow per-band average — we only draw the part ABOVE it (the beats), so
+        // a constantly-loud track never sits pinned at max.
+        barAvg[i] += (bars[i] - barAvg[i]) * 0.02
       }
 
-      const bass = signal.bass
       const drop = signal.drop
+      const impact = signal.impact
       const energy = signal.energy
+      energyAvg += (energy - energyAvg) * 0.012
+      const pulse = Math.max(0, energy - energyAvg) // "punch" above the steady level
 
-      // fade the previous frame toward transparent (trails; keeps the 3D visible)
+      // Readability gate: near-invisible when the music is steady; only ramps
+      // toward full on real swells + drops.
+      canvas.style.opacity = String(Math.min(0.82, 0.03 + pulse * 2.4 + impact * 0.7))
+
+      // fade previous frame toward transparent (trails; keeps the 3D visible)
       ctx.globalCompositeOperation = 'destination-out'
-      ctx.fillStyle = `rgba(0,0,0,${0.12 + drop * 0.1})`
+      ctx.fillStyle = `rgba(0,0,0,${0.16 + drop * 0.12})`
       ctx.fillRect(0, 0, w, h)
       ctx.globalCompositeOperation = 'lighter'
 
-      const maxH = h * 0.26
+      const maxH = h * 0.16
       const bw = w / BARS
       for (let i = 0; i < BARS; i++) {
-        const bh = (0.02 + bars[i]) * maxH + drop * maxH * 0.5
+        // only the beat content (how far this band is above its recent average)
+        const rel = Math.min(1, Math.max(0, bars[i] - barAvg[i] * 0.96) * 3.2)
+        const bh = rel * maxH + drop * maxH * 0.7
+        if (bh < 0.6) continue
         const x = i * bw
-        ctx.fillStyle = neonColor(i / BARS, 0.12)
+        ctx.fillStyle = neonColor(i / BARS, 0.06)
         ctx.fillRect(x - bw * 0.5, h - bh, bw * 2, bh)
         ctx.fillRect(x - bw * 0.5, 0, bw * 2, bh)
-        ctx.fillStyle = neonColor(i / BARS, 0.5 + energy * 0.35)
+        ctx.fillStyle = neonColor(i / BARS, 0.3 + impact * 0.4)
         ctx.fillRect(x, h - bh, bw * 0.9, bh)
         ctx.fillRect(x, 0, bw * 0.9, bh)
       }
 
-      // center oscilloscope trace across the full width — the signature element
+      // center oscilloscope — amplitude follows the punch, not the constant level
       const mid = h / 2
-      const amp = (0.06 + energy * 0.55 + bass * 0.25 + drop * 0.5) * h * 0.5
+      const amp = (0.006 + pulse * 1.7 + impact * 0.5 + drop * 0.4) * h * 0.4
       const SEG = 256
       const step = Math.max(1, Math.floor(wave.length / SEG))
       ctx.beginPath()
@@ -99,26 +113,20 @@ export function BackgroundVisualizer() {
         if (i === 0) ctx.moveTo(x, y)
         else ctx.lineTo(x, y)
       }
-      // glow underlay + bright core (oscilloscope persistence look)
-      ctx.lineWidth = (3 + bass * 5) * d
-      ctx.strokeStyle = neonColor(0.3, 0.12 + energy * 0.28)
-      ctx.stroke()
-      ctx.lineWidth = (1.4 + bass * 1.6) * d
-      ctx.strokeStyle = neonColor(0.26, 0.55 + energy * 0.4)
+      ctx.lineWidth = (1.3 + impact * 2) * d
+      ctx.strokeStyle = neonColor(0.28, 0.18 + impact * 0.4)
       ctx.stroke()
 
-      // screen-wide shockwave + flash on the drop
-      if (drop > 0.01) {
+      // screen-wide shockwave on the drop only
+      if (drop > 0.02) {
         const cx = w / 2
         const cy = h / 2
-        const maxR = Math.hypot(w, h) * 0.62
+        const maxR = Math.hypot(w, h) * 0.6
         ctx.beginPath()
         ctx.arc(cx, cy, (1 - drop) * maxR + 10, 0, Math.PI * 2)
-        ctx.lineWidth = (2 + drop * 10) * d
-        ctx.strokeStyle = `rgba(34,211,238,${drop * 0.5})`
+        ctx.lineWidth = (2 + drop * 9) * d
+        ctx.strokeStyle = `rgba(34,211,238,${drop * 0.4})`
         ctx.stroke()
-        ctx.fillStyle = `rgba(124,92,255,${drop * 0.16})`
-        ctx.fillRect(0, 0, w, h)
       }
 
       raf = requestAnimationFrame(loop)

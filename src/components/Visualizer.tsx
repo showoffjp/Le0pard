@@ -174,7 +174,7 @@ export function Visualizer({ className }: { className?: string }) {
         ctx.lineWidth = (1 + drop * 6) * d
         ctx.strokeStyle = `rgba(168,85,247,${drop * 0.7})`
         ctx.stroke()
-        ctx.fillStyle = `rgba(150,90,255,${drop * 0.32})`
+        ctx.fillStyle = `rgba(150,90,255,${drop * 0.14})`
         ctx.fillRect(0, 0, w, h)
       }
 
