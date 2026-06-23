@@ -80,7 +80,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
       if (imp > 0.01) matRef.current.emissive.lerp(m.tint, 0.04 * imp)
       matRef.current.distort = MathUtils.damp(
         matRef.current.distort ?? 0.3,
-        p.distort + signal.treble * 0.18 + sp * 1.7 + imp * m.distort,
+        p.distort + signal.bass * 0.12 + sp * 1.7 + imp * m.distort,
         4,
         dt,
       )

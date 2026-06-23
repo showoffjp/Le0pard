@@ -37,6 +37,9 @@ function buildAnalyser(srcNode: AudioNode) {
   const a = ctx!.createAnalyser()
   a.fftSize = 1024
   a.smoothingTimeConstant = 0.6
+  // Tighter dB window → gates low-level 8-bit hiss + punchier, cleaner bumps.
+  a.minDecibels = -80
+  a.maxDecibels = -22
   srcNode.connect(a)
   source = srcNode
   analyser = a

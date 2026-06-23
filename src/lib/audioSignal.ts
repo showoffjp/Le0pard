@@ -120,7 +120,7 @@ export function tickSignal(elapsed: number, dt: number, playing: boolean, trackI
     (0.2 + 0.5 * (0.5 + 0.5 * Math.sin(elapsed * 11.7))) * p.trebleWeight + hat + rising * 0.45,
   )
   const energy = clamp01(
-    (0.22 + 0.78 * (bass * 0.5 + mid * 0.22 + treble * 0.28)) * p.drive + signal.buildup * 0.18,
+    (0.18 + 0.82 * (bass * 0.86 + mid * 0.08 + treble * 0.06)) * p.drive + signal.buildup * 0.14,
   )
 
   signal.beat = damp(signal.beat, kick * L, 22, dt)
@@ -151,7 +151,9 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   const bass = clamp01(band(1, 8) * 1.7)
   const mid = clamp01(band(9, 60) * 1.15)
   const treble = clamp01(band(61, 200) * 1.3)
-  const energy = clamp01((bass * 0.6 + mid * 0.24 + treble * 0.2) * 1.18)
+  // Overall "energy" is intentionally ~90% bass-weighted: the mix is bass-led,
+  // so the whole reactive site punches on the low end, not muddy mids/highs.
+  const energy = clamp01((bass * 0.9 + mid * 0.06 + treble * 0.04) * 1.12)
 
   signal.level = damp(signal.level, energy > 0.03 ? 1 : 0, 3, dt)
   signal.bass = damp(signal.bass, bass, 24, dt)
@@ -169,9 +171,12 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
   }
   liveBassAvg += (bass - liveBassAvg) * (1 - Math.exp(-2.4 * dt))
 
-  // Accurate equalizer: log-spaced bars across the real FFT.
-  const loBin = 1
-  const hiBin = Math.max(loBin + 1, Math.floor(n * 0.66))
+  // Accurate equalizer: log-spaced bars across the *content* range. The source
+  // tops out ~8 kHz, so map ~40 Hz–9 kHz to keep every bar alive + punchy.
+  const sr = analyser.context.sampleRate || 48000
+  const binHz = sr / 2 / n
+  const loBin = Math.max(1, Math.floor(40 / binHz))
+  const hiBin = Math.max(loBin + 2, Math.min(n - 1, Math.floor(9000 / binHz)))
   const ratio = hiBin / loBin
   const release = 1 - Math.exp(-9 * dt)
   for (let b = 0; b < BAR_COUNT; b++) {
@@ -183,8 +188,9 @@ export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, d
       sum += data[i]
       cnt++
     }
-    // gentle high-frequency tilt so quieter highs still register
-    const target = clamp01((cnt ? sum / cnt / 255 : 0) * (1 + (b / BAR_COUNT) * 0.9))
+    // gentle high tilt + gamma curve for visual punch
+    const v = clamp01((cnt ? sum / cnt / 255 : 0) * (1 + (b / BAR_COUNT) * 0.8))
+    const target = Math.pow(v, 0.82)
     const prev = spectrum[b]
     spectrum[b] = target > prev ? target : prev + (target - prev) * release
   }
