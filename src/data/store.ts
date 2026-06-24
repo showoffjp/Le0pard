@@ -1151,6 +1151,14 @@ const extraMerch: MerchItem[] = [
   // Bundles
   { id: 'bundle-vinyl', name: 'Vinyl Lover Bundle', category: 'bundle', typeLabel: 'Bundle', price: 79, blurb: 'The 2×LP + a slipmat + the art print — spin it right.', motif: 'bundle', glow: 'purple', badge: 'Save $9' },
   { id: 'bundle-tee5', name: 'Build-Your-Own 5 Tee Pack', category: 'bundle', typeLabel: 'Bundle', price: 135, blurb: 'Pick any five tees (Track Series included) and save big.', motif: 'bundle', glow: 'cyan', badge: 'Save $25' },
+
+  // Fun extras + lifestyle
+  { id: 'youth-tee', name: 'Youth Album Tee', category: 'apparel', typeLabel: 'Youth Tee', price: 26, blurb: 'The album cover tee sized down for the next-gen fan (XS–XL youth).', motif: 'cover', glow: 'mix' },
+  { id: 'onesie', name: 'DYSTØPIA Baby Onesie', category: 'apparel', typeLabel: 'Onesie', price: 22, blurb: 'Soft snap-bottom onesie with the LEOPARDØ wordmark — future heads only.', motif: 'wordmark', glow: 'purple' },
+  { id: 'deck-orbit', name: 'Orbit Skate Deck', category: 'home', typeLabel: 'Skate Deck', price: 65, blurb: '7-ply maple deck with the gyroscope orbit rings — ride it or hang it.', motif: 'orbit', glow: 'purple', badge: 'Limited' },
+  { id: 'towel-duality', name: 'Duality Beach Towel', category: 'home', typeLabel: 'Beach Towel', price: 34, blurb: 'Oversized microfiber towel split UTØPIA-to-DYSTØPIA.', motif: 'duality', glow: 'mix' },
+  { id: 'yogamat-mandala', name: 'Mandala Yoga Mat', category: 'home', typeLabel: 'Yoga Mat', price: 44, blurb: 'Grippy 5mm mat centered on the glowing mandala — flow through the future.', motif: 'mandala', glow: 'purple' },
+  { id: 'petbandana', name: 'Leopard Pet Bandana', category: 'accessory', typeLabel: 'Pet Bandana', price: 14, blurb: 'Tie-on pet bandana in the neon rosette — your hound runs the burning future too.', motif: 'leopard', glow: 'cyan' },
 ]
 
 export const merch: MerchItem[] = [
