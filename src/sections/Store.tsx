@@ -96,18 +96,44 @@ function MerchCard({ item, onQuickView }: { item: MerchItem; onQuickView: (i: Me
 }
 
 const PAGE = 16
+type SortBy = 'featured' | 'price-asc' | 'price-desc' | 'name'
+const SORTS: { id: SortBy; label: string }[] = [
+  { id: 'featured', label: 'Featured' },
+  { id: 'price-asc', label: 'Price ↑' },
+  { id: 'price-desc', label: 'Price ↓' },
+  { id: 'name', label: 'A–Z' },
+]
 
 export function Store() {
   const [cat, setCat] = useState<MerchCategory | 'all'>('all')
   const [showTracks, setShowTracks] = useState(false)
   const [shown, setShown] = useState(PAGE)
   const [quick, setQuick] = useState<MerchItem | null>(null)
+  const [query, setQuery] = useState('')
+  const [sortBy, setSortBy] = useState<SortBy>('featured')
 
-  const visible = useMemo(
-    () => (cat === 'all' ? merch : merch.filter((m) => m.category === cat)),
-    [cat],
-  )
+  const visible = useMemo(() => {
+    let list = cat === 'all' ? merch : merch.filter((m) => m.category === cat)
+    const q = query.trim().toLowerCase()
+    if (q) {
+      list = list.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          m.typeLabel.toLowerCase().includes(q) ||
+          (m.text ? m.text.toLowerCase().includes(q) : false),
+      )
+    }
+    if (sortBy !== 'featured') {
+      list = [...list].sort((a, b) => {
+        if (sortBy === 'price-asc') return a.price - b.price
+        if (sortBy === 'price-desc') return b.price - a.price
+        return a.name.localeCompare(b.name)
+      })
+    }
+    return list
+  }, [cat, query, sortBy])
   const page = visible.slice(0, shown)
+  const searching = query.trim().length > 0
 
   const pick = (id: MerchCategory | 'all') => {
     setCat(id)
@@ -266,8 +292,47 @@ export function Store() {
         </Reveal>
       </div>
 
-      {/* Featured drops — a curated shelf on the All view */}
-      {cat === 'all' && featuredMerch.length > 0 && (
+      {/* Search + sort */}
+      <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full sm:max-w-xs">
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">⌕</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setShown(PAGE)
+            }}
+            placeholder="Search the store…"
+            aria-label="Search products"
+            className="w-full rounded-full border border-white/12 bg-white/[0.04] py-2 pl-9 pr-3 font-mono text-xs uppercase tracking-widest2 text-slate-200 outline-none transition placeholder:text-slate-600 focus:border-neon-purple/60 focus:ring-1 focus:ring-neon-purple/40"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-500">Sort</span>
+          {SORTS.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => {
+                setSortBy(s.id)
+                setShown(PAGE)
+              }}
+              aria-pressed={sortBy === s.id}
+              className={cn(
+                'clip-tech-sm px-2.5 py-1 font-display text-[0.55rem] uppercase tracking-widest2 transition',
+                sortBy === s.id
+                  ? 'bg-gradient-to-r from-neon-violet to-neon-blue text-white'
+                  : 'bg-white/[0.04] text-slate-400 ring-1 ring-white/12 hover:text-white',
+              )}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Featured drops — a curated shelf on the All view (hidden while searching) */}
+      {cat === 'all' && !searching && featuredMerch.length > 0 && (
         <div className="mt-9">
           <Reveal>
             <div className="mb-4 flex items-center gap-3">
@@ -287,24 +352,39 @@ export function Store() {
         </div>
       )}
 
-      {/* Full catalog — filterable + paginated */}
+      {/* Full catalog — filterable + searchable + paginated */}
       <div className="mt-10 flex items-center gap-3">
-        <span className="font-display text-[0.7rem] uppercase tracking-widest3 text-slate-400">
-          {cat === 'all' ? 'All Drops' : merchCategories.find((c) => c.id === cat)?.label}
+        <span className="truncate font-display text-[0.7rem] uppercase tracking-widest3 text-slate-400">
+          {searching
+            ? `Results for “${query.trim()}”`
+            : cat === 'all'
+              ? 'All Drops'
+              : merchCategories.find((c) => c.id === cat)?.label}
         </span>
-        <span className="font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-600">
+        <span className="shrink-0 font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-600">
           {Math.min(shown, visible.length)} / {visible.length}
         </span>
         <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
-      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {page.map((item, i) => (
-          <Reveal key={item.id} delay={Math.min(i % PAGE, 11) * 50}>
-            <MerchCard item={item} onQuickView={setQuick} />
-          </Reveal>
-        ))}
-      </div>
+      {visible.length === 0 ? (
+        <div className="mt-10 flex flex-col items-center gap-3 py-12 text-center">
+          <p className="font-display text-sm uppercase tracking-widest2 text-slate-400">
+            No drops match “{query.trim()}”
+          </p>
+          <NeonButton variant="ghost" onClick={() => { setQuery(''); setShown(PAGE) }}>
+            Clear search
+          </NeonButton>
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {page.map((item, i) => (
+            <Reveal key={item.id} delay={Math.min(i % PAGE, 11) * 50}>
+              <MerchCard item={item} onQuickView={setQuick} />
+            </Reveal>
+          ))}
+        </div>
+      )}
 
       {shown < visible.length && (
         <div className="mt-10 flex justify-center">
