@@ -239,6 +239,7 @@ export function Store() {
               <button
                 key={c.id}
                 onClick={() => pick(c.id)}
+                aria-pressed={cat === c.id}
                 className={cn(
                   'clip-tech-sm px-3.5 py-1.5 font-display text-[0.6rem] uppercase tracking-widest2 transition',
                   cat === c.id
