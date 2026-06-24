@@ -2,7 +2,9 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Points, BufferGeometry, Float32BufferAttribute, AdditiveBlending, PointsMaterial } from 'three'
 import { useExperience } from '../store/useExperience'
+import { useAudio } from '../store/useAudio'
 import { signal } from '../lib/audioSignal'
+import { trackScene } from '../lib/trackScene'
 
 function makeGeometry(count: number, spread: number, height: number) {
   const positions = new Float32Array(count * 3)
@@ -50,9 +52,14 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     }
 
     if (emberMat.current) {
-      // embers fade in across the second half of the journey + erupt on the drop
-      emberMat.current.opacity = Math.max(0, progress - 0.18) * 1.1 + signal.energy * 0.5 + signal.drop * 0.9
-      emberMat.current.size = 0.05 + progress * 0.05 + signal.bass * 0.06 + signal.drop * 0.06
+      // embers fade in across the second half of the journey + erupt on the drop.
+      // Per-track warmth biases how fiercely they burn, so each song's ember field
+      // reads a little different even at the same scroll position.
+      const sc = trackScene(useAudio.getState().trackIndex)
+      const warm = sc.warmth * signal.level
+      emberMat.current.opacity =
+        Math.max(0, progress - 0.18) * 1.1 + signal.energy * 0.5 + signal.drop * 0.9 + warm * 0.5
+      emberMat.current.size = 0.05 + progress * 0.05 + signal.bass * 0.06 + signal.drop * 0.06 + warm * 0.02
     }
   })
 
