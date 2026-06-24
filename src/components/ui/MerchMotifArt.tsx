@@ -260,8 +260,8 @@ export function MotifGraphic({ motif, text, sub }: { motif: MerchMotif; text?: s
             {sub ?? 'DYSTØPIA'}
           </div>
           <div
-            className="gradient-flow mt-2 font-display text-[1.7rem] font-black uppercase leading-[0.95] tracking-tight"
-            style={{ wordBreak: 'break-word' }}
+            className="gradient-cool mt-2 font-display text-[1.7rem] font-black uppercase leading-[0.95] tracking-tight"
+            style={{ wordBreak: 'break-word', filter: 'drop-shadow(0 0 14px rgba(124,92,255,.45))' }}
           >
             {text}
           </div>

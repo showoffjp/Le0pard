@@ -7,6 +7,7 @@ import {
   musicTiers,
   formatPrice,
   trackBuyUrl,
+  STORE_CONFIG,
   type MerchCategory,
   type MerchItem,
 } from '../data/store'
@@ -211,6 +212,14 @@ export function Store() {
             <h3 className="mt-2 font-display text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
               Merch
             </h3>
+            <div className="mt-3 flex items-center gap-4">
+              <NeonButton href={STORE_CONFIG.storeUrl} newTab className="px-5 py-2.5">
+                Shop All ↗
+              </NeonButton>
+              <span className="font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-500">
+                {merch.length} drops
+              </span>
+            </div>
           </div>
         </Reveal>
 

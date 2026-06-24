@@ -84,6 +84,7 @@ export type MerchCategory =
   | 'tracks'
   | 'music'
   | 'bundle'
+  | 'seasonal'
 export type MerchMotif =
   | 'cover'
   | 'wordmark'
@@ -954,7 +955,143 @@ const trackMerch: MerchItem[] = dystopia.tracks.map((t, i) => ({
   ...(t.n === 1 || t.n === 20 ? { badge: 'Era' } : {}),
 }))
 
-export const merch: MerchItem[] = [...baseMerch, ...themedMerch, ...trackMerch]
+// A neon type Art Print for every song too — same key art, different format.
+const trackPosters: MerchItem[] = dystopia.tracks.map((t, i) => ({
+  id: `track-poster-${t.n}`,
+  name: `${t.title} — Art Print`,
+  category: 'tracks',
+  typeLabel: '12×16 Print',
+  price: 20,
+  blurb: `Track ${String(t.n).padStart(2, '0')} of DYSTØPIA as a neon-type art print — archival matte, ready to frame.`,
+  motif: 'track',
+  glow: TRACK_GLOWS[(i + 2) % TRACK_GLOWS.length],
+  text: t.title,
+  sub: `Track ${String(t.n).padStart(2, '0')}`,
+}))
+
+/* ── Mantra tees: the album's own words (real taglines, not invented lyrics) ── */
+const mantraMerch: MerchItem[] = [
+  {
+    id: 'mantra-symphonic',
+    name: 'Symphonic Trap Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 33,
+    blurb: 'The ethos on your chest — “Symphonic Trap” set in living neon type.',
+    motif: 'track',
+    glow: 'blue',
+    text: 'SYMPHONIC TRAP',
+    sub: 'LEOPARDØ',
+  },
+  {
+    id: 'mantra-fall',
+    name: 'The Fall Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 33,
+    blurb: 'The whole arc of the record — UTØPIA to DYSTØPIA — on heavyweight black.',
+    motif: 'track',
+    glow: 'mix',
+    text: 'THE FALL',
+    sub: 'UTØPIA → DYSTØPIA',
+  },
+  {
+    id: 'mantra-wardrums',
+    name: 'Ancient War Drums Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 33,
+    blurb: 'Ancient war drums pounding through a burning future — the LEOPARDØ creed.',
+    motif: 'track',
+    glow: 'ember',
+    text: 'WAR DRUMS',
+    sub: 'ANCIENT MELODIES',
+  },
+  {
+    id: 'mantra-charleston',
+    name: 'Charleston SC Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 33,
+    blurb: 'Reppin’ home — Charleston, South Carolina, where the burning future was forged.',
+    motif: 'track',
+    glow: 'cyan',
+    text: 'CHARLESTON SC',
+    sub: 'LEOPARDØ · EST 2026',
+  },
+]
+
+/* ── Seasonal drop: limited holiday / winter colorways + bundle ──────────────── */
+const seasonalMerch: MerchItem[] = [
+  {
+    id: 'seasonal-polar-tee',
+    name: 'PØLAR Frost Tee',
+    category: 'seasonal',
+    typeLabel: 'Tee',
+    price: 34,
+    blurb: 'Winter-drop colorway of the PØLAR track tee — icy neon on black.',
+    motif: 'track',
+    glow: 'cyan',
+    text: 'PØLAR',
+    sub: 'Winter Drop',
+    badge: 'Seasonal',
+  },
+  {
+    id: 'seasonal-beanie',
+    name: 'Winter Ember Beanie',
+    category: 'seasonal',
+    typeLabel: 'Beanie',
+    price: 30,
+    blurb: 'Cuffed knit beanie with the ember spark mark — warmth from a burning future.',
+    motif: 'ember',
+    glow: 'ember',
+    badge: 'Seasonal',
+  },
+  {
+    id: 'seasonal-crew',
+    name: 'Ember Holiday Crewneck',
+    category: 'seasonal',
+    typeLabel: 'Crewneck',
+    price: 56,
+    blurb: 'Cozy heavyweight crew in the limited holiday ember colorway.',
+    motif: 'ember',
+    glow: 'ember',
+    badge: 'Seasonal',
+  },
+  {
+    id: 'seasonal-utopia-ls',
+    name: 'New Dawn — UTØPIA Long Sleeve',
+    category: 'seasonal',
+    typeLabel: 'Long Sleeve',
+    price: 42,
+    blurb: 'A new-year long sleeve built on the UTØPIA title — the hopeful dawn before the fall.',
+    motif: 'track',
+    glow: 'blue',
+    text: 'UTØPIA',
+    sub: 'New Dawn',
+    badge: 'Seasonal',
+  },
+  {
+    id: 'seasonal-bundle',
+    name: 'Holiday Bundle',
+    category: 'seasonal',
+    typeLabel: 'Bundle',
+    price: 99,
+    blurb: 'Limited holiday drop — beanie + crewneck + sticker sheet at a seasonal price.',
+    motif: 'bundle',
+    glow: 'ember',
+    badge: 'Seasonal',
+  },
+]
+
+export const merch: MerchItem[] = [
+  ...baseMerch,
+  ...themedMerch,
+  ...trackMerch,
+  ...trackPosters,
+  ...mantraMerch,
+  ...seasonalMerch,
+]
 
 export const merchCategories: { id: MerchCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -968,6 +1105,7 @@ export const merchCategories: { id: MerchCategory | 'all'; label: string }[] = [
   { id: 'home', label: 'Home' },
   { id: 'music', label: 'Music' },
   { id: 'bundle', label: 'Bundles' },
+  { id: 'seasonal', label: 'Seasonal' },
 ]
 
 export function merchBuyUrl(item: MerchItem): string {
