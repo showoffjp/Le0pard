@@ -73,19 +73,41 @@ export function Hero() {
         </div>
       </MagicLayer>
 
-      <MagicLayer depth={26} className="my-2">
-        <h1
-          data-hero-title
-          className="gradient-flow font-display font-black uppercase leading-[0.82] tracking-tight text-[clamp(3.6rem,18vw,15rem)]"
-          style={{
-            textShadow:
-              '2px 0 rgba(34,211,238,.42), -2px 0 rgba(168,85,247,.5), 0 0 52px rgba(124,58,237,.55)',
-            filter:
-              'drop-shadow(0 0 34px rgba(168,85,247,.4)) drop-shadow(0 0 64px rgba(255,90,0,.16))',
-          }}
-        >
-          DYSTØPIA
-        </h1>
+      <MagicLayer depth={26} className="my-3">
+        <div data-hero className="relative flex items-center justify-center py-10 md:py-16">
+          {/* targeting reticle that frames the live 3D core as the hero subject */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[min(88vw,620px)] -translate-x-1/2 -translate-y-1/2"
+          >
+            <span className="absolute inset-8 clip-tech border border-white/[0.07]" />
+            <span className="absolute left-0 top-0 h-9 w-9 border-l-2 border-t-2 border-neon-cyan/50" />
+            <span className="absolute right-0 top-0 h-9 w-9 border-r-2 border-t-2 border-neon-cyan/50" />
+            <span className="absolute bottom-0 left-0 h-9 w-9 border-b-2 border-l-2 border-neon-purple/50" />
+            <span className="absolute bottom-0 right-0 h-9 w-9 border-b-2 border-r-2 border-neon-purple/50" />
+            <span className="absolute -top-4 left-1 font-mono text-[0.5rem] uppercase tracking-widest3 text-neon-cyan/60">
+              LØ·CORE
+            </span>
+            <span className="absolute -bottom-4 right-1 font-mono text-[0.5rem] uppercase tracking-widest3 text-slate-500">
+              SYS·DYSTØPIA
+            </span>
+            <span className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-neon-cyan/40" />
+            <span className="absolute bottom-0 left-1/2 h-3 w-px -translate-x-1/2 bg-neon-purple/40" />
+          </div>
+
+          <h1
+            data-hero-title
+            className="gradient-flow relative font-display font-black uppercase leading-[0.82] tracking-tight text-[clamp(2.7rem,11.5vw,8.5rem)]"
+            style={{
+              textShadow:
+                '2px 0 rgba(34,211,238,.4), -2px 0 rgba(168,85,247,.48), 0 0 44px rgba(124,58,237,.5)',
+              filter:
+                'drop-shadow(0 0 30px rgba(168,85,247,.38)) drop-shadow(0 0 60px rgba(255,90,0,.15))',
+            }}
+          >
+            DYSTØPIA
+          </h1>
+        </div>
       </MagicLayer>
 
       <MagicLayer depth={8}>

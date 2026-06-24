@@ -29,6 +29,24 @@ export const featuredPromo: Promo = {
 
 export const posts: Post[] = [
   {
+    id: 'track-series',
+    category: 'DROP',
+    date: 'Now Live',
+    title: 'A Tee For Every Song',
+    excerpt:
+      'The Track Series just dropped — a neon-typographic tee (and art print) for all 20 songs, colored from cool UTØPIA to burning DYSTØPIA.',
+    href: '#store',
+  },
+  {
+    id: 'store-expanded',
+    category: 'PROMO',
+    date: 'New',
+    title: 'The Store Just Went Massive',
+    excerpt:
+      '100+ drops across apparel, drinkware, tech, prints, home, vinyl, bundles and a full seasonal run. Shop the whole catalog on-site.',
+    href: '#store',
+  },
+  {
     id: 'dystopia-out',
     category: 'DROP',
     date: 'Apr 20, 2026',

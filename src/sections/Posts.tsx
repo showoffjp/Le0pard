@@ -1,4 +1,5 @@
 import { posts, featuredPromo, type PostCategory } from '../data/posts'
+import { useExperience } from '../store/useExperience'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
 import { TiltCard } from '../components/ui/TiltCard'
@@ -15,6 +16,7 @@ const CAT: Record<PostCategory, { glow: 'purple' | 'blue' | 'cyan' | 'ember' | '
 }
 
 export function Posts() {
+  const scrollTo = useExperience((s) => s.scrollTo)
   return (
     <section id="posts" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
@@ -71,23 +73,37 @@ export function Posts() {
                   post.href ? 'text-neon-cyan group-hover:gap-3' : 'text-slate-600',
                 )}
               >
-                {post.href ? 'Read ↗' : 'Soon'}
+                {post.href ? (post.href.startsWith('#') ? 'Shop ↗' : 'Read ↗') : 'Soon'}
               </span>
             </TechFrame>
           )
 
+          const internal = post.href?.startsWith('#')
           return (
             <Reveal key={post.id} delay={i * 80}>
               <TiltCard className="h-full">
                 {post.href ? (
-                  <a
-                    href={post.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block h-full"
-                  >
-                    {Card}
-                  </a>
+                  internal ? (
+                    <a
+                      href={post.href}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        scrollTo(post.href!)
+                      }}
+                      className="group block h-full cursor-pointer"
+                    >
+                      {Card}
+                    </a>
+                  ) : (
+                    <a
+                      href={post.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block h-full"
+                    >
+                      {Card}
+                    </a>
+                  )
                 ) : (
                   <div className="group h-full">{Card}</div>
                 )}
