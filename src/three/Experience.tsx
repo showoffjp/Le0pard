@@ -14,7 +14,7 @@ export function Experience() {
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
       <Canvas
         flat
-        dpr={[1, lowPower ? 1.3 : 1.8]}
+        dpr={[1, lowPower ? 1 : 1.5]}
         gl={{
           antialias: !lowPower,
           alpha: true,

@@ -1,15 +1,23 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAudio } from '../../store/useAudio'
 import { useExperience } from '../../store/useExperience'
 import { dystopia } from '../../data/music'
-import { signal } from '../../lib/audioSignal'
+import { spectrum, BAR_COUNT } from '../../lib/audioSignal'
 import { cn } from '../../lib/cn'
 
-const BARS = 20
+const BARS = BAR_COUNT
+
+const fmt = (s: number) => {
+  if (!Number.isFinite(s) || s < 0) s = 0
+  const m = Math.floor(s / 60)
+  const ss = Math.floor(s % 60)
+  return `${m}:${ss.toString().padStart(2, '0')}`
+}
 
 /**
- * Floating "Now Playing" dock. Selecting a track drives the whole site's
- * reactive visualizer; real audio lives one tap away on Bandcamp.
+ * Floating "Now Playing" dock — the persistent transport for the on-site
+ * player. A real draggable scrubber (rewind / fast-forward), prev / next track
+ * skip, play / pause. The bars + the whole site react to the real audio.
  */
 export function NowPlaying() {
   const playing = useAudio((s) => s.playing)
@@ -18,9 +26,61 @@ export function NowPlaying() {
   const toggle = useAudio((s) => s.toggle)
   const next = useAudio((s) => s.next)
   const prev = useAudio((s) => s.prev)
+  const seek = useAudio((s) => s.seek)
+  const currentTime = useAudio((s) => s.currentTime)
+  const duration = useAudio((s) => s.duration)
   const scrollTo = useExperience((s) => s.scrollTo)
   const track = dystopia.tracks[trackIndex]
   const barsRef = useRef<HTMLDivElement>(null)
+  const trackBarRef = useRef<HTMLDivElement>(null)
+  const draggingRef = useRef(false)
+  const [scrub, setScrub] = useState<number | null>(null)
+
+  const livePct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0
+  const pct = scrub != null ? scrub : livePct
+
+  // ── scrubbing: click or drag the bar to rewind / fast-forward ──
+  const ratioFrom = (clientX: number) => {
+    const el = trackBarRef.current
+    if (!el) return null
+    const r = el.getBoundingClientRect()
+    if (r.width <= 0) return null
+    return Math.max(0, Math.min(1, (clientX - r.left) / r.width))
+  }
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (duration <= 0) return
+    draggingRef.current = true
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch {
+      /* pointer capture is best-effort */
+    }
+    const ratio = ratioFrom(e.clientX)
+    if (ratio != null) {
+      setScrub(ratio * 100)
+      seek(ratio * duration)
+    }
+  }
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return
+    const ratio = ratioFrom(e.clientX)
+    if (ratio != null) {
+      setScrub(ratio * 100)
+      seek(ratio * duration)
+    }
+  }
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return
+    draggingRef.current = false
+    const ratio = ratioFrom(e.clientX)
+    if (ratio != null && duration > 0) seek(ratio * duration)
+    setScrub(null)
+  }
+  // nudge helpers for explicit rewind / fast-forward
+  const nudge = (sec: number) => {
+    if (duration <= 0) return
+    seek(Math.max(0, Math.min(duration, currentTime + sec)))
+  }
 
   useEffect(() => {
     let raf = 0
@@ -28,13 +88,10 @@ export function NowPlaying() {
       const bars = barsRef.current
       if (bars) {
         const children = bars.children
-        const now = performance.now()
         for (let i = 0; i < children.length; i++) {
           const el = children[i] as HTMLElement
-          const t = i / BARS
-          const band = t < 0.4 ? signal.bass : t < 0.72 ? signal.mid : signal.treble
-          const wobble = 0.4 + 0.6 * Math.abs(Math.sin(i * 1.3 + now / 220))
-          el.style.transform = `scaleY(${Math.max(0.06, band * wobble)})`
+          // straight from the real FFT — an accurate spectrum of what's playing
+          el.style.transform = `scaleY(${Math.max(0.04, spectrum[i])})`
         }
       }
       raf = requestAnimationFrame(loop)
@@ -53,48 +110,92 @@ export function NowPlaying() {
         started ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-24 opacity-0',
       )}
     >
-      <div className="pointer-events-auto flex w-full max-w-2xl items-center gap-3 clip-tech-sm glass border border-white/10 px-3 py-2.5 shadow-[0_0_34px_rgba(124,58,237,.3)] md:gap-4 md:px-4 md:py-3">
-        <button
-          aria-label={playing ? 'Pause visualizer' : 'Play visualizer'}
-          onClick={toggle}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue text-sm text-white shadow-[0_0_22px_rgba(124,58,237,.6)] transition hover:brightness-110"
-        >
-          {playing ? '❚❚' : '▶'}
-        </button>
-
-        <div ref={barsRef} className="flex h-8 flex-1 items-end gap-[3px]">
-          {Array.from({ length: BARS }).map((_, i) => (
-            <span
-              key={i}
-              className="h-full w-full origin-bottom rounded-[1px] bg-gradient-to-t from-neon-blue via-neon-violet to-neon-purple"
-              style={{ transform: 'scaleY(0.06)' }}
-            />
-          ))}
-        </div>
-
-        <div className="hidden min-w-[140px] text-right sm:block">
-          <div className="font-mono text-[0.55rem] uppercase tracking-widest2 text-neon-cyan/70">
-            {playing ? 'Reactive Visualizer' : 'Visualizer · Paused'}
-          </div>
-          <div className="truncate font-display text-sm font-bold uppercase tracking-wide text-white">
-            {String(track.n).padStart(2, '0')} · {track.title}
-          </div>
-        </div>
-
-        <div className="flex shrink-0 items-center gap-1.5">
-          <button aria-label="Previous track" onClick={prev} className={btn}>
-            ⟪
-          </button>
-          <button aria-label="Next track" onClick={next} className={btn}>
-            ⟫
-          </button>
-          <button
-            aria-label="Listen on Bandcamp"
-            onClick={() => scrollTo('#listen')}
-            className="hidden h-9 items-center rounded-full border border-neon-cyan/40 bg-white/[0.04] px-3 font-display text-[0.6rem] uppercase tracking-widest2 text-neon-cyan transition hover:bg-neon-cyan/10 md:flex"
+      <div className="pointer-events-auto relative flex w-full max-w-2xl flex-col gap-2 overflow-hidden clip-tech-sm glass border border-white/10 px-3 py-2.5 shadow-[0_0_34px_rgba(124,58,237,.3)] md:px-4 md:py-3">
+        {/* draggable scrubber — rewind / fast-forward */}
+        <div className="flex items-center gap-2.5">
+          <span className="w-9 shrink-0 text-right font-mono text-[0.6rem] tabular-nums text-slate-400">
+            {fmt(currentTime)}
+          </span>
+          <div
+            ref={trackBarRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            role="slider"
+            aria-label="Seek"
+            aria-valuemin={0}
+            aria-valuemax={Math.max(0, Math.round(duration))}
+            aria-valuenow={Math.round(currentTime)}
+            className="group relative flex h-4 flex-1 cursor-pointer touch-none items-center"
           >
-            Hear it
+            <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-neon-cyan via-neon-violet to-neon-purple"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            {/* handle */}
+            <span
+              className="pointer-events-none absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(168,85,247,.9)] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              style={{ left: `${pct}%`, opacity: scrub != null ? 1 : undefined }}
+            />
+          </div>
+          <span className="w-9 shrink-0 font-mono text-[0.6rem] tabular-nums text-slate-500">
+            {fmt(duration)}
+          </span>
+        </div>
+
+        {/* transport */}
+        <div className="flex items-center gap-3 md:gap-4">
+          <button
+            aria-label={playing ? 'Pause' : 'Play'}
+            onClick={toggle}
+            className="react-pop flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue text-sm text-white shadow-[0_0_22px_rgba(124,58,237,.6)] transition hover:brightness-110"
+          >
+            {playing ? '❚❚' : '▶'}
           </button>
+
+          <div ref={barsRef} className="flex h-8 flex-1 items-end gap-[3px]">
+            {Array.from({ length: BARS }).map((_, i) => (
+              <span
+                key={i}
+                className="h-full w-full origin-bottom rounded-[1px] bg-gradient-to-t from-neon-blue via-neon-violet to-neon-purple"
+                style={{ transform: 'scaleY(0.06)' }}
+              />
+            ))}
+          </div>
+
+          <div className="hidden min-w-[140px] text-right sm:block">
+            <div className="font-mono text-[0.55rem] uppercase tracking-widest2 text-neon-cyan/70">
+              {playing ? 'Now Playing' : started ? 'Paused' : 'Reactive Player'}
+            </div>
+            <div className="truncate font-display text-sm font-bold uppercase tracking-wide text-white">
+              {String(track.n).padStart(2, '0')} · {track.title}
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1.5">
+            <button aria-label="Previous track" onClick={prev} className={btn}>
+              ⟪
+            </button>
+            <button aria-label="Rewind 10 seconds" onClick={() => nudge(-10)} className={cn(btn, 'hidden sm:flex')}>
+              «
+            </button>
+            <button aria-label="Fast-forward 10 seconds" onClick={() => nudge(10)} className={cn(btn, 'hidden sm:flex')}>
+              »
+            </button>
+            <button aria-label="Next track" onClick={next} className={btn}>
+              ⟫
+            </button>
+            <button
+              aria-label="Go to album"
+              onClick={() => scrollTo('#album')}
+              className="hidden h-9 items-center rounded-full border border-neon-cyan/40 bg-white/[0.04] px-3 font-display text-[0.6rem] uppercase tracking-widest2 text-neon-cyan transition hover:bg-neon-cyan/10 md:flex"
+            >
+              Album
+            </button>
+          </div>
         </div>
       </div>
     </div>

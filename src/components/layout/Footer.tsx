@@ -40,8 +40,6 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-slate-400">
               {[
                 ['Album', '#album'],
-                ['Tracks', '#tracks'],
-                ['Listen', '#listen'],
                 ['Video', '#video'],
                 ['Store', '#store'],
                 ['News', '#posts'],
