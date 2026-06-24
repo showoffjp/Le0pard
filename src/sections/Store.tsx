@@ -7,20 +7,20 @@ import {
   musicTiers,
   formatPrice,
   trackBuyUrl,
+  STORE_CONFIG,
   type MerchCategory,
   type MerchItem,
-  type MerchMotif,
 } from '../data/store'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { TiltCard } from '../components/ui/TiltCard'
-import { GoggleMark } from '../components/ui/GoggleMark'
+import { MotifGraphic } from '../components/ui/MerchMotifArt'
 import { cn } from '../lib/cn'
 
 /** Rendered "design plate" for each product (swapped for a photo when `image` is set). */
-function MerchArt({ motif, typeLabel }: { motif: MerchMotif; typeLabel: string }) {
+function MerchArt({ item }: { item: MerchItem }) {
   return (
     <div className="scanlines relative aspect-square overflow-hidden bg-gradient-to-br from-steel/60 via-ink to-abyss">
       <div className="hud-grid absolute inset-0 opacity-40" />
@@ -33,61 +33,11 @@ function MerchArt({ motif, typeLabel }: { motif: MerchMotif; typeLabel: string }
       />
 
       <div className="absolute inset-0 grid place-items-center p-8">
-        {motif === 'cover' && (
-          <img
-            src={dystopia.coverSmall}
-            alt=""
-            className="h-3/4 w-3/4 object-cover clip-tech shadow-[0_0_40px_rgba(124,58,237,.45)]"
-            loading="lazy"
-          />
-        )}
-
-        {motif === 'wordmark' && (
-          <div className="text-center">
-            <div className="font-display text-2xl font-black uppercase tracking-widest2 text-white sm:text-3xl">
-              LEOPARD<span className="text-neon-purple neon-purple">Ø</span>
-            </div>
-            <div className="mt-2 font-mono text-[0.55rem] uppercase tracking-widest3 text-neon-cyan/70">
-              Symphonic Trap
-            </div>
-          </div>
-        )}
-
-        {motif === 'goggle' && (
-          <GoggleMark
-            className="w-3/4"
-            style={{ filter: 'drop-shadow(0 0 18px rgba(34,211,238,.6))' }}
-          />
-        )}
-
-        {motif === 'flame' && (
-          <div className="text-center">
-            <div
-              className="gradient-heat font-display text-[5rem] font-black leading-none"
-              style={{ filter: 'drop-shadow(0 0 26px rgba(255,90,0,.55))' }}
-            >
-              Ø
-            </div>
-            <div className="mt-1 font-display text-xs uppercase tracking-widest2 text-slate-300">
-              DYSTØPIA
-            </div>
-          </div>
-        )}
-
-        {motif === 'octagon' && (
-          <div className="relative grid h-32 w-32 place-items-center">
-            <div className="absolute inset-0 clip-tech bg-gradient-to-br from-neon-purple/80 via-neon-blue/70 to-neon-cyan/60 p-[1.5px]">
-              <div className="clip-tech h-full w-full bg-abyss" />
-            </div>
-            <span className="relative font-display text-[0.6rem] font-bold uppercase tracking-widest2 text-white">
-              LEOPARDØ
-            </span>
-          </div>
-        )}
+        <MotifGraphic motif={item.motif} text={item.text} sub={item.sub} />
       </div>
 
       <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-void/60 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-300 backdrop-blur">
-        {typeLabel}
+        {item.typeLabel}
       </span>
     </div>
   )
@@ -103,7 +53,7 @@ function MerchCard({ item }: { item: MerchItem }) {
               <img src={item.image} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
             </div>
           ) : (
-            <MerchArt motif={item.motif} typeLabel={item.typeLabel} />
+            <MerchArt item={item} />
           )}
 
           {item.badge && (
@@ -262,6 +212,14 @@ export function Store() {
             <h3 className="mt-2 font-display text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
               Merch
             </h3>
+            <div className="mt-3 flex items-center gap-4">
+              <NeonButton href={STORE_CONFIG.storeUrl} newTab className="px-5 py-2.5">
+                Shop All ↗
+              </NeonButton>
+              <span className="font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-500">
+                {merch.length} drops
+              </span>
+            </div>
           </div>
         </Reveal>
 
@@ -287,7 +245,7 @@ export function Store() {
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {visible.map((item, i) => (
-          <Reveal key={item.id} delay={i * 70}>
+          <Reveal key={item.id} delay={Math.min(i, 11) * 55}>
             <MerchCard item={item} />
           </Reveal>
         ))}
