@@ -22,6 +22,7 @@ import { Discography } from './sections/Discography'
 import { Store } from './sections/Store'
 import { Posts } from './sections/Posts'
 import { About } from './sections/About'
+import { PressKit } from './sections/PressKit'
 
 // The 3D world (three.js + postprocessing) is the heaviest bundle — load it in
 // its own chunk so the page becomes interactive before it arrives. The Loader
@@ -72,6 +73,8 @@ export default function App() {
         <Posts />
         <SeamDivider label="The Artist" />
         <About />
+        <SeamDivider label="Press" />
+        <PressKit />
       </main>
 
       <Footer />
