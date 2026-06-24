@@ -123,7 +123,7 @@ function silhouette(kind, a) {
     case 'mug':
       return { box: { cx: 380, cy: 410, r: 86 }, shape: `
         <rect x="280" y="300" width="200" height="240" rx="20" fill="${FABRIC}" ${stroke}/>
-        <path d="M480 350 Q560 350 560 430 Q560 500 480 500" fill="none" ${stroke} stroke-width="16"/>` }
+        <path d="M480 350 Q560 350 560 430 Q560 500 480 500" fill="none" stroke="${a}" stroke-opacity="0.55" stroke-width="16"/>` }
     case 'glass':
       return { box: { cx: CX, cy: 430, r: 76 }, shape: `<path d="M330 280 L470 280 L450 600 L350 600 Z" fill="${FABRIC}" fill-opacity="0.55" ${stroke}/>` }
     case 'can':
@@ -256,13 +256,14 @@ function makeSVG(p) {
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="${a}" flood-opacity="0.5"/></filter>
     <clipPath id="cp">${clip}</clipPath>
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
   <rect width="${W}" height="${H}" fill="url(#halo)"/>
   <ellipse cx="${CX}" cy="696" rx="226" ry="40" fill="${a}" opacity="0.14"/>
   <ellipse cx="${CX}" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g>${shape}</g>
+  <g filter="url(#rim)">${shape}</g>
   <g clip-path="url(#cp)">
     ${GLOSSY.has(kind) ? specular(box) : ''}
     <g filter="url(#glow)" opacity="0.9">${em}</g>
