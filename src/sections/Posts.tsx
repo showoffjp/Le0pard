@@ -1,10 +1,12 @@
-import { posts, featuredPromo, type PostCategory } from '../data/posts'
+import { useState } from 'react'
+import { posts, featuredPromo, type Post, type PostCategory } from '../data/posts'
 import { useExperience } from '../store/useExperience'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
 import { TiltCard } from '../components/ui/TiltCard'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
+import { PostModal } from '../components/ui/PostModal'
 import { cn } from '../lib/cn'
 
 const CAT: Record<PostCategory, { glow: 'purple' | 'blue' | 'cyan' | 'ember' | 'mix'; text: string }> = {
@@ -17,6 +19,7 @@ const CAT: Record<PostCategory, { glow: 'purple' | 'blue' | 'cyan' | 'ember' | '
 
 export function Posts() {
   const scrollTo = useExperience((s) => s.scrollTo)
+  const [active, setActive] = useState<Post | null>(null)
   return (
     <section id="posts" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
@@ -70,10 +73,16 @@ export function Posts() {
               <span
                 className={cn(
                   'mt-5 inline-flex items-center gap-2 font-display text-[0.62rem] uppercase tracking-widest2 transition',
-                  post.href ? 'text-neon-cyan group-hover:gap-3' : 'text-slate-600',
+                  post.body || post.href ? 'text-neon-cyan group-hover:gap-3' : 'text-slate-600',
                 )}
               >
-                {post.href ? (post.href.startsWith('#') ? 'Shop ↗' : 'Read ↗') : 'Soon'}
+                {post.body
+                  ? 'Read →'
+                  : post.href
+                    ? post.href.startsWith('#')
+                      ? 'Shop ↗'
+                      : 'Read ↗'
+                    : 'Soon'}
               </span>
             </TechFrame>
           )
@@ -82,7 +91,16 @@ export function Posts() {
           return (
             <Reveal key={post.id} delay={i * 80}>
               <TiltCard className="h-full">
-                {post.href ? (
+                {post.body ? (
+                  <button
+                    type="button"
+                    onClick={() => setActive(post)}
+                    aria-label={`Read: ${post.title}`}
+                    className="group block h-full w-full cursor-pointer text-left"
+                  >
+                    {Card}
+                  </button>
+                ) : post.href ? (
                   internal ? (
                     <a
                       href={post.href}
@@ -112,6 +130,8 @@ export function Posts() {
           )
         })}
       </div>
+
+      <PostModal post={active} onClose={() => setActive(null)} />
     </section>
   )
 }
