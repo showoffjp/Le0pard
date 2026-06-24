@@ -10,6 +10,7 @@ const LINKS = [
   { label: 'Store', id: '#store' },
   { label: 'News', id: '#posts' },
   { label: 'About', id: '#about' },
+  { label: 'Press', id: '#press' },
 ]
 
 export function Navbar() {
