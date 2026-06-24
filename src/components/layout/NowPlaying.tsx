@@ -159,7 +159,8 @@ export function NowPlaying() {
             {playing ? '❚❚' : '▶'}
           </button>
 
-          <div ref={barsRef} className="flex h-8 flex-1 items-end gap-[3px]">
+          {/* equalizer — hidden on phones, where we show the track title instead */}
+          <div ref={barsRef} className="hidden h-8 flex-1 items-end gap-[3px] sm:flex">
             {Array.from({ length: BARS }).map((_, i) => (
               <span
                 key={i}
@@ -169,7 +170,7 @@ export function NowPlaying() {
             ))}
           </div>
 
-          <div className="hidden min-w-[140px] text-right sm:block">
+          <div className="min-w-0 flex-1 text-left sm:min-w-[140px] sm:flex-none sm:text-right">
             <div className="font-mono text-[0.55rem] uppercase tracking-widest2 text-neon-cyan/70">
               {playing ? 'Now Playing' : started ? 'Paused' : 'Reactive Player'}
             </div>
