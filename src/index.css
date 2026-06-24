@@ -17,6 +17,7 @@
 
   html {
     scroll-behavior: auto; /* Lenis owns smoothing */
+    overflow-x: clip; /* kill horizontal rubber-banding from decorative glow bleed */
   }
 
   body {
