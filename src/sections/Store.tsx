@@ -16,7 +16,7 @@ import { TechFrame } from '../components/ui/TechFrame'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { TiltCard } from '../components/ui/TiltCard'
-import { GoggleMark } from '../components/ui/GoggleMark'
+import { MotifGraphic } from '../components/ui/MerchMotifArt'
 import { cn } from '../lib/cn'
 
 /** Rendered "design plate" for each product (swapped for a photo when `image` is set). */
@@ -33,57 +33,7 @@ function MerchArt({ motif, typeLabel }: { motif: MerchMotif; typeLabel: string }
       />
 
       <div className="absolute inset-0 grid place-items-center p-8">
-        {motif === 'cover' && (
-          <img
-            src={dystopia.coverSmall}
-            alt=""
-            className="h-3/4 w-3/4 object-cover clip-tech shadow-[0_0_40px_rgba(124,58,237,.45)]"
-            loading="lazy"
-          />
-        )}
-
-        {motif === 'wordmark' && (
-          <div className="text-center">
-            <div className="font-display text-2xl font-black uppercase tracking-widest2 text-white sm:text-3xl">
-              LEOPARD<span className="text-neon-purple neon-purple">Ø</span>
-            </div>
-            <div className="mt-2 font-mono text-[0.55rem] uppercase tracking-widest3 text-neon-cyan/70">
-              Symphonic Trap
-            </div>
-          </div>
-        )}
-
-        {motif === 'goggle' && (
-          <GoggleMark
-            className="w-3/4"
-            style={{ filter: 'drop-shadow(0 0 18px rgba(34,211,238,.6))' }}
-          />
-        )}
-
-        {motif === 'flame' && (
-          <div className="text-center">
-            <div
-              className="gradient-heat font-display text-[5rem] font-black leading-none"
-              style={{ filter: 'drop-shadow(0 0 26px rgba(255,90,0,.55))' }}
-            >
-              Ø
-            </div>
-            <div className="mt-1 font-display text-xs uppercase tracking-widest2 text-slate-300">
-              DYSTØPIA
-            </div>
-          </div>
-        )}
-
-        {motif === 'octagon' && (
-          <div className="relative grid h-32 w-32 place-items-center">
-            <div className="absolute inset-0 clip-tech bg-gradient-to-br from-neon-purple/80 via-neon-blue/70 to-neon-cyan/60 p-[1.5px]">
-              <div className="clip-tech h-full w-full bg-abyss" />
-            </div>
-            <span className="relative font-display text-[0.6rem] font-bold uppercase tracking-widest2 text-white">
-              LEOPARDØ
-            </span>
-          </div>
-        )}
+        <MotifGraphic motif={motif} />
       </div>
 
       <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-void/60 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-300 backdrop-blur">

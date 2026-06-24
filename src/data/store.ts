@@ -73,8 +73,21 @@ export function trackBuyUrl(track: Track): string {
 
 /* ───────────────────────────────── MERCH ──────────────────────────────────── */
 
-export type MerchCategory = 'apparel' | 'headwear' | 'print' | 'accessory'
-export type MerchMotif = 'cover' | 'wordmark' | 'goggle' | 'flame' | 'octagon'
+export type MerchCategory = 'apparel' | 'headwear' | 'drinkware' | 'print' | 'tech' | 'accessory' | 'home'
+export type MerchMotif =
+  | 'cover'
+  | 'wordmark'
+  | 'goggle'
+  | 'flame'
+  | 'octagon'
+  | 'grid'
+  | 'waveform'
+  | 'orbit'
+  | 'circuit'
+  | 'glitch'
+  | 'monogram'
+  | 'barcode'
+  | 'duality'
 export type Glow = 'purple' | 'blue' | 'cyan' | 'ember' | 'mix'
 
 export type MerchItem = {
@@ -95,6 +108,7 @@ export type MerchItem = {
 }
 
 export const merch: MerchItem[] = [
+  /* ── Apparel ──────────────────────────────────────────────────────────── */
   {
     id: 'tee-dystopia',
     name: 'DYSTØPIA Album Tee',
@@ -117,6 +131,57 @@ export const merch: MerchItem[] = [
     glow: 'cyan',
   },
   {
+    id: 'tee-glitch',
+    name: 'System Failure Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 34,
+    blurb: 'RGB-split glitched DYSTØPIA wordmark — a corrupted-signal hit on midweight black.',
+    motif: 'glitch',
+    glow: 'mix',
+    badge: 'New',
+  },
+  {
+    id: 'tee-waveform',
+    name: 'Equalizer Tee',
+    category: 'apparel',
+    typeLabel: 'Tee',
+    price: 33,
+    blurb: 'The reactive spectrum frozen in neon — a tall waveform bar print front and center.',
+    motif: 'waveform',
+    glow: 'blue',
+  },
+  {
+    id: 'tank-barcode',
+    name: 'Barcode Tank',
+    category: 'apparel',
+    typeLabel: 'Tank',
+    price: 28,
+    blurb: 'Breathable summer-fest tank with the LEOPARDØ // DYSTØPIA barcode down the front.',
+    motif: 'barcode',
+    glow: 'cyan',
+  },
+  {
+    id: 'longsleeve-circuit',
+    name: 'Circuit Long Sleeve',
+    category: 'apparel',
+    typeLabel: 'Long Sleeve',
+    price: 42,
+    blurb: 'Circuit-trace artwork on the chest with patterned ink running down both sleeves.',
+    motif: 'circuit',
+    glow: 'cyan',
+  },
+  {
+    id: 'crew-monogram',
+    name: 'LØ Monogram Crewneck',
+    category: 'apparel',
+    typeLabel: 'Crewneck',
+    price: 54,
+    blurb: 'Mid-heavy fleece crew with the gradient LØ monogram embroidered over the heart.',
+    motif: 'monogram',
+    glow: 'purple',
+  },
+  {
     id: 'hoodie-flame',
     name: 'Flame Wordmark Hoodie',
     category: 'apparel',
@@ -127,6 +192,30 @@ export const merch: MerchItem[] = [
     glow: 'ember',
     badge: 'Heavyweight',
   },
+  {
+    id: 'hoodie-orbit',
+    name: 'Orbit Rings Hoodie',
+    category: 'apparel',
+    typeLabel: 'Hoodie',
+    price: 70,
+    blurb: 'The interwoven gyroscope rings printed big across the back, glowing violet on black.',
+    motif: 'orbit',
+    glow: 'purple',
+    badge: 'Fan Fave',
+  },
+  {
+    id: 'zip-duality',
+    name: 'UTØPIA / DYSTØPIA Zip Hoodie',
+    category: 'apparel',
+    typeLabel: 'Zip Hoodie',
+    price: 76,
+    blurb: 'Full-zip split down the journey — cool UTØPIA left, burning DYSTØPIA right.',
+    motif: 'duality',
+    glow: 'mix',
+    badge: 'Limited',
+  },
+
+  /* ── Headwear ─────────────────────────────────────────────────────────── */
   {
     id: 'hat-dad',
     name: 'LEOPARDØ Dad Hat',
@@ -146,8 +235,103 @@ export const merch: MerchItem[] = [
     blurb: 'Structured snapback with the octagonal tech-frame embroidered in violet thread.',
     motif: 'octagon',
     glow: 'cyan',
+  },
+  {
+    id: 'beanie-visor',
+    name: 'Visor Cuff Beanie',
+    category: 'headwear',
+    typeLabel: 'Beanie',
+    price: 28,
+    blurb: 'Ribbed cuffed beanie with the neon visor glyph woven into a tonal patch.',
+    motif: 'goggle',
+    glow: 'cyan',
+  },
+  {
+    id: 'bucket-orbit',
+    name: 'Orbit Bucket Hat',
+    category: 'headwear',
+    typeLabel: 'Bucket Hat',
+    price: 36,
+    blurb: 'Reversible bucket hat with the orbit-ring motif all-over on one side, blackout on the other.',
+    motif: 'orbit',
+    glow: 'blue',
     badge: 'New',
   },
+  {
+    id: 'trucker-flame',
+    name: 'Flame Trucker',
+    category: 'headwear',
+    typeLabel: 'Trucker',
+    price: 32,
+    blurb: 'Foam-front trucker with mesh back and the embered Ø flame patch stitched on.',
+    motif: 'flame',
+    glow: 'ember',
+  },
+
+  /* ── Drinkware ────────────────────────────────────────────────────────── */
+  {
+    id: 'tumbler-cover',
+    name: 'DYSTØPIA Insulated Tumbler',
+    category: 'drinkware',
+    typeLabel: '20oz Tumbler',
+    price: 32,
+    blurb: 'Double-wall vacuum 20oz tumbler wrapped in the album key art — keeps it cold 24h.',
+    motif: 'cover',
+    glow: 'mix',
+    badge: 'New',
+  },
+  {
+    id: 'bottle-flame',
+    name: 'Flame Ø Water Bottle',
+    category: 'drinkware',
+    typeLabel: '25oz Bottle',
+    price: 30,
+    blurb: 'Stainless 25oz bottle with the ember flame Ø and a matte blackout finish.',
+    motif: 'flame',
+    glow: 'ember',
+  },
+  {
+    id: 'mug-visor',
+    name: 'Neon Visor Mug',
+    category: 'drinkware',
+    typeLabel: '11oz Mug',
+    price: 18,
+    blurb: 'Ceramic mug with the glowing visor glyph — neon stays vivid, dishwasher safe.',
+    motif: 'goggle',
+    glow: 'cyan',
+  },
+  {
+    id: 'campmug-wordmark',
+    name: 'LEOPARDØ Enamel Camp Mug',
+    category: 'drinkware',
+    typeLabel: 'Camp Mug',
+    price: 24,
+    blurb: 'Speckled enamel camp mug with a rolled rim and the LEOPARDØ wordmark.',
+    motif: 'wordmark',
+    glow: 'purple',
+  },
+  {
+    id: 'pint-orbit',
+    name: 'Orbit Pint Glass',
+    category: 'drinkware',
+    typeLabel: 'Pint Glass',
+    price: 14,
+    blurb: 'Heavy-base pint glass with the orbit rings printed in glowing violet.',
+    motif: 'orbit',
+    glow: 'purple',
+  },
+  {
+    id: 'cancooler-octagon',
+    name: 'Octagon Can Cooler',
+    category: 'drinkware',
+    typeLabel: 'Can Cooler',
+    price: 12,
+    blurb: 'Neoprene slim + standard can cooler with the octagon tech-frame.',
+    motif: 'octagon',
+    glow: 'blue',
+  },
+
+  /* ── Prints ───────────────────────────────────────────────────────────── */
   {
     id: 'poster-dystopia',
     name: 'DYSTØPIA Tour Poster',
@@ -158,6 +342,103 @@ export const merch: MerchItem[] = [
     motif: 'cover',
     glow: 'mix',
   },
+  {
+    id: 'print-grid',
+    name: 'Synthwave Horizon Print',
+    category: 'print',
+    typeLabel: '18×24 Print',
+    price: 28,
+    blurb: 'The UTØPIA sunrise over a neon grid — a glowing horizon on archival matte.',
+    motif: 'grid',
+    glow: 'cyan',
+    badge: 'New',
+  },
+  {
+    id: 'print-orbit',
+    name: 'Orbit Rings Art Print',
+    category: 'print',
+    typeLabel: '18×24 Print',
+    price: 30,
+    blurb: 'The interwoven spectrum gyroscope rendered as line art in violet + cyan.',
+    motif: 'orbit',
+    glow: 'purple',
+  },
+  {
+    id: 'canvas-duality',
+    name: 'UTØPIA / DYSTØPIA Canvas',
+    category: 'print',
+    typeLabel: 'Gallery Canvas',
+    price: 65,
+    blurb: 'Gallery-wrapped canvas of the full narrative split — cool to burning, edge to edge.',
+    motif: 'duality',
+    glow: 'mix',
+    badge: 'Limited',
+  },
+  {
+    id: 'print-circuit',
+    name: 'Circuit Blueprint Print',
+    category: 'print',
+    typeLabel: '12×16 Print',
+    price: 22,
+    blurb: 'A technical-blueprint take on the brand circuitry, foil-bright on deep navy.',
+    motif: 'circuit',
+    glow: 'cyan',
+  },
+
+  /* ── Tech ─────────────────────────────────────────────────────────────── */
+  {
+    id: 'case-cover',
+    name: 'DYSTØPIA Phone Case',
+    category: 'tech',
+    typeLabel: 'Phone Case',
+    price: 28,
+    blurb: 'Impact-tough phone case wrapped in album art (iPhone + Pixel + Galaxy fits).',
+    motif: 'cover',
+    glow: 'mix',
+  },
+  {
+    id: 'deskmat-circuit',
+    name: 'Circuit XL Deskmat',
+    category: 'tech',
+    typeLabel: 'Deskmat',
+    price: 34,
+    blurb: 'Stitched-edge XL desk/mouse mat with the circuit artwork edge to edge (900×400mm).',
+    motif: 'circuit',
+    glow: 'cyan',
+    badge: 'Fan Fave',
+  },
+  {
+    id: 'sleeve-waveform',
+    name: 'Waveform Laptop Sleeve',
+    category: 'tech',
+    typeLabel: 'Laptop Sleeve',
+    price: 40,
+    blurb: 'Padded sleeve (13–16") with the neon equalizer print and a soft-lined interior.',
+    motif: 'waveform',
+    glow: 'blue',
+  },
+  {
+    id: 'airpods-octagon',
+    name: 'Octagon AirPods Case',
+    category: 'tech',
+    typeLabel: 'AirPods Case',
+    price: 20,
+    blurb: 'Snap-on AirPods / Pro case with the octagon tech-frame and a carabiner clip.',
+    motif: 'octagon',
+    glow: 'purple',
+  },
+  {
+    id: 'mousepad-grid',
+    name: 'Synthwave Mousepad',
+    category: 'tech',
+    typeLabel: 'Mousepad',
+    price: 16,
+    blurb: 'Standard-size cloth mousepad with the glowing synthwave horizon.',
+    motif: 'grid',
+    glow: 'cyan',
+  },
+
+  /* ── Extras ───────────────────────────────────────────────────────────── */
   {
     id: 'pin-octagon',
     name: 'Octagon Enamel Pin',
@@ -178,14 +459,100 @@ export const merch: MerchItem[] = [
     motif: 'goggle',
     glow: 'blue',
   },
+  {
+    id: 'tote-wordmark',
+    name: 'LEOPARDØ Canvas Tote',
+    category: 'accessory',
+    typeLabel: 'Tote',
+    price: 24,
+    blurb: 'Heavyweight natural canvas tote with the LEOPARDØ wordmark screened large.',
+    motif: 'wordmark',
+    glow: 'purple',
+  },
+  {
+    id: 'patch-flame',
+    name: 'Flame Ø Iron-On Patch',
+    category: 'accessory',
+    typeLabel: 'Patch',
+    price: 10,
+    blurb: 'Embroidered iron-on flame Ø patch — jackets, bags, anywhere it fits.',
+    motif: 'flame',
+    glow: 'ember',
+  },
+  {
+    id: 'socks-visor',
+    name: 'Visor Crew Socks',
+    category: 'accessory',
+    typeLabel: 'Socks',
+    price: 16,
+    blurb: 'Cushioned crew socks with the visor glyph knit at the ankle.',
+    motif: 'goggle',
+    glow: 'cyan',
+  },
+  {
+    id: 'lanyard-barcode',
+    name: 'Barcode Lanyard',
+    category: 'accessory',
+    typeLabel: 'Lanyard',
+    price: 12,
+    blurb: 'Festival-ready lanyard with the LEOPARDØ barcode and a detachable buckle.',
+    motif: 'barcode',
+    glow: 'blue',
+  },
+  {
+    id: 'keychain-monogram',
+    name: 'LØ Acrylic Keychain',
+    category: 'accessory',
+    typeLabel: 'Keychain',
+    price: 11,
+    blurb: 'Double-sided acrylic LØ monogram keychain with a holo edge.',
+    motif: 'monogram',
+    glow: 'purple',
+  },
+
+  /* ── Home ─────────────────────────────────────────────────────────────── */
+  {
+    id: 'blanket-orbit',
+    name: 'Orbit Throw Blanket',
+    category: 'home',
+    typeLabel: 'Throw Blanket',
+    price: 58,
+    blurb: 'Plush 50×60" throw with the orbit rings glowing across a deep-space field.',
+    motif: 'orbit',
+    glow: 'purple',
+    badge: 'Cozy',
+  },
+  {
+    id: 'flag-cover',
+    name: 'DYSTØPIA Wall Flag',
+    category: 'home',
+    typeLabel: 'Wall Flag',
+    price: 30,
+    blurb: 'Big 3×5ft wall flag of the album key art — instant studio / dorm centerpiece.',
+    motif: 'cover',
+    glow: 'mix',
+  },
+  {
+    id: 'pillow-grid',
+    name: 'Synthwave Throw Pillow',
+    category: 'home',
+    typeLabel: 'Throw Pillow',
+    price: 26,
+    blurb: 'Double-sided 18" pillow with the neon horizon — cover + insert included.',
+    motif: 'grid',
+    glow: 'cyan',
+  },
 ]
 
 export const merchCategories: { id: MerchCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'apparel', label: 'Apparel' },
   { id: 'headwear', label: 'Headwear' },
+  { id: 'drinkware', label: 'Drinkware' },
   { id: 'print', label: 'Prints' },
+  { id: 'tech', label: 'Tech' },
   { id: 'accessory', label: 'Extras' },
+  { id: 'home', label: 'Home' },
 ]
 
 export function merchBuyUrl(item: MerchItem): string {
