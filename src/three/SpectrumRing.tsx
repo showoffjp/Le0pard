@@ -4,6 +4,7 @@ import { InstancedMesh, Object3D, Color, Vector3, Euler } from 'three'
 import { signal } from '../lib/audioSignal'
 import { sampleFrequency, analyserSampleRate } from '../lib/audioReactor'
 import { neonRGB01 } from '../lib/neon'
+import { useExperience } from '../store/useExperience'
 
 /** One "wheel": a mirrored radial spectrum disc that spins in-plane AND precesses
  *  about its own world axis, so several of them interweave like an armillary
@@ -92,9 +93,12 @@ function Wheel({ def, half }: { def: WheelDef; half: number }) {
     const I = signal.intensity
 
     // gyroscopic motion: precess the whole disc about its world axis, and spin
-    // the bars within their own plane — together the wheels interweave.
-    mesh.rotateOnWorldAxis(axis, (def.precess + energy * 0.18 + drop * 0.9) * dt)
-    mesh.rotateZ((def.spin + energy * 0.1 + drop * 0.6) * dt)
+    // the bars within their own plane — together the wheels interweave. Held
+    // still for reduced-motion users (the bars still react, just no spin).
+    if (!useExperience.getState().reducedMotion) {
+      mesh.rotateOnWorldAxis(axis, (def.precess + energy * 0.18 + drop * 0.9) * dt)
+      mesh.rotateZ((def.spin + energy * 0.1 + drop * 0.6) * dt)
+    }
 
     const R = def.R + bass * 0.26 + drop * 0.5
     const lenScale = 0.45 + energy * 0.8 + I * 0.5
