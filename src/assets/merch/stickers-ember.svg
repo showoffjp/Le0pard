@@ -3,17 +3,23 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.28"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.26"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><circle cx="400" cy="400" r="148"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#ff6a00" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="143" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="322" cy="335" r="5.2" fill="#ff2d00"/><circle cx="348" cy="309" r="5.2" fill="#ff2d00"/><circle cx="374" cy="283" r="5.2" fill="#ff2d00"/><circle cx="400" cy="335" r="5.2" fill="#ff2d00"/><circle cx="426" cy="309" r="5.2" fill="#ff2d00"/><circle cx="452" cy="283" r="5.2" fill="#ff2d00"/><circle cx="478" cy="335" r="5.2" fill="#ff2d00"/></g>
-  <g><circle cx="400" cy="400" r="160" fill="#16131f" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/><circle cx="400" cy="400" r="160" fill="none" stroke="#ff6a00" stroke-opacity="0.25" stroke-width="6"/></g>
-  <g><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="143" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="322" cy="335" r="5.2" fill="#ff2d00"/><circle cx="348" cy="309" r="5.2" fill="#ff2d00"/><circle cx="374" cy="283" r="5.2" fill="#ff2d00"/><circle cx="400" cy="335" r="5.2" fill="#ff2d00"/><circle cx="426" cy="309" r="5.2" fill="#ff2d00"/><circle cx="452" cy="283" r="5.2" fill="#ff2d00"/><circle cx="478" cy="335" r="5.2" fill="#ff2d00"/></g>
+  <g><circle cx="400" cy="400" r="160" fill="url(#fab)" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/><circle cx="400" cy="400" r="160" fill="none" stroke="#ff6a00" stroke-opacity="0.25" stroke-width="6"/></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="140.008" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="323.632" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="349.088" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="374.544" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="400" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="425.456" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="450.91200000000003" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="476.36800000000005" cy="336.36" r="5.0912" fill="#ff2d00"/></g>
+    <g><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="140.008" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="323.632" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="349.088" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="374.544" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="400" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="425.456" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="450.91200000000003" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="476.36800000000005" cy="336.36" r="5.0912" fill="#ff2d00"/></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#ff6a00">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Ember Sticker Sheet</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">STICKERS</text>

@@ -25,6 +25,40 @@ const GLOW = {
 const esc = (s) => String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]))
 const W = 800, H = 800, CX = 400
 
+// The printable area per archetype — the emblem is CLIPPED to this so it can
+// never spill outside the product. `box` (derived) is the emblem's safe centre+radius.
+const R = (x, y, w, h) => ({ clip: `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10"/>`, box: { cx: x + w / 2, cy: y + h / 2, r: (Math.min(w, h) / 2) * 0.92 } })
+const C = (cx, cy, cr) => ({ clip: `<circle cx="${cx}" cy="${cy}" r="${cr}"/>`, box: { cx, cy, r: cr * 0.86 } })
+function clipbox(kind) {
+  switch (kind) {
+    case 'tee': return R(308, 305, 184, 230)
+    case 'hoodie': return R(312, 362, 176, 200)
+    case 'bottoms': return R(322, 252, 156, 170)
+    case 'cap': return R(302, 338, 196, 70)
+    case 'beanie': return R(302, 300, 196, 145)
+    case 'bottle': return R(340, 306, 120, 286)
+    case 'mug': return R(294, 314, 172, 212)
+    case 'glass': return R(348, 300, 104, 264)
+    case 'can': return R(340, 274, 120, 292)
+    case 'poster': return R(260, 210, 280, 380)
+    case 'disc': return C(400, 400, 148)
+    case 'cassette': return R(304, 300, 192, 76)
+    case 'box': return R(312, 360, 176, 184)
+    case 'phone': return R(336, 238, 128, 308)
+    case 'mat': return R(236, 374, 328, 144)
+    case 'laptop': return R(262, 250, 276, 196)
+    case 'panel': return R(254, 244, 292, 312)
+    case 'deck': return R(350, 214, 100, 372)
+    case 'pillow': return R(288, 298, 224, 224)
+    case 'umbrella': return R(262, 270, 276, 124)
+    case 'fabric': return R(276, 264, 248, 282)
+    case 'badge': return C(400, 400, 148)
+    default: return R(258, 258, 284, 284)
+  }
+}
+// font size that fits `len` chars within ~1.8r wide and `cap`·r tall
+const fit = (len, r, cap = 0.6) => Math.min(r * cap, (1.8 * r) / Math.max(3, len * 0.62))
+
 function archetype(p) {
   const t = p.typeLabel.toLowerCase(), c = p.category
   if (c === 'music') return /cassette/.test(t) ? 'cassette' : /box/.test(t) ? 'box' : 'disc'
@@ -49,7 +83,7 @@ function archetype(p) {
   return 'tee'
 }
 
-const FABRIC = '#16131f', FABRIC2 = '#0e0b16', SEAM = 'rgba(255,255,255,0.10)'
+const FABRIC = 'url(#fab)', FABRIC2 = '#0c0a14'
 
 // silhouettes → { shape, box:{cx,cy,r} } where the emblem is placed
 function silhouette(kind, a) {
@@ -138,15 +172,16 @@ function emblem(p, a, b, box) {
   switch (m) {
     case 'track': {
       const t = (p.text || 'DYSTØPIA').toString()
-      const size = Math.min(r * 0.62, (r * 2.4) / Math.max(5, t.length) * 1.5)
-      return `${T(p.sub || 'DYSTØPIA', r * 0.16, a, cy - r * 0.55)}${T(t, size)}${T('LEOPARDØ', r * 0.14, '#9aa3b2', cy + r * 0.55)}`
+      return `${T(p.sub || 'DYSTØPIA', fit(8, r, 0.15), a, cy - r * 0.6)}${T(t, fit(t.length, r, 0.6))}${T('LEOPARDØ', fit(8, r, 0.14), '#9aa3b2', cy + r * 0.6)}`
     }
     case 'wordmark':
-      return T('LEOPARDØ', r * 0.34)
+      return T('LEOPARDØ', fit(8, r, 0.34))
     case 'monogram':
       return T('LØ', r * 0.95)
-    case 'glitch':
-      return `<g>${T('DYSTØPIA', r * 0.42, b, cy - 3)}${T('DYSTØPIA', r * 0.42, '#22d3ee', cy + 3)}${T('DYSTØPIA', r * 0.42, '#fff')}</g>`
+    case 'glitch': {
+      const s = fit(8, r, 0.42)
+      return `<g>${T('DYSTØPIA', s, b, cy - 3)}${T('DYSTØPIA', s, '#22d3ee', cy + 3)}${T('DYSTØPIA', s, '#fff')}</g>`
+    }
     case 'octagon':
       return `<path d="M${cx - r * 0.5} ${cy - r * 0.8} H${cx + r * 0.5} L${cx + r * 0.8} ${cy - r * 0.5} V${cy + r * 0.5} L${cx + r * 0.5} ${cy + r * 0.8} H${cx - r * 0.5} L${cx - r * 0.8} ${cy + r * 0.5} V${cy - r * 0.5} Z" ${g}/>${T('LØ', r * 0.4, '#fff')}`
     case 'flame':
@@ -193,24 +228,31 @@ function emblem(p, a, b, box) {
 function makeSVG(p) {
   const [a, b] = GLOW[p.glow] || GLOW.mix
   const kind = archetype(p)
-  const { shape, box } = silhouette(kind, a)
+  const { shape } = silhouette(kind, a)
+  const { clip, box } = clipbox(kind)
   const em = emblem(p, a, b, box)
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
   <defs>
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="${a}" stop-opacity="0.28"/><stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="${a}" stop-opacity="0.26"/><stop offset="100%" stop-color="${a}" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp">${clip}</clipPath>
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
   <rect width="${W}" height="${H}" fill="url(#halo)"/>
   <ellipse cx="${CX}" cy="690" rx="230" ry="42" fill="${a}" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7">${em}</g>
   <g>${shape}</g>
-  <g>${em}</g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9">${em}</g>
+    <g>${em}</g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="${a}">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">${esc(p.name)}</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">${esc(p.typeLabel.toUpperCase())}</text>
