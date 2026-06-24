@@ -7,21 +7,32 @@
       <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.26"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="260" y="210" width="280" height="380" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#ff6a00" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#ff6a00" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g>
         <rect x="232" y="180" width="336" height="440" rx="6" fill="#0c0a14" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/>
         <rect x="252" y="200" width="296" height="400" rx="4" fill="url(#fab)" stroke="#ff6a00" stroke-opacity="0.3"/></g>
   <g clip-path="url(#cp)">
+    
     <g filter="url(#glow)" opacity="0.9"><circle cx="400" cy="374.24" r="36.06400000000001" fill="#ff6a00"/><rect x="290.52" y="425.76" width="15.456000000000001" height="51.52000000000001" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="310.4254545454545" y="348.92253493731073" width="15.456000000000001" height="128.35746506268927" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="330.3309090909091" y="323.3700789856078" width="15.456000000000001" height="153.90992101439218" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="350.23636363636365" y="366.1575666774399" width="15.456000000000001" height="111.12243332256008" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="370.14181818181817" y="402.7934232511104" width="15.456000000000001" height="74.48657674888952" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="390.0472727272727" y="335.5534079201043" width="15.456000000000001" height="141.72659207989568" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="409.95272727272726" y="328.5215982204794" width="15.456000000000001" height="148.75840177952054" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="429.85818181818183" y="386.39136117336" width="15.456000000000001" height="90.88863882663998" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="449.76363636363635" y="380.9823583017117" width="15.456000000000001" height="96.29764169828825" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="469.66909090909087" y="326.72282326730186" width="15.456000000000001" height="150.5571767326981" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="489.57454545454544" y="338.56544955379036" width="15.456000000000001" height="138.7145504462096" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/></g>
     <g><circle cx="400" cy="374.24" r="36.06400000000001" fill="#ff6a00"/><rect x="290.52" y="425.76" width="15.456000000000001" height="51.52000000000001" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="310.4254545454545" y="348.92253493731073" width="15.456000000000001" height="128.35746506268927" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="330.3309090909091" y="323.3700789856078" width="15.456000000000001" height="153.90992101439218" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="350.23636363636365" y="366.1575666774399" width="15.456000000000001" height="111.12243332256008" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="370.14181818181817" y="402.7934232511104" width="15.456000000000001" height="74.48657674888952" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="390.0472727272727" y="335.5534079201043" width="15.456000000000001" height="141.72659207989568" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="409.95272727272726" y="328.5215982204794" width="15.456000000000001" height="148.75840177952054" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="429.85818181818183" y="386.39136117336" width="15.456000000000001" height="90.88863882663998" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="449.76363636363635" y="380.9823583017117" width="15.456000000000001" height="96.29764169828825" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="469.66909090909087" y="326.72282326730186" width="15.456000000000001" height="150.5571767326981" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/><rect x="489.57454545454544" y="338.56544955379036" width="15.456000000000001" height="138.7145504462096" fill="#0c0a14" stroke="#ff2d00" stroke-opacity="0.6"/></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#ff6a00">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Burning Skyline Tapestry</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">TAPESTRY</text>

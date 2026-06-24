@@ -7,19 +7,30 @@
       <stop offset="0%" stop-color="#a855f7" stop-opacity="0.26"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="348" y="300" width="104" height="264" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#a855f7" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#a855f7" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g><path d="M330 280 L470 280 L450 600 L350 600 Z" fill="url(#fab)" fill-opacity="0.55" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
+    <rect x="370.3392" y="381.768" width="7.654400000000001" height="100.46400000000001" rx="3.8272000000000004" fill="#ffffff" opacity="0.14"/><rect x="416.2656" y="384.15999999999997" width="2.8704" height="95.68" rx="1.4352" fill="#ffffff" opacity="0.07"/>
     <g filter="url(#glow)" opacity="0.9"><path d="M376.08 393.728 H423.92 L438.272 408.08 V455.92 L423.92 470.272 H376.08 L361.728 455.92 V408.08 Z" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="432" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19.136000000000003" fill="#fff" letter-spacing="1">LØ</text></g>
     <g><path d="M376.08 393.728 H423.92 L438.272 408.08 V455.92 L423.92 470.272 H376.08 L361.728 455.92 V408.08 Z" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="432" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19.136000000000003" fill="#fff" letter-spacing="1">LØ</text></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#a855f7">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Octagon Shot Glass Set</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">SHOT SET (×4)</text>

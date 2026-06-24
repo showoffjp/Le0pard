@@ -7,21 +7,32 @@
       <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.26"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="308" y="305" width="184" height="230" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#22d3ee" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#22d3ee" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g>
         <path d="M250 250 L330 210 Q400 250 470 210 L550 250 L600 330 L540 370 L540 600 Q400 630 260 600 L260 370 L200 330 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/>
         <path d="M330 210 Q400 270 470 210" fill="none" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
+    
     <g filter="url(#glow)" opacity="0.9"><rect x="332.288" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="339.81155555555557" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="347.33511111111113" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="354.8586666666667" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="362.38222222222225" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="369.9057777777778" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="377.4293333333334" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="384.9528888888889" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="392.47644444444444" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="400" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="407.52355555555556" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="415.0471111111111" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="422.5706666666667" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="430.09422222222224" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="437.6177777777778" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="445.14133333333336" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="452.6648888888889" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="460.1884444444445" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/></g>
     <g><rect x="332.288" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="339.81155555555557" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="347.33511111111113" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="354.8586666666667" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="362.38222222222225" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="369.9057777777778" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="377.4293333333334" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="384.9528888888889" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="392.47644444444444" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="400" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="407.52355555555556" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="415.0471111111111" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="422.5706666666667" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="430.09422222222224" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="437.6177777777778" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="445.14133333333336" y="377.68" width="6.348000000000001" height="84.64" fill="#22d3ee"/><rect x="452.6648888888889" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/><rect x="460.1884444444445" y="377.68" width="2.5392" height="84.64" fill="#22d3ee"/></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#22d3ee">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Barcode Tank</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">TANK</text>

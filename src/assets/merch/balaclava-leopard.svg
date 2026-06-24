@@ -7,21 +7,32 @@
       <stop offset="0%" stop-color="#a855f7" stop-opacity="0.26"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="302" y="300" width="196" height="145" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#a855f7" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#a855f7" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g>
         <path d="M280 460 Q280 250 520 250 Q520 460 520 460 Z" fill="url(#fab)" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/>
         <rect x="270" y="450" width="260" height="60" rx="14" fill="#0c0a14" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
+    
     <g filter="url(#glow)" opacity="0.9"><circle cx="420.01" cy="372.5" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="421.5599201394997" cy="409.34843892140015" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="388.7857590101386" cy="386.8764805093132" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="381.9095164382386" cy="358.0875934191318" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="368.8968310878664" cy="352.50049478822604" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="389.59554093169555" cy="355.70104400604885" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="412.7002044476121" cy="385.9453642361141" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="434.6790969443224" cy="410.28188200538136" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="430.027004182683" cy="373.79530066462024" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><text x="400" y="372.5" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="10.672" fill="#fff" letter-spacing="1">LEOPARDØ</text></g>
     <g><circle cx="420.01" cy="372.5" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="421.5599201394997" cy="409.34843892140015" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="388.7857590101386" cy="386.8764805093132" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="381.9095164382386" cy="358.0875934191318" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="368.8968310878664" cy="352.50049478822604" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="389.59554093169555" cy="355.70104400604885" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="412.7002044476121" cy="385.9453642361141" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><circle cx="434.6790969443224" cy="410.28188200538136" r="6.670000000000001" fill="none" stroke="#7c5cff" stroke-width="2.668"/><circle cx="430.027004182683" cy="373.79530066462024" r="6.670000000000001" fill="none" stroke="#a855f7" stroke-width="2.668"/><text x="400" y="372.5" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="10.672" fill="#fff" letter-spacing="1">LEOPARDØ</text></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#a855f7">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Leopard Balaclava</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">BALACLAVA</text>
