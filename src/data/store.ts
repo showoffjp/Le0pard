@@ -1093,6 +1093,21 @@ export const merch: MerchItem[] = [
   ...seasonalMerch,
 ]
 
+/** A curated "Featured Drops" shelf shown above the grid on the All view. */
+const FEATURED_IDS = [
+  'tee-dystopia',
+  'hoodie-orbit',
+  'vinyl-2lp',
+  'tee-tracklist',
+  'tumbler-cover',
+  'bundle-collector',
+  'tee-glitch',
+  'track-tee-1',
+]
+export const featuredMerch: MerchItem[] = FEATURED_IDS.map((id) => merch.find((m) => m.id === id)).filter(
+  (m): m is MerchItem => Boolean(m),
+)
+
 export const merchCategories: { id: MerchCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'tracks', label: 'Track Series' },
