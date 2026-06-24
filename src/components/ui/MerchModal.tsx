@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { merchBuyUrl, formatPrice, type MerchItem } from '../../data/store'
+import { merchPhoto } from '../../lib/merchPhotos'
 import { TechFrame } from './TechFrame'
 import { NeonButton } from './NeonButton'
 import { MotifGraphic } from './MerchMotifArt'
@@ -32,6 +33,7 @@ export function MerchModal({ item, onClose }: { item: MerchItem | null; onClose:
 
   if (!item) return null
   const sizes = sizesFor(item)
+  const photo = item.image ?? merchPhoto(item.id)
 
   return (
     <div
@@ -52,9 +54,9 @@ export function MerchModal({ item, onClose }: { item: MerchItem | null; onClose:
         <TechFrame glow={item.glow} padded={false}>
           <div className="grid md:grid-cols-2">
             {/* art */}
-            {item.image ? (
+            {photo ? (
               <div className="scanlines relative aspect-square overflow-hidden">
-                <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                <img src={photo} alt={item.name} className="h-full w-full object-cover" />
               </div>
             ) : (
               <div className="scanlines relative aspect-square overflow-hidden bg-gradient-to-br from-steel/60 via-ink to-abyss">

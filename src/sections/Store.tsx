@@ -19,6 +19,7 @@ import { Reveal } from '../components/ui/Reveal'
 import { TiltCard } from '../components/ui/TiltCard'
 import { MotifGraphic } from '../components/ui/MerchMotifArt'
 import { MerchModal } from '../components/ui/MerchModal'
+import { merchPhoto } from '../lib/merchPhotos'
 import { cn } from '../lib/cn'
 
 /** Rendered "design plate" for each product (swapped for a photo when `image` is set). */
@@ -46,6 +47,7 @@ function MerchArt({ item }: { item: MerchItem }) {
 }
 
 function MerchCard({ item, onQuickView }: { item: MerchItem; onQuickView: (i: MerchItem) => void }) {
+  const photo = item.image ?? merchPhoto(item.id)
   return (
     <TiltCard className="h-full">
       <TechFrame glow={item.glow} padded={false} className="h-full">
@@ -56,9 +58,9 @@ function MerchCard({ item, onQuickView }: { item: MerchItem; onQuickView: (i: Me
             aria-label={`Quick view ${item.name}`}
             className="group/qv relative block w-full text-left"
           >
-            {item.image ? (
+            {photo ? (
               <div className="scanlines relative aspect-square overflow-hidden">
-                <img src={item.image} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
+                <img src={photo} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
               </div>
             ) : (
               <MerchArt item={item} />
