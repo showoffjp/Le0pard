@@ -18,6 +18,7 @@ import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { TiltCard } from '../components/ui/TiltCard'
 import { MotifGraphic } from '../components/ui/MerchMotifArt'
+import { MerchModal } from '../components/ui/MerchModal'
 import { cn } from '../lib/cn'
 
 /** Rendered "design plate" for each product (swapped for a photo when `image` is set). */
@@ -44,18 +45,28 @@ function MerchArt({ item }: { item: MerchItem }) {
   )
 }
 
-function MerchCard({ item }: { item: MerchItem }) {
+function MerchCard({ item, onQuickView }: { item: MerchItem; onQuickView: (i: MerchItem) => void }) {
   return (
     <TiltCard className="h-full">
       <TechFrame glow={item.glow} padded={false} className="h-full">
         <div className="relative flex h-full flex-col">
-          {item.image ? (
-            <div className="scanlines relative aspect-square overflow-hidden">
-              <img src={item.image} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
-            </div>
-          ) : (
-            <MerchArt item={item} />
-          )}
+          <button
+            type="button"
+            onClick={() => onQuickView(item)}
+            aria-label={`Quick view ${item.name}`}
+            className="group/qv relative block w-full text-left"
+          >
+            {item.image ? (
+              <div className="scanlines relative aspect-square overflow-hidden">
+                <img src={item.image} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
+              </div>
+            ) : (
+              <MerchArt item={item} />
+            )}
+            <span className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1 rounded-full border border-white/15 bg-void/70 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-200 opacity-0 backdrop-blur transition-opacity duration-200 group-hover/qv:opacity-100">
+              ⤢ Quick view
+            </span>
+          </button>
 
           {item.badge && (
             <span className="absolute right-3 top-3 rounded-full border border-neon-purple/40 bg-neon-violet/15 px-2.5 py-1 font-display text-[0.55rem] uppercase tracking-widest2 text-neon-purple backdrop-blur">
@@ -90,6 +101,7 @@ export function Store() {
   const [cat, setCat] = useState<MerchCategory | 'all'>('all')
   const [showTracks, setShowTracks] = useState(false)
   const [shown, setShown] = useState(PAGE)
+  const [quick, setQuick] = useState<MerchItem | null>(null)
 
   const visible = useMemo(
     () => (cat === 'all' ? merch : merch.filter((m) => m.category === cat)),
@@ -268,7 +280,7 @@ export function Store() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featuredMerch.map((item, i) => (
               <Reveal key={item.id} delay={Math.min(i, 7) * 55}>
-                <MerchCard item={item} />
+                <MerchCard item={item} onQuickView={setQuick} />
               </Reveal>
             ))}
           </div>
@@ -289,7 +301,7 @@ export function Store() {
       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {page.map((item, i) => (
           <Reveal key={item.id} delay={Math.min(i % PAGE, 11) * 50}>
-            <MerchCard item={item} />
+            <MerchCard item={item} onQuickView={setQuick} />
           </Reveal>
         ))}
       </div>
@@ -307,6 +319,8 @@ export function Store() {
           Secure checkout via Bandcamp &amp; Stripe · Lossless downloads · Ships worldwide
         </p>
       </Reveal>
+
+      <MerchModal item={quick} onClose={() => setQuick(null)} />
     </section>
   )
 }
