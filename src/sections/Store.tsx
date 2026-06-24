@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { dystopia } from '../data/music'
 import {
   merch,
+  featuredMerch,
   merchBuyUrl,
   merchCategories,
   musicTiers,
@@ -83,14 +84,23 @@ function MerchCard({ item }: { item: MerchItem }) {
   )
 }
 
+const PAGE = 16
+
 export function Store() {
   const [cat, setCat] = useState<MerchCategory | 'all'>('all')
   const [showTracks, setShowTracks] = useState(false)
+  const [shown, setShown] = useState(PAGE)
 
   const visible = useMemo(
     () => (cat === 'all' ? merch : merch.filter((m) => m.category === cat)),
     [cat],
   )
+  const page = visible.slice(0, shown)
+
+  const pick = (id: MerchCategory | 'all') => {
+    setCat(id)
+    setShown(PAGE)
+  }
 
   return (
     <section id="store" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
@@ -228,7 +238,7 @@ export function Store() {
             {merchCategories.map((c) => (
               <button
                 key={c.id}
-                onClick={() => setCat(c.id)}
+                onClick={() => pick(c.id)}
                 className={cn(
                   'clip-tech-sm px-3.5 py-1.5 font-display text-[0.6rem] uppercase tracking-widest2 transition',
                   cat === c.id
@@ -243,13 +253,53 @@ export function Store() {
         </Reveal>
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {visible.map((item, i) => (
-          <Reveal key={item.id} delay={Math.min(i, 11) * 55}>
+      {/* Featured drops — a curated shelf on the All view */}
+      {cat === 'all' && featuredMerch.length > 0 && (
+        <Reveal>
+          <div className="mt-9">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="font-display text-[0.7rem] uppercase tracking-widest3 text-neon-cyan">
+                ★ Featured Drops
+              </span>
+              <span className="h-px flex-1 bg-gradient-to-r from-neon-purple/40 to-transparent" />
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {featuredMerch.map((item, i) => (
+                <Reveal key={item.id} delay={Math.min(i, 7) * 55}>
+                  <MerchCard item={item} />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      )}
+
+      {/* Full catalog — filterable + paginated */}
+      <div className="mt-10 flex items-center gap-3">
+        <span className="font-display text-[0.7rem] uppercase tracking-widest3 text-slate-400">
+          {cat === 'all' ? 'All Drops' : merchCategories.find((c) => c.id === cat)?.label}
+        </span>
+        <span className="font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-600">
+          {Math.min(shown, visible.length)} / {visible.length}
+        </span>
+        <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+      </div>
+
+      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {page.map((item, i) => (
+          <Reveal key={item.id} delay={Math.min(i % PAGE, 11) * 50}>
             <MerchCard item={item} />
           </Reveal>
         ))}
       </div>
+
+      {shown < visible.length && (
+        <div className="mt-10 flex justify-center">
+          <NeonButton variant="ghost" onClick={() => setShown((s) => s + PAGE)}>
+            Load more ({visible.length - shown} left)
+          </NeonButton>
+        </div>
+      )}
 
       <Reveal delay={120}>
         <p className="mt-10 text-center font-mono text-[0.6rem] uppercase tracking-widest2 text-slate-600">
