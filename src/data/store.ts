@@ -5,10 +5,13 @@
 //    + handles secure checkout and instant download delivery. Album buys point at
 //    `dystopia.bandcampUrl`. For a per-track FLAC buy link, drop the track's own
 //    Bandcamp track-page URL into TRACK_BUY_OVERRIDES below.
-//  • MERCH  → each product has an optional `buyUrl`. Paste in a Stripe Payment
-//    Link ("https://buy.stripe.com/…") or a Printful / Printify product URL.
-//    Until one is set, the Buy button falls back to STORE_CONFIG.fallbackUrl so
-//    nothing ever 404s.
+//  • MERCH  → wire real commerce in ONE place: the `BUY_LINKS` map at the bottom
+//    of this file (keyed by product id). Paste a Stripe Payment Link
+//    ("https://buy.stripe.com/…") or a Printful/Printify product URL. A product
+//    can also carry an inline `buyUrl`, and `STORE_CONFIG.storeUrl` powers the
+//    "Shop All" CTA. Until links are set, every Buy button falls back to
+//    STORE_CONFIG.fallbackUrl so nothing ever 404s. Real product photos: set the
+//    product's `image` path to swap the generative design plate for a mockup.
 //
 // No secrets live in this repo — Stripe Payment Links + Bandcamp are just URLs,
 // so the store goes fully live the moment you replace the placeholders.
@@ -1132,9 +1135,28 @@ export const merchCategories: { id: MerchCategory | 'all'; label: string }[] = [
   { id: 'seasonal', label: 'Seasonal' },
 ]
 
+/**
+ * Central buy-link map — the one place to wire real commerce. Paste a Stripe
+ * Payment Link ("https://buy.stripe.com/…") or a Printful/Printify product URL
+ * keyed by the product `id`. Anything not listed (and without an inline `buyUrl`)
+ * falls back to STORE_CONFIG.fallbackUrl, so the store never 404s pre-launch.
+ *
+ *   export const BUY_LINKS = {
+ *     'tee-dystopia': 'https://buy.stripe.com/abc123',
+ *     'hoodie-orbit': 'https://leopardo.printful.me/product/orbit-hoodie',
+ *   }
+ *
+ * Resolution order: item.buyUrl → BUY_LINKS[id] → STORE_CONFIG.fallbackUrl.
+ */
+export const BUY_LINKS: Record<string, string> = {}
+
 export function merchBuyUrl(item: MerchItem): string {
-  return item.buyUrl ?? STORE_CONFIG.fallbackUrl
+  return item.buyUrl ?? BUY_LINKS[item.id] ?? STORE_CONFIG.fallbackUrl
 }
+
+/** True once any real commerce link is wired (toggles "live checkout" copy). */
+export const isStoreWired =
+  Object.keys(BUY_LINKS).length > 0 || merch.some((m) => Boolean(m.buyUrl))
 
 export function formatPrice(n: number): string {
   return `$${n.toFixed(n % 1 === 0 ? 0 : 2)}`
