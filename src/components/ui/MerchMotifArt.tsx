@@ -465,6 +465,30 @@ export function MotifGraphic({
         </svg>
       )
 
+    case 'pulse':
+      return (
+        <div className="w-3/4 text-center">
+          <svg
+            viewBox="0 0 200 110"
+            className="w-full"
+            style={{ filter: 'drop-shadow(0 0 12px rgba(34,211,238,.6))' }}
+            aria-hidden="true"
+          >
+            <polyline
+              fill="none"
+              stroke="#22d3ee"
+              strokeWidth="2.6"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              points="0,55 44,55 56,55 64,26 74,86 84,40 94,55 130,55 142,55 150,16 162,96 172,48 184,55 200,55"
+            />
+          </svg>
+          <div className="mt-3 font-mono text-[0.5rem] uppercase tracking-widest3 text-neon-cyan/70">
+            DYSTØPIA · LIVE SIGNAL
+          </div>
+        </div>
+      )
+
     case 'eclipse':
       return (
         <div className="relative grid h-3/4 w-3/4 place-items-center">

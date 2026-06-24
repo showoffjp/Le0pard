@@ -112,6 +112,7 @@ export type MerchMotif =
   | 'bundle'
   | 'mandala'
   | 'eclipse'
+  | 'pulse'
 export type Glow = 'purple' | 'blue' | 'cyan' | 'ember' | 'mix'
 
 export type MerchItem = {
@@ -1159,6 +1160,23 @@ const extraMerch: MerchItem[] = [
   { id: 'towel-duality', name: 'Duality Beach Towel', category: 'home', typeLabel: 'Beach Towel', price: 34, blurb: 'Oversized microfiber towel split UTØPIA-to-DYSTØPIA.', motif: 'duality', glow: 'mix' },
   { id: 'yogamat-mandala', name: 'Mandala Yoga Mat', category: 'home', typeLabel: 'Yoga Mat', price: 44, blurb: 'Grippy 5mm mat centered on the glowing mandala — flow through the future.', motif: 'mandala', glow: 'purple' },
   { id: 'petbandana', name: 'Leopard Pet Bandana', category: 'accessory', typeLabel: 'Pet Bandana', price: 14, blurb: 'Tie-on pet bandana in the neon rosette — your hound runs the burning future too.', motif: 'leopard', glow: 'cyan' },
+
+  // Wave 3 — new "pulse" design + more lifestyle
+  { id: 'tee-pulse', name: 'Live Signal Tee', category: 'apparel', typeLabel: 'Tee', price: 33, blurb: 'The reactive waveform frozen as a heartbeat line — DYSTØPIA, live.', motif: 'pulse', glow: 'cyan', badge: 'New' },
+  { id: 'scarf-leopard', name: 'Leopard Knit Scarf', category: 'apparel', typeLabel: 'Scarf', price: 30, blurb: 'Chunky knit scarf with the neon rosette woven end to end.', motif: 'leopard', glow: 'purple' },
+  { id: 'trapper-leopard', name: 'Leopard Trapper Hat', category: 'headwear', typeLabel: 'Trapper Hat', price: 36, blurb: 'Sherpa-lined trapper in the rosette print — warmth for the cold dystopia.', motif: 'leopard', glow: 'purple' },
+  { id: 'winetumbler-mandala', name: 'Mandala Wine Tumbler', category: 'drinkware', typeLabel: 'Wine Tumbler', price: 22, blurb: 'Insulated stemless wine tumbler etched with the mandala.', motif: 'mandala', glow: 'purple' },
+  { id: 'gamingmat-circuit', name: 'Circuit XXL Gaming Mat', category: 'tech', typeLabel: 'Gaming Mat', price: 40, blurb: 'Full-desk XXL gaming mat (1200×600mm) in the circuit artwork.', motif: 'circuit', glow: 'cyan' },
+  { id: 'popsocket-octagon', name: 'Octagon Phone Button', category: 'tech', typeLabel: 'Phone Button', price: 12, blurb: 'Swappable grip-button with the octagon mark.', motif: 'octagon', glow: 'purple' },
+  { id: 'lighter-flame', name: 'Flame Metal Lighter', category: 'accessory', typeLabel: 'Lighter', price: 14, blurb: 'Refillable metal flip lighter engraved with the ember Ø.', motif: 'flame', glow: 'ember' },
+  { id: 'facemask-octagon', name: 'Octagon Face Mask', category: 'accessory', typeLabel: 'Face Mask', price: 12, blurb: 'Adjustable two-layer mask with the octagon tech-frame.', motif: 'octagon', glow: 'cyan' },
+  { id: 'umbrella-skyline', name: 'Skyline Storm Umbrella', category: 'accessory', typeLabel: 'Umbrella', price: 32, blurb: 'Auto-open umbrella printed with the burning skyline inside the canopy.', motif: 'skyline', glow: 'ember' },
+  { id: 'tapestry-mandala', name: 'Mandala Wall Tapestry', category: 'home', typeLabel: 'Tapestry', price: 44, blurb: 'Big wall tapestry of the glowing mandala — instant focal point.', motif: 'mandala', glow: 'purple' },
+  { id: 'curtains-grid', name: 'Synthwave Blackout Curtains', category: 'home', typeLabel: 'Curtains', price: 54, blurb: 'Blackout curtain pair with the neon-grid horizon along the hem.', motif: 'grid', glow: 'cyan' },
+  { id: 'magnets-octagon', name: 'Magnet Set (×6)', category: 'home', typeLabel: 'Magnets', price: 12, blurb: 'Six die-cut fridge magnets — every mark in the set.', motif: 'octagon', glow: 'blue' },
+  { id: 'lenticular-eclipse', name: 'Lenticular Eclipse Print', category: 'print', typeLabel: 'Lenticular', price: 34, blurb: 'Tilt-to-animate lenticular print — the eclipse comes alive as you move.', motif: 'eclipse', glow: 'ember', badge: 'Limited' },
+  { id: 'minidisc', name: 'DYSTØPIA MiniDisc', category: 'music', typeLabel: 'MiniDisc', price: 18, blurb: 'A numbered MiniDisc pressing for the format faithful.', motif: 'vinyl', glow: 'cyan', badge: 'Limited' },
+  { id: 'bundle-desk', name: 'Desk Setup Bundle', category: 'bundle', typeLabel: 'Bundle', price: 79, blurb: 'Deskmat + mousepad + keycaps + a phone grip — kit the whole battlestation.', motif: 'bundle', glow: 'cyan', badge: 'Save $11' },
 ]
 
 export const merch: MerchItem[] = [
