@@ -17,13 +17,14 @@
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#ff6a00" flood-opacity="0.5"/></filter>
     <clipPath id="cp"><circle cx="400" cy="400" r="148"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="696" rx="226" ry="40" fill="#ff6a00" opacity="0.14"/>
   <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g><circle cx="400" cy="400" r="160" fill="url(#fab)" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/><circle cx="400" cy="400" r="160" fill="none" stroke="#ff6a00" stroke-opacity="0.25" stroke-width="6"/></g>
+  <g filter="url(#rim)"><circle cx="400" cy="400" r="160" fill="url(#fab)" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/><circle cx="400" cy="400" r="160" fill="none" stroke="#ff6a00" stroke-opacity="0.25" stroke-width="6"/></g>
   <g clip-path="url(#cp)">
     
     <g filter="url(#glow)" opacity="0.9"><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="140.008" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="323.632" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="349.088" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="374.544" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="400" cy="336.36" r="5.0912" fill="#ff2d00"/><circle cx="425.456" cy="310.904" r="5.0912" fill="#ff2d00"/><circle cx="450.91200000000003" cy="285.448" r="5.0912" fill="#ff2d00"/><circle cx="476.36800000000005" cy="336.36" r="5.0912" fill="#ff2d00"/></g>

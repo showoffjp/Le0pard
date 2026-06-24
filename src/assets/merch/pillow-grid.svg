@@ -17,13 +17,14 @@
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#22d3ee" flood-opacity="0.5"/></filter>
     <clipPath id="cp"><rect x="288" y="298" width="224" height="224" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="696" rx="226" ry="40" fill="#22d3ee" opacity="0.14"/>
   <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g><path d="M260 270 Q400 250 540 270 Q560 410 540 550 Q400 570 260 550 Q240 410 260 270 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g filter="url(#rim)"><path d="M260 270 Q400 250 540 270 Q560 410 540 550 Q400 570 260 550 Q240 410 260 270 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
     
     <g filter="url(#glow)" opacity="0.9"><circle cx="400" cy="389.392" r="41.21600000000001" fill="#22d3ee"/><rect x="358.784" y="358.48" width="82.43200000000002" height="61.824" fill="#04050a" opacity="0.5"/><line x1="296.96" y1="430.608" x2="503.04" y2="430.608" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="446.064" x2="503.04" y2="446.064" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="461.52" x2="503.04" y2="461.52" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="476.976" x2="503.04" y2="476.976" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="492.432" x2="503.04" y2="492.432" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/></g>

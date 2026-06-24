@@ -17,15 +17,16 @@
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#a855f7" flood-opacity="0.5"/></filter>
     <clipPath id="cp"><rect x="294" y="314" width="172" height="212" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="696" rx="226" ry="40" fill="#a855f7" opacity="0.14"/>
   <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g>
+  <g filter="url(#rim)">
         <rect x="280" y="300" width="200" height="240" rx="20" fill="url(#fab)" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/>
-        <path d="M480 350 Q560 350 560 430 Q560 500 480 500" fill="none" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2" stroke-width="16"/></g>
+        <path d="M480 350 Q560 350 560 430 Q560 500 480 500" fill="none" stroke="#a855f7" stroke-opacity="0.55" stroke-width="16"/></g>
   <g clip-path="url(#cp)">
     <rect x="330.9456" y="336.924" width="12.6592" height="166.15200000000002" rx="6.3296" fill="#ffffff" opacity="0.14"/><rect x="406.9008" y="340.88" width="4.7472" height="158.24" rx="2.3736" fill="#ffffff" opacity="0.07"/>
     <g filter="url(#glow)" opacity="0.9"><text x="380" y="420" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="26.900800000000004" fill="#a855f7" letter-spacing="1">LEOPARDØ</text></g>

@@ -17,13 +17,14 @@
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#a855f7" flood-opacity="0.5"/></filter>
     <clipPath id="cp"><rect x="276" y="264" width="248" height="282" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="696" rx="226" ry="40" fill="#a855f7" opacity="0.14"/>
   <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g><path d="M250 250 Q400 230 550 250 L560 560 Q400 600 240 560 Z" fill="url(#fab)" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g filter="url(#rim)"><path d="M250 250 Q400 230 550 250 L560 560 Q400 600 240 560 Z" fill="url(#fab)" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
     
     <g filter="url(#glow)" opacity="0.9"><circle cx="434.224" cy="405" r="11.408000000000001" fill="none" stroke="#a855f7" stroke-width="4.5632"/><circle cx="436.874897893765" cy="468.02353691384303" r="11.408000000000001" fill="none" stroke="#7c5cff" stroke-width="4.5632"/><circle cx="380.8197809276853" cy="429.5887390779978" r="11.408000000000001" fill="none" stroke="#a855f7" stroke-width="4.5632"/><circle cx="369.0590350116081" cy="380.3498149513427" r="11.408000000000001" fill="none" stroke="#7c5cff" stroke-width="4.5632"/><circle cx="346.8028559295923" cy="370.793949706759" r="11.408000000000001" fill="none" stroke="#a855f7" stroke-width="4.5632"/><circle cx="382.20478724869315" cy="376.2679925068973" r="11.408000000000001" fill="none" stroke="#7c5cff" stroke-width="4.5632"/><circle cx="421.7217289862607" cy="427.99620917625026" r="11.408000000000001" fill="none" stroke="#a855f7" stroke-width="4.5632"/><circle cx="459.3132140840824" cy="469.6200464643764" r="11.408000000000001" fill="none" stroke="#7c5cff" stroke-width="4.5632"/><circle cx="451.3565312917613" cy="407.21541079190223" r="11.408000000000001" fill="none" stroke="#a855f7" stroke-width="4.5632"/><text x="400" y="405" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18.2528" fill="#fff" letter-spacing="1">LEOPARDØ</text></g>

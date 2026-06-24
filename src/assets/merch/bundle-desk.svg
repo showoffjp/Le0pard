@@ -17,13 +17,14 @@
     </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
     <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="rim" x="-35%" y="-35%" width="170%" height="170%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#22d3ee" flood-opacity="0.5"/></filter>
     <clipPath id="cp"><rect x="312" y="360" width="176" height="184" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="696" rx="226" ry="40" fill="#22d3ee" opacity="0.14"/>
   <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
-  <g>
+  <g filter="url(#rim)">
         <path d="M250 320 L400 250 L550 320 L550 560 L400 630 L250 560 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/>
         <path d="M250 320 L400 390 L550 320 M400 390 L400 630" fill="none" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
