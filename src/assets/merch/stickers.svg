@@ -7,19 +7,30 @@
       <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.26"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><circle cx="400" cy="400" r="148"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#3b82f6" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#3b82f6" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g><circle cx="400" cy="400" r="160" fill="url(#fab)" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/><circle cx="400" cy="400" r="160" fill="none" stroke="#3b82f6" stroke-opacity="0.25" stroke-width="6"/></g>
   <g clip-path="url(#cp)">
+    
     <g filter="url(#glow)" opacity="0.9"><path d="M291.812 374.544 L387.272 355.452 L393.636 412.728 L291.812 431.82 Z" fill="#3b82f6" fill-opacity="0.3" stroke="#3b82f6" stroke-width="3.8184"/><path d="M508.188 374.544 L412.728 355.452 L406.364 412.728 L508.188 431.82 Z" fill="#6366f1" fill-opacity="0.3" stroke="#6366f1" stroke-width="3.8184"/></g>
     <g><path d="M291.812 374.544 L387.272 355.452 L393.636 412.728 L291.812 431.82 Z" fill="#3b82f6" fill-opacity="0.3" stroke="#3b82f6" stroke-width="3.8184"/><path d="M508.188 374.544 L412.728 355.452 L406.364 412.728 L508.188 431.82 Z" fill="#6366f1" fill-opacity="0.3" stroke="#6366f1" stroke-width="3.8184"/></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#3b82f6">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Sticker Pack</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">STICKERS</text>

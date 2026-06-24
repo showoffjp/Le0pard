@@ -59,6 +59,12 @@ function clipbox(kind) {
 // font size that fits `len` chars within ~1.8r wide and `cap`·r tall
 const fit = (len, r, cap = 0.6) => Math.min(r * cap, (1.8 * r) / Math.max(3, len * 0.62))
 
+// hard-goods get a glossy vertical specular highlight
+const GLOSSY = new Set(['bottle', 'can', 'mug', 'glass', 'disc', 'phone', 'panel', 'cassette'])
+const specular = ({ cx, cy, r }) =>
+  `<rect x="${cx - r * 0.62}" y="${cy - r * 1.05}" width="${r * 0.16}" height="${r * 2.1}" rx="${r * 0.08}" fill="#ffffff" opacity="0.14"/>` +
+  `<rect x="${cx + r * 0.34}" y="${cy - r}" width="${r * 0.06}" height="${r * 2}" rx="${r * 0.03}" fill="#ffffff" opacity="0.07"/>`
+
 function archetype(p) {
   const t = p.typeLabel.toLowerCase(), c = p.category
   if (c === 'music') return /cassette/.test(t) ? 'cassette' : /box/.test(t) ? 'box' : 'disc'
@@ -240,19 +246,30 @@ function makeSVG(p) {
       <stop offset="0%" stop-color="${a}" stop-opacity="0.26"/><stop offset="100%" stop-color="${a}" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp">${clip}</clipPath>
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
   <rect width="${W}" height="${H}" fill="url(#halo)"/>
-  <ellipse cx="${CX}" cy="690" rx="230" ry="42" fill="${a}" opacity="0.16"/>
+  <ellipse cx="${CX}" cy="696" rx="226" ry="40" fill="${a}" opacity="0.14"/>
+  <ellipse cx="${CX}" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g>${shape}</g>
   <g clip-path="url(#cp)">
+    ${GLOSSY.has(kind) ? specular(box) : ''}
     <g filter="url(#glow)" opacity="0.9">${em}</g>
     <g>${em}</g>
   </g>
+  <rect width="${W}" height="${H}" fill="url(#toplight)"/>
+  <rect width="${W}" height="${H}" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="${a}">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">${esc(p.name)}</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">${esc(p.typeLabel.toUpperCase())}</text>

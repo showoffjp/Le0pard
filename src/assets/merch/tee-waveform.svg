@@ -7,21 +7,32 @@
       <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.26"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="308" y="305" width="184" height="230" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#3b82f6" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#3b82f6" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g>
         <path d="M250 250 L330 210 Q400 250 470 210 L550 250 L600 330 L540 370 L540 600 Q400 630 260 600 L260 370 L200 330 Z" fill="url(#fab)" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/>
         <path d="M330 210 Q400 270 470 210" fill="none" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/></g>
   <g clip-path="url(#cp)">
+    
     <g filter="url(#glow)" opacity="0.9"><rect x="332.288" y="449.624" width="5.9248" height="16.928" rx="2" fill="#3b82f6"/><rect x="341.65885714285713" y="374.08294139897276" width="5.9248" height="92.46905860102724" rx="2" fill="#6366f1"/><rect x="351.0297142857143" y="430.1579010120041" width="5.9248" height="36.394098987995896" rx="2" fill="#3b82f6"/><rect x="360.4005714285714" y="379.0991407590027" width="5.9248" height="87.45285924099734" rx="2" fill="#6366f1"/><rect x="369.7714285714286" y="411.9844213636654" width="5.9248" height="54.56757863633462" rx="2" fill="#3b82f6"/><rect x="379.1422857142857" y="388.798445708793" width="5.9248" height="77.753554291207" rx="2" fill="#6366f1"/><rect x="388.5131428571429" y="396.31034579787433" width="5.9248" height="70.24165420212569" rx="2" fill="#3b82f6"/><rect x="397.884" y="402.53678733823176" width="5.9248" height="64.01521266176825" rx="2" fill="#6366f1"/><rect x="407.2548571428572" y="384.1764895914916" width="5.9248" height="82.37551040850842" rx="2" fill="#3b82f6"/><rect x="416.6257142857143" y="419.4018901012024" width="5.9248" height="47.15010989879762" rx="2" fill="#6366f1"/><rect x="425.99657142857143" y="376.3885846585829" width="5.9248" height="90.16341534141714" rx="2" fill="#3b82f6"/><rect x="435.3674285714286" y="438.27385020957763" width="5.9248" height="28.278149790422408" rx="2" fill="#6366f1"/><rect x="444.7382857142857" y="373.463776038732" width="5.9248" height="93.08822396126799" rx="2" fill="#3b82f6"/><rect x="454.1091428571429" y="441.3484987069756" width="5.9248" height="25.203501293024434" rx="2" fill="#6366f1"/></g>
     <g><rect x="332.288" y="449.624" width="5.9248" height="16.928" rx="2" fill="#3b82f6"/><rect x="341.65885714285713" y="374.08294139897276" width="5.9248" height="92.46905860102724" rx="2" fill="#6366f1"/><rect x="351.0297142857143" y="430.1579010120041" width="5.9248" height="36.394098987995896" rx="2" fill="#3b82f6"/><rect x="360.4005714285714" y="379.0991407590027" width="5.9248" height="87.45285924099734" rx="2" fill="#6366f1"/><rect x="369.7714285714286" y="411.9844213636654" width="5.9248" height="54.56757863633462" rx="2" fill="#3b82f6"/><rect x="379.1422857142857" y="388.798445708793" width="5.9248" height="77.753554291207" rx="2" fill="#6366f1"/><rect x="388.5131428571429" y="396.31034579787433" width="5.9248" height="70.24165420212569" rx="2" fill="#3b82f6"/><rect x="397.884" y="402.53678733823176" width="5.9248" height="64.01521266176825" rx="2" fill="#6366f1"/><rect x="407.2548571428572" y="384.1764895914916" width="5.9248" height="82.37551040850842" rx="2" fill="#3b82f6"/><rect x="416.6257142857143" y="419.4018901012024" width="5.9248" height="47.15010989879762" rx="2" fill="#6366f1"/><rect x="425.99657142857143" y="376.3885846585829" width="5.9248" height="90.16341534141714" rx="2" fill="#3b82f6"/><rect x="435.3674285714286" y="438.27385020957763" width="5.9248" height="28.278149790422408" rx="2" fill="#6366f1"/><rect x="444.7382857142857" y="373.463776038732" width="5.9248" height="93.08822396126799" rx="2" fill="#3b82f6"/><rect x="454.1091428571429" y="441.3484987069756" width="5.9248" height="25.203501293024434" rx="2" fill="#6366f1"/></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#3b82f6">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Equalizer Tee</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">TEE</text>

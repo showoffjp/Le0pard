@@ -7,19 +7,30 @@
       <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.26"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+      <stop offset="0%" stop-color="#272036"/><stop offset="52%" stop-color="#171122"/><stop offset="100%" stop-color="#090610"/>
     </linearGradient>
+    <linearGradient id="toplight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/><stop offset="44%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#04050a" stop-opacity="0"/><stop offset="76%" stop-color="#04050a" stop-opacity="0"/><stop offset="100%" stop-color="#04050a" stop-opacity="0.55"/>
+    </radialGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
     <clipPath id="cp"><rect x="336" y="238" width="128" height="308" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
-  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#ff6a00" opacity="0.16"/>
+  <ellipse cx="400" cy="696" rx="226" ry="40" fill="#ff6a00" opacity="0.14"/>
+  <ellipse cx="400" cy="676" rx="166" ry="24" fill="#020308" opacity="0.7" filter="url(#soft)"/>
   <g><rect x="312" y="200" width="176" height="400" rx="34" fill="url(#fab)" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/><rect x="332" y="232" width="136" height="320" rx="14" fill="#0c0a14"/></g>
   <g clip-path="url(#cp)">
+    <rect x="363.4944" y="330.176" width="9.4208" height="123.64800000000001" rx="4.7104" fill="#ffffff" opacity="0.14"/><rect x="420.0192" y="333.12" width="3.5328" height="117.76" rx="1.7664" fill="#ffffff" opacity="0.07"/>
     <g filter="url(#glow)" opacity="0.9"><text x="400" y="392" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="64.76800000000001" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="364.672" cy="362.56" r="2.3552" fill="#ff2d00"/><circle cx="376.44800000000004" cy="350.784" r="2.3552" fill="#ff2d00"/><circle cx="388.22400000000005" cy="339.008" r="2.3552" fill="#ff2d00"/><circle cx="400" cy="362.56" r="2.3552" fill="#ff2d00"/><circle cx="411.776" cy="350.784" r="2.3552" fill="#ff2d00"/><circle cx="423.552" cy="339.008" r="2.3552" fill="#ff2d00"/><circle cx="435.32800000000003" cy="362.56" r="2.3552" fill="#ff2d00"/></g>
     <g><text x="400" y="392" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="64.76800000000001" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="364.672" cy="362.56" r="2.3552" fill="#ff2d00"/><circle cx="376.44800000000004" cy="350.784" r="2.3552" fill="#ff2d00"/><circle cx="388.22400000000005" cy="339.008" r="2.3552" fill="#ff2d00"/><circle cx="400" cy="362.56" r="2.3552" fill="#ff2d00"/><circle cx="411.776" cy="350.784" r="2.3552" fill="#ff2d00"/><circle cx="423.552" cy="339.008" r="2.3552" fill="#ff2d00"/><circle cx="435.32800000000003" cy="362.56" r="2.3552" fill="#ff2d00"/></g>
   </g>
+  <rect width="800" height="800" fill="url(#toplight)"/>
+  <rect width="800" height="800" fill="url(#vig)"/>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#ff6a00">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Burning Future Phone Case</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">PHONE CASE</text>
