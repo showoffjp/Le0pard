@@ -11,6 +11,10 @@ export type Post = {
   title: string
   excerpt: string
   href?: string
+  /** Full article body (paragraphs). When set, the card opens an in-page reader. */
+  body?: string[]
+  /** Optional in-reader call-to-action. */
+  cta?: { label: string; href: string }
 }
 
 export type Promo = {
@@ -35,6 +39,12 @@ export const posts: Post[] = [
     title: 'A Tee For Every Song',
     excerpt:
       'The Track Series just dropped — a neon-typographic tee (and art print) for all 20 songs, colored from cool UTØPIA to burning DYSTØPIA.',
+    body: [
+      'Every track on DYSTØPIA now has its own piece. The Track Series is twenty neon-typographic tees — one for each song — each rendered in living type and printed on heavyweight black.',
+      'The catch: the whole run is colored along the album’s arc. UTØPIA and the early tracks glow cool cyan and blue; the middle shifts through violet; and by SACRIMØNY and DYSTØPIA the type itself is on fire. Line them up and you’re looking at the fall from utopia to ruin.',
+      'Each design comes as a tee and a matching art print, so you can wear the song or frame it. Tap into the Track Series filter in the store to see all forty.',
+    ],
+    cta: { label: 'Shop the Track Series', href: '#store' },
     href: '#store',
   },
   {
@@ -44,6 +54,12 @@ export const posts: Post[] = [
     title: 'The Store Just Went Massive',
     excerpt:
       '100+ drops across apparel, drinkware, tech, prints, home, vinyl, bundles and a full seasonal run. Shop the whole catalog on-site.',
+    body: [
+      'The shop is no longer a handful of tees. It’s a full storefront now — well over a hundred and fifty drops across apparel, headwear, drinkware, tech, prints, home goods, physical music and multi-item bundles.',
+      'Highlights: the per-song Track Series, vinyl (including a limited ember-splatter pressing), a collector box set, a seasonal capsule, and a stack of on-brand designs — from the octagon tech-frame to the oriental mandala and the neon eclipse.',
+      'Every product opens a quick-view with sizes, and the whole thing is filterable by category. Dig in.',
+    ],
+    cta: { label: 'Browse the store', href: '#store' },
     href: '#store',
   },
   {
@@ -52,6 +68,12 @@ export const posts: Post[] = [
     date: 'Apr 20, 2026',
     title: 'DYSTØPIA Arrives',
     excerpt: 'Twenty tracks tracing the fall from UTØPIA to DYSTØPIA. Out now on Bandcamp.',
+    body: [
+      'DYSTØPIA is out. Twenty tracks tracing one descent — from the hopeful sprawl of UTØPIA to the burning skyline of the title track.',
+      'It’s symphonic trap at full scale: massive cinematic horns and strings smashing straight into heavy 808s, all soaked in oriental melodies that move like ancient war drums through a collapsing future.',
+      'Stream it, then own it in lossless — FLAC, ALAC, WAV and 320 on Bandcamp.',
+    ],
+    cta: { label: 'Stream / Buy', href: site.links.bandcamp },
     href: site.links.bandcamp,
   },
   {
