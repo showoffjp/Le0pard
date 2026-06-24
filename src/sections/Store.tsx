@@ -9,7 +9,6 @@ import {
   trackBuyUrl,
   type MerchCategory,
   type MerchItem,
-  type MerchMotif,
 } from '../data/store'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
@@ -20,7 +19,7 @@ import { MotifGraphic } from '../components/ui/MerchMotifArt'
 import { cn } from '../lib/cn'
 
 /** Rendered "design plate" for each product (swapped for a photo when `image` is set). */
-function MerchArt({ motif, typeLabel }: { motif: MerchMotif; typeLabel: string }) {
+function MerchArt({ item }: { item: MerchItem }) {
   return (
     <div className="scanlines relative aspect-square overflow-hidden bg-gradient-to-br from-steel/60 via-ink to-abyss">
       <div className="hud-grid absolute inset-0 opacity-40" />
@@ -33,11 +32,11 @@ function MerchArt({ motif, typeLabel }: { motif: MerchMotif; typeLabel: string }
       />
 
       <div className="absolute inset-0 grid place-items-center p-8">
-        <MotifGraphic motif={motif} />
+        <MotifGraphic motif={item.motif} text={item.text} sub={item.sub} />
       </div>
 
       <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-void/60 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-300 backdrop-blur">
-        {typeLabel}
+        {item.typeLabel}
       </span>
     </div>
   )
@@ -53,7 +52,7 @@ function MerchCard({ item }: { item: MerchItem }) {
               <img src={item.image} alt={item.name} className="h-full w-full object-cover" loading="lazy" />
             </div>
           ) : (
-            <MerchArt motif={item.motif} typeLabel={item.typeLabel} />
+            <MerchArt item={item} />
           )}
 
           {item.badge && (
@@ -237,7 +236,7 @@ export function Store() {
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {visible.map((item, i) => (
-          <Reveal key={item.id} delay={i * 70}>
+          <Reveal key={item.id} delay={Math.min(i, 11) * 55}>
             <MerchCard item={item} />
           </Reveal>
         ))}

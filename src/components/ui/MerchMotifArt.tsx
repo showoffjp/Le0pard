@@ -2,12 +2,35 @@ import { dystopia } from '../../data/music'
 import { GoggleMark } from './GoggleMark'
 import type { MerchMotif } from '../../data/store'
 
+// Neon "leopard" rosettes — a filled core + a ring per spot, scattered.
+const LEOPARD_SPOTS: [number, number, string][] = [
+  [18, 22, 'rgba(168,85,247,.6)'],
+  [44, 16, 'rgba(34,211,238,.5)'],
+  [72, 26, 'rgba(124,92,255,.55)'],
+  [28, 50, 'rgba(34,211,238,.45)'],
+  [58, 46, 'rgba(168,85,247,.55)'],
+  [84, 56, 'rgba(124,92,255,.5)'],
+  [16, 78, 'rgba(124,92,255,.5)'],
+  [46, 82, 'rgba(168,85,247,.55)'],
+  [76, 84, 'rgba(34,211,238,.45)'],
+]
+const LEOPARD_BG = [
+  ...LEOPARD_SPOTS.map(([x, y, c]) => `radial-gradient(circle at ${x}% ${y}%, ${c} 0 6px, transparent 8px)`),
+  ...LEOPARD_SPOTS.map(([x, y, c]) => `radial-gradient(circle at ${x}% ${y}%, transparent 0 10px, ${c} 10px 12px, transparent 14px)`),
+].join(',')
+
+const SKYLINE = [42, 66, 52, 82, 56, 92, 64, 100, 72, 86, 60, 76, 50, 70, 46, 62, 40, 58]
+const EMBER_SPARKS: [number, number][] = [
+  [20, 70], [35, 42], [50, 80], [66, 36], [80, 60], [28, 22],
+  [72, 18], [45, 56], [60, 68], [15, 46], [88, 40], [40, 86],
+]
+
 /**
  * Generative "design plate" graphics for each merch motif — drawn in CSS/SVG so
  * every product has distinct, on-brand key art without needing a product photo.
  * Swap a product to a real photo any time by setting `image` on the MerchItem.
  */
-export function MotifGraphic({ motif }: { motif: MerchMotif }) {
+export function MotifGraphic({ motif, text, sub }: { motif: MerchMotif; text?: string; sub?: string }) {
   switch (motif) {
     case 'cover':
       return (
@@ -227,6 +250,170 @@ export function MotifGraphic({ motif }: { motif: MerchMotif }) {
             </div>
           </div>
           <div className="absolute left-[-10%] right-[-10%] top-1/2 h-px -translate-y-1/2 -rotate-[26deg] bg-white/40" />
+        </div>
+      )
+
+    case 'track':
+      return (
+        <div className="px-2 text-center">
+          <div className="font-mono text-[0.5rem] uppercase tracking-widest3 text-neon-cyan/70">
+            {sub ?? 'DYSTØPIA'}
+          </div>
+          <div
+            className="gradient-flow mt-2 font-display text-[1.7rem] font-black uppercase leading-[0.95] tracking-tight"
+            style={{ wordBreak: 'break-word' }}
+          >
+            {text}
+          </div>
+          <div className="mx-auto mt-2 h-px w-14 bg-gradient-to-r from-transparent via-neon-purple to-transparent" />
+          <div className="mt-2 font-mono text-[0.5rem] uppercase tracking-widest3 text-slate-400">
+            LEOPARDØ
+          </div>
+        </div>
+      )
+
+    case 'tracklist':
+      return (
+        <div className="w-full px-2 text-center">
+          <div className="font-display text-sm font-black uppercase tracking-widest2 text-white">DYSTØPIA</div>
+          <ul className="mx-auto mt-2 grid max-w-[15rem] grid-cols-2 gap-x-3 gap-y-[1px] text-left">
+            {dystopia.tracks.map((t) => (
+              <li
+                key={t.n}
+                className="flex gap-1.5 font-mono text-[0.42rem] uppercase tracking-widest2 text-slate-300"
+              >
+                <span className="text-neon-purple/70">{String(t.n).padStart(2, '0')}</span>
+                <span className="truncate">{t.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+
+    case 'leopard':
+      return (
+        <div
+          className="relative h-3/4 w-3/4 overflow-hidden clip-tech"
+          style={{ backgroundColor: '#0a0612', backgroundImage: LEOPARD_BG }}
+        >
+          <div className="absolute inset-0 grid place-items-center">
+            <span
+              className="font-display text-sm font-black uppercase tracking-widest2 text-white/90"
+              style={{ textShadow: '0 0 10px rgba(34,211,238,.85)' }}
+            >
+              LEOPARDØ
+            </span>
+          </div>
+        </div>
+      )
+
+    case 'skyline':
+      return (
+        <div className="relative h-3/4 w-full overflow-hidden">
+          <div
+            className="absolute inset-x-0 top-0 h-2/3"
+            style={{ background: 'radial-gradient(120% 100% at 50% 100%, rgba(168,85,247,.4), transparent 70%)' }}
+          />
+          <div
+            className="absolute left-1/2 top-[14%] h-12 w-12 -translate-x-1/2 rounded-full bg-gradient-to-t from-neon-ember to-neon-purple"
+            style={{ filter: 'drop-shadow(0 0 18px rgba(255,106,0,.55))' }}
+          />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-center gap-[2px]">
+            {SKYLINE.map((h, i) => (
+              <div
+                key={i}
+                className="relative w-3 bg-abyss"
+                style={{ height: `${h}%`, boxShadow: 'inset 0 0 0 1px rgba(124,92,255,.5)' }}
+              >
+                <span className="absolute left-1 top-2 h-0.5 w-0.5 bg-neon-cyan/80" />
+                <span className="absolute right-1 top-4 h-0.5 w-0.5 bg-neon-cyan/55" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+
+    case 'ember':
+      return (
+        <div className="relative h-3/4 w-3/4">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'radial-gradient(80% 90% at 50% 100%, rgba(255,106,0,.32), transparent 65%)' }}
+          />
+          {EMBER_SPARKS.map(([x, y], i) => {
+            const big = i % 3 === 0
+            const hot = i % 2 === 0
+            return (
+              <span
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  width: big ? '4px' : '2px',
+                  height: big ? '4px' : '2px',
+                  background: hot ? '#ff6a00' : '#a855f7',
+                  boxShadow: `0 0 8px ${hot ? 'rgba(255,106,0,.9)' : 'rgba(168,85,247,.9)'}`,
+                }}
+              />
+            )
+          })}
+          <div className="absolute inset-0 grid place-items-center">
+            <span
+              className="gradient-heat font-display text-6xl font-black"
+              style={{ filter: 'drop-shadow(0 0 22px rgba(255,90,0,.55))' }}
+            >
+              Ø
+            </span>
+          </div>
+        </div>
+      )
+
+    case 'crest':
+      return (
+        <div className="relative grid h-36 w-32 place-items-center">
+          <div className="absolute inset-0 clip-tech bg-gradient-to-b from-neon-purple/45 to-neon-blue/25" />
+          <div className="absolute inset-[3px] clip-tech bg-abyss" />
+          <div className="relative text-center">
+            <div className="font-mono text-[0.45rem] uppercase tracking-widest3 text-neon-cyan/70">EST · 2026</div>
+            <div className="my-1 text-neon-ember">★</div>
+            <div className="font-display text-base font-black uppercase tracking-widest2 text-white">LEOPARDØ</div>
+            <div className="mx-auto mt-1 h-px w-12 bg-neon-purple/60" />
+            <div className="mt-1 font-mono text-[0.45rem] uppercase tracking-widest3 text-slate-400">DYSTØPIA</div>
+          </div>
+        </div>
+      )
+
+    case 'vinyl':
+      return (
+        <div className="relative grid h-3/4 w-3/4 place-items-center">
+          <div
+            className="relative h-full w-full rounded-full"
+            style={{
+              background: 'repeating-radial-gradient(circle at 50% 50%, #0a0612 0 3px, #15101f 3px 6px)',
+              boxShadow: '0 0 30px rgba(124,92,255,.4)',
+            }}
+          >
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{ background: 'conic-gradient(from 210deg, transparent, rgba(124,92,255,.28), transparent 42%)' }}
+            />
+            <div className="absolute left-1/2 top-1/2 grid h-1/3 w-1/3 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue">
+              <span className="font-display text-[0.7rem] font-black text-white">Ø</span>
+            </div>
+            <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-abyss" />
+          </div>
+        </div>
+      )
+
+    case 'bundle':
+      return (
+        <div className="relative h-3/4 w-3/4">
+          <div className="absolute left-2 top-3 h-2/3 w-2/3 -rotate-6 clip-tech bg-gradient-to-br from-neon-blue/30 to-abyss ring-1 ring-white/10" />
+          <div className="absolute right-2 top-1 h-2/3 w-2/3 rotate-6 clip-tech bg-gradient-to-br from-neon-cyan/25 to-abyss ring-1 ring-white/10" />
+          <div className="absolute left-1/2 top-1/2 grid h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2 place-items-center clip-tech bg-gradient-to-br from-neon-purple/50 to-abyss ring-1 ring-neon-purple/40">
+            <span className="font-display text-xs font-black uppercase tracking-widest2 text-white">Bundle</span>
+          </div>
         </div>
       )
 
