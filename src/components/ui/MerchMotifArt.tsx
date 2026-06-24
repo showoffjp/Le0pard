@@ -1,6 +1,6 @@
 import { dystopia } from '../../data/music'
 import { GoggleMark } from './GoggleMark'
-import type { MerchMotif } from '../../data/store'
+import type { MerchMotif, Glow } from '../../data/store'
 
 // Neon "leopard" rosettes — a filled core + a ring per spot, scattered.
 const LEOPARD_SPOTS: [number, number, string][] = [
@@ -30,7 +30,17 @@ const EMBER_SPARKS: [number, number][] = [
  * every product has distinct, on-brand key art without needing a product photo.
  * Swap a product to a real photo any time by setting `image` on the MerchItem.
  */
-export function MotifGraphic({ motif, text, sub }: { motif: MerchMotif; text?: string; sub?: string }) {
+export function MotifGraphic({
+  motif,
+  text,
+  sub,
+  glow,
+}: {
+  motif: MerchMotif
+  text?: string
+  sub?: string
+  glow?: Glow
+}) {
   switch (motif) {
     case 'cover':
       return (
@@ -253,24 +263,35 @@ export function MotifGraphic({ motif, text, sub }: { motif: MerchMotif; text?: s
         </div>
       )
 
-    case 'track':
+    case 'track': {
+      const heat = glow === 'ember'
       return (
         <div className="px-2 text-center">
-          <div className="font-mono text-[0.5rem] uppercase tracking-widest3 text-neon-cyan/70">
+          <div
+            className={`font-mono text-[0.5rem] uppercase tracking-widest3 ${heat ? 'text-neon-ember/80' : 'text-neon-cyan/70'}`}
+          >
             {sub ?? 'DYSTØPIA'}
           </div>
           <div
-            className="gradient-cool mt-2 font-display text-[1.7rem] font-black uppercase leading-[0.95] tracking-tight"
-            style={{ wordBreak: 'break-word', filter: 'drop-shadow(0 0 14px rgba(124,92,255,.45))' }}
+            className={`${heat ? 'gradient-heat' : 'gradient-cool'} mt-2 font-display text-[1.7rem] font-black uppercase leading-[0.95] tracking-tight`}
+            style={{
+              wordBreak: 'break-word',
+              filter: heat
+                ? 'drop-shadow(0 0 14px rgba(255,90,0,.5))'
+                : 'drop-shadow(0 0 14px rgba(124,92,255,.45))',
+            }}
           >
             {text}
           </div>
-          <div className="mx-auto mt-2 h-px w-14 bg-gradient-to-r from-transparent via-neon-purple to-transparent" />
+          <div
+            className={`mx-auto mt-2 h-px w-14 bg-gradient-to-r from-transparent to-transparent ${heat ? 'via-neon-ember' : 'via-neon-purple'}`}
+          />
           <div className="mt-2 font-mono text-[0.5rem] uppercase tracking-widest3 text-slate-400">
             LEOPARDØ
           </div>
         </div>
       )
+    }
 
     case 'tracklist':
       return (

@@ -939,8 +939,17 @@ const themedMerch: MerchItem[] = [
   },
 ]
 
-/* ── Track Series: a distinct typographic tee for every song on DYSTØPIA ────── */
-const TRACK_GLOWS: Glow[] = ['cyan', 'blue', 'purple', 'mix', 'ember']
+/* ── Track Series: a distinct typographic tee for every song on DYSTØPIA ──────
+ * The glow follows the album's UTØPIA → DYSTØPIA arc: cool & hopeful at the top
+ * of the record, burning by the end — so the per-song merch tells the story. */
+function arcGlow(i: number, n: number): Glow {
+  const p = n <= 1 ? 0 : i / (n - 1)
+  if (p < 0.28) return 'cyan'
+  if (p < 0.5) return 'blue'
+  if (p < 0.72) return 'purple'
+  if (p < 0.9) return 'mix'
+  return 'ember'
+}
 const trackMerch: MerchItem[] = dystopia.tracks.map((t, i) => ({
   id: `track-tee-${t.n}`,
   name: `${t.title} — Track Tee`,
@@ -949,7 +958,7 @@ const trackMerch: MerchItem[] = dystopia.tracks.map((t, i) => ({
   price: 32,
   blurb: `Track ${String(t.n).padStart(2, '0')} of DYSTØPIA — the “${t.title}” title in living neon on a black heavyweight tee.`,
   motif: 'track',
-  glow: TRACK_GLOWS[i % TRACK_GLOWS.length],
+  glow: arcGlow(i, dystopia.tracks.length),
   text: t.title,
   sub: `Track ${String(t.n).padStart(2, '0')}`,
   ...(t.n === 1 || t.n === 20 ? { badge: 'Era' } : {}),
@@ -964,7 +973,7 @@ const trackPosters: MerchItem[] = dystopia.tracks.map((t, i) => ({
   price: 20,
   blurb: `Track ${String(t.n).padStart(2, '0')} of DYSTØPIA as a neon-type art print — archival matte, ready to frame.`,
   motif: 'track',
-  glow: TRACK_GLOWS[(i + 2) % TRACK_GLOWS.length],
+  glow: arcGlow(i, dystopia.tracks.length),
   text: t.title,
   sub: `Track ${String(t.n).padStart(2, '0')}`,
 }))

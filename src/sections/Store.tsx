@@ -34,7 +34,7 @@ function MerchArt({ item }: { item: MerchItem }) {
       />
 
       <div className="absolute inset-0 grid place-items-center p-8">
-        <MotifGraphic motif={item.motif} text={item.text} sub={item.sub} />
+        <MotifGraphic motif={item.motif} text={item.text} sub={item.sub} glow={item.glow} />
       </div>
 
       <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-void/60 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-300 backdrop-blur">
