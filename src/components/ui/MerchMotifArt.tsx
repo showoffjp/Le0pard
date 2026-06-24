@@ -438,6 +438,55 @@ export function MotifGraphic({
         </div>
       )
 
+    case 'mandala':
+      return (
+        <svg
+          viewBox="0 0 200 200"
+          className="h-3/4 w-3/4"
+          style={{ filter: 'drop-shadow(0 0 14px rgba(168,85,247,.5))' }}
+          aria-hidden="true"
+        >
+          <g fill="none" stroke="#a855f7" strokeWidth="1.3" opacity="0.85">
+            <circle cx="100" cy="100" r="74" />
+            <circle cx="100" cy="100" r="56" />
+            <circle cx="100" cy="100" r="36" />
+          </g>
+          <g fill="none" stroke="#22d3ee" strokeWidth="1.2" opacity="0.7">
+            {[0, 30, 60, 90, 120, 150].map((a, i) => (
+              <ellipse key={i} cx="100" cy="48" rx="13" ry="34" transform={`rotate(${a} 100 100)`} />
+            ))}
+          </g>
+          <g stroke="#7c5cff" strokeWidth="1" opacity="0.55">
+            {[0, 45, 90, 135].map((a, i) => (
+              <line key={i} x1="100" y1="18" x2="100" y2="182" transform={`rotate(${a} 100 100)`} />
+            ))}
+          </g>
+          <circle cx="100" cy="100" r="9" fill="#a855f7" />
+        </svg>
+      )
+
+    case 'eclipse':
+      return (
+        <div className="relative grid h-3/4 w-3/4 place-items-center">
+          <div
+            className="absolute h-36 w-36 rounded-full"
+            style={{
+              background:
+                'radial-gradient(circle, transparent 52%, rgba(255,106,0,.5) 60%, rgba(168,85,247,.4) 71%, transparent 80%)',
+              filter: 'drop-shadow(0 0 24px rgba(255,106,0,.5))',
+            }}
+          />
+          <div
+            className="h-24 w-24 rounded-full bg-abyss"
+            style={{ boxShadow: '0 0 0 2px rgba(34,211,238,.7), 0 0 26px rgba(124,92,255,.5)' }}
+          />
+          <div
+            className="absolute h-24 w-24 rounded-full"
+            style={{ background: 'radial-gradient(circle at 32% 30%, rgba(124,92,255,.55), transparent 46%)' }}
+          />
+        </div>
+      )
+
     default:
       return null
   }
