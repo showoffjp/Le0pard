@@ -3,6 +3,7 @@ import { dystopia } from '../data/music'
 import { signal } from '../lib/audioSignal'
 import { sampleFrequency, sampleWaveform, analyserSampleRate } from '../lib/audioReactor'
 import { neonColor } from '../lib/neon'
+import { useExperience } from '../store/useExperience'
 
 const BARS = 96
 
@@ -19,6 +20,7 @@ export function Visualizer({ className }: { className?: string }) {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    const reduced = useExperience.getState().reducedMotion
 
     const img = new Image()
     img.src = dystopia.coverSmall
@@ -87,7 +89,7 @@ export function Visualizer({ className }: { className?: string }) {
       const radius = Math.min(w, h) * 0.26
       const artR = radius * (1 + bass * 0.13 + drop * 0.26)
       const maxLen = Math.min(w, h) * 0.27
-      rot += 0.0016 + energy * 0.006 + drop * 0.05
+      rot += reduced ? 0 : 0.0016 + energy * 0.006 + drop * 0.05
 
       // oscilloscope waveform halo (traces the live wave around the art)
       ctx.beginPath()
@@ -163,8 +165,8 @@ export function Visualizer({ className }: { className?: string }) {
         ctx.stroke()
       }
 
-      // shockwave + flash on the drop
-      if (drop > 0.01) {
+      // shockwave + flash on the drop (skip the screen-flash for reduced motion)
+      if (drop > 0.01 && !reduced) {
         ctx.globalCompositeOperation = 'lighter'
         ctx.beginPath()
         ctx.arc(cx, cy, artR + maxLen * (1.6 - drop) + 8 * d, 0, Math.PI * 2)
