@@ -3,8 +3,10 @@ import { useFrame } from '@react-three/fiber'
 import { MeshDistortMaterial } from '@react-three/drei'
 import { Mesh, MathUtils, MeshBasicMaterial, Color, AdditiveBlending, BackSide, FrontSide } from 'three'
 import { useExperience } from '../store/useExperience'
+import { useAudio } from '../store/useAudio'
 import { samplePalette, makePalette } from '../lib/palette'
 import { signal } from '../lib/audioSignal'
+import { trackScene } from '../lib/trackScene'
 
 /** Per-drop "personality" — a unique silhouette + motion seeded by dropId. */
 type Mutation = {
@@ -104,6 +106,10 @@ export function Core({ lowPower }: { lowPower: boolean }) {
     const p = pal.current
     const t = state.clock.elapsedTime
     const dt = Math.min(delta, 0.05)
+    // per-track scene character (signature accent / distortion / spin), faded in
+    // by how much a song is actually playing so it's a no-op when idle.
+    const sc = trackScene(useAudio.getState().trackIndex)
+    const lev = signal.level
 
     // Fire on a new drop: reseed the mutation + kick the splat impulse.
     if (signal.dropId !== lastDropId.current) {
@@ -123,7 +129,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
       if (imp > 0.01) matRef.current.emissive.lerp(m.tint, 0.04 * imp)
       matRef.current.distort = MathUtils.damp(
         matRef.current.distort ?? 0.3,
-        p.distort + signal.bass * 0.12 + sp * 1.7 + imp * m.distort,
+        p.distort + signal.bass * 0.12 + sp * 1.7 + imp * m.distort + sc.distort * lev * 0.6,
         4,
         dt,
       )
@@ -143,6 +149,8 @@ export function Core({ lowPower }: { lowPower: boolean }) {
     // giving an iridescent "living" surface; intensity rides energy + drops.
     rimColor.current.copy(p.coreEmissive).lerp(p.lightA, 0.18 + signal.tone * 0.6)
     if (imp > 0.01) rimColor.current.lerp(m.tint, 0.25 * imp)
+    // each track tints the rim toward its signature accent
+    rimColor.current.lerp(sc.accent, 0.18 * lev)
     rimU.current.uColor.value.lerp(rimColor.current, 0.12)
     // gentle idle "breathing" so the orb feels alive even with no music playing
     const breathe = 0.13 + Math.sin(t * 0.8) * 0.13
@@ -164,7 +172,7 @@ export function Core({ lowPower }: { lowPower: boolean }) {
     )
 
     if (coreRef.current) {
-      coreRef.current.rotation.y += dt * (0.12 + signal.energy * 0.5 + m.spin * imp)
+      coreRef.current.rotation.y += dt * (0.12 + signal.energy * 0.5 + m.spin * imp + sc.spin * lev)
       coreRef.current.rotation.x = Math.sin(t * 0.22) * 0.16 + m.spin * imp * Math.sin(t * 1.3) * 0.3
       coreRef.current.rotation.z += dt * m.spin * imp * 0.6
 
