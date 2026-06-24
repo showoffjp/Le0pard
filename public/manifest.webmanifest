@@ -1,0 +1,16 @@
+{
+  "name": "LEOPARDØ — DYSTØPIA",
+  "short_name": "LEOPARDØ",
+  "description": "Symphonic trap from a burning future — an immersive audio-visual experience.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#04050a",
+  "theme_color": "#04050a",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    { "src": "/img/dystopia-cover-350.jpg", "sizes": "350x350", "type": "image/jpeg", "purpose": "any" },
+    { "src": "/img/dystopia-cover-700.jpg", "sizes": "700x700", "type": "image/jpeg", "purpose": "any" },
+    { "src": "/img/dystopia-cover.jpg", "sizes": "1200x1198", "type": "image/jpeg", "purpose": "any" }
+  ]
+}
