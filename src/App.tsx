@@ -1,7 +1,7 @@
+import { lazy, Suspense } from 'react'
 import { useSmoothScroll, usePointerTracking } from './lib/useSmoothScroll'
 import { useAudioClock } from './lib/useAudioClock'
 import { useSignalVars } from './lib/useSignalVars'
-import { Experience } from './three/Experience'
 import { Loader } from './components/layout/Loader'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
@@ -23,6 +23,13 @@ import { Store } from './sections/Store'
 import { Posts } from './sections/Posts'
 import { About } from './sections/About'
 
+// The 3D world (three.js + postprocessing) is the heaviest bundle — load it in
+// its own chunk so the page becomes interactive before it arrives. The Loader
+// covers the boot, and the page background is dark void until the canvas mounts.
+const Experience = lazy(() =>
+  import('./three/Experience').then((m) => ({ default: m.Experience })),
+)
+
 export default function App() {
   useSmoothScroll()
   usePointerTracking()
@@ -32,7 +39,9 @@ export default function App() {
   return (
     <>
       <Loader />
-      <Experience />
+      <Suspense fallback={null}>
+        <Experience />
+      </Suspense>
       <AudioEngine />
       <BackgroundVisualizer />
       <div className="react-bg" aria-hidden="true" />
