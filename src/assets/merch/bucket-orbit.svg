@@ -3,19 +3,25 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.28"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.26"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><rect x="302" y="338" width="196" height="70" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#3b82f6" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><ellipse cx="400" cy="360" rx="85.5" ry="32.300000000000004" transform="rotate(18 400 360)" fill="none" stroke="#3b82f6" stroke-width="2.85" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="360" rx="76" ry="28.5" transform="rotate(-34 400 360)" stroke="#6366f1" fill="none" stroke-width="2.85"/><circle cx="400" cy="360" r="11.4" fill="#3b82f6"/></g>
   <g>
-        <path d="M250 400 Q400 250 560 380 L560 410 L250 420 Z" fill="#16131f" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/>
-        <path d="M250 420 Q360 470 520 440 L560 410 L250 410 Z" fill="#0e0b16" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/></g>
-  <g><ellipse cx="400" cy="360" rx="85.5" ry="32.300000000000004" transform="rotate(18 400 360)" fill="none" stroke="#3b82f6" stroke-width="2.85" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="360" rx="76" ry="28.5" transform="rotate(-34 400 360)" stroke="#6366f1" fill="none" stroke-width="2.85"/><circle cx="400" cy="360" r="11.4" fill="#3b82f6"/></g>
+        <path d="M250 400 Q400 250 560 380 L560 410 L250 420 Z" fill="url(#fab)" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/>
+        <path d="M250 420 Q360 470 520 440 L560 410 L250 410 Z" fill="#0c0a14" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><ellipse cx="400" cy="373" rx="28.980000000000004" ry="10.948000000000002" transform="rotate(18 400 373)" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="373" rx="25.760000000000005" ry="9.66" transform="rotate(-34 400 373)" stroke="#6366f1" fill="none" stroke-width="0.9660000000000001"/><circle cx="400" cy="373" r="3.8640000000000003" fill="#3b82f6"/></g>
+    <g><ellipse cx="400" cy="373" rx="28.980000000000004" ry="10.948000000000002" transform="rotate(18 400 373)" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="373" rx="25.760000000000005" ry="9.66" transform="rotate(-34 400 373)" stroke="#6366f1" fill="none" stroke-width="0.9660000000000001"/><circle cx="400" cy="373" r="3.8640000000000003" fill="#3b82f6"/></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#3b82f6">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Orbit Bucket Hat</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">BUCKET HAT</text>

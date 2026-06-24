@@ -3,17 +3,23 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.28"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.26"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><rect x="336" y="238" width="128" height="308" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#a855f7" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><ellipse cx="400" cy="410" rx="86.4" ry="32.64" transform="rotate(18 400 410)" fill="none" stroke="#a855f7" stroke-width="2.88" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="410" rx="76.80000000000001" ry="28.799999999999997" transform="rotate(-34 400 410)" stroke="#7c5cff" fill="none" stroke-width="2.88"/><circle cx="400" cy="410" r="11.52" fill="#a855f7"/></g>
-  <g><rect x="312" y="200" width="176" height="400" rx="34" fill="#16131f" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/><rect x="332" y="232" width="136" height="320" rx="14" fill="#0e0b16"/></g>
-  <g><ellipse cx="400" cy="410" rx="86.4" ry="32.64" transform="rotate(18 400 410)" fill="none" stroke="#a855f7" stroke-width="2.88" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="410" rx="76.80000000000001" ry="28.799999999999997" transform="rotate(-34 400 410)" stroke="#7c5cff" fill="none" stroke-width="2.88"/><circle cx="400" cy="410" r="11.52" fill="#a855f7"/></g>
+  <g><rect x="312" y="200" width="176" height="400" rx="34" fill="url(#fab)" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/><rect x="332" y="232" width="136" height="320" rx="14" fill="#0c0a14"/></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><ellipse cx="400" cy="392" rx="52.992000000000004" ry="20.0192" transform="rotate(18 400 392)" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="392" rx="47.104000000000006" ry="17.664" transform="rotate(-34 400 392)" stroke="#7c5cff" fill="none" stroke-width="1.7664"/><circle cx="400" cy="392" r="7.0656" fill="#a855f7"/></g>
+    <g><ellipse cx="400" cy="392" rx="52.992000000000004" ry="20.0192" transform="rotate(18 400 392)" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="400" cy="392" rx="47.104000000000006" ry="17.664" transform="rotate(-34 400 392)" stroke="#7c5cff" fill="none" stroke-width="1.7664"/><circle cx="400" cy="392" r="7.0656" fill="#a855f7"/></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#a855f7">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Orbit Phone Grip</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">PHONE GRIP</text>

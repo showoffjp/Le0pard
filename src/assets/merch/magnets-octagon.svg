@@ -3,17 +3,23 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.28"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.26"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><rect x="258" y="258" width="284" height="284" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#3b82f6" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><path d="M330 288 H470 L512 330 V470 L470 512 H330 L288 470 V330 Z" fill="none" stroke="#3b82f6" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="56" fill="#fff" letter-spacing="1">LØ</text></g>
-  <g><rect x="240" y="240" width="320" height="320" rx="16" fill="#16131f" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/></g>
-  <g><path d="M330 288 H470 L512 330 V470 L470 512 H330 L288 470 V330 Z" fill="none" stroke="#3b82f6" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="56" fill="#fff" letter-spacing="1">LØ</text></g>
+  <g><rect x="240" y="240" width="320" height="320" rx="16" fill="url(#fab)" stroke="#3b82f6" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><path d="M334.68 295.488 H465.32 L504.512 334.68 V465.32 L465.32 504.512 H334.68 L295.488 465.32 V334.68 Z" fill="none" stroke="#3b82f6" stroke-width="3.9192000000000005" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="52.25600000000001" fill="#fff" letter-spacing="1">LØ</text></g>
+    <g><path d="M334.68 295.488 H465.32 L504.512 334.68 V465.32 L465.32 504.512 H334.68 L295.488 465.32 V334.68 Z" fill="none" stroke="#3b82f6" stroke-width="3.9192000000000005" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="52.25600000000001" fill="#fff" letter-spacing="1">LØ</text></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#3b82f6">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Magnet Set (×6)</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">MAGNETS</text>

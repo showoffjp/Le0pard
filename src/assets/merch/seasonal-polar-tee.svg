@@ -3,19 +3,25 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.28"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.26"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><rect x="308" y="305" width="184" height="230" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#22d3ee" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><text x="400" y="334" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19.2" fill="#22d3ee" letter-spacing="1">Winter Drop</text><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="74.4" fill="#22d3ee" letter-spacing="1">PØLAR</text><text x="400" y="466" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="16.8" fill="#9aa3b2" letter-spacing="1">LEOPARDØ</text></g>
   <g>
-        <path d="M250 250 L330 210 Q400 250 470 210 L550 250 L600 330 L540 370 L540 600 Q400 630 260 600 L260 370 L200 330 Z" fill="#16131f" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/>
+        <path d="M250 250 L330 210 Q400 250 470 210 L550 250 L600 330 L540 370 L540 600 Q400 630 260 600 L260 370 L200 330 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/>
         <path d="M330 210 Q400 270 470 210" fill="none" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
-  <g><text x="400" y="334" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19.2" fill="#22d3ee" letter-spacing="1">Winter Drop</text><text x="400" y="400" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="74.4" fill="#22d3ee" letter-spacing="1">PØLAR</text><text x="400" y="466" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="16.8" fill="#9aa3b2" letter-spacing="1">LEOPARDØ</text></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><text x="400" y="369.216" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="12.696" fill="#22d3ee" letter-spacing="1">Winter Drop</text><text x="400" y="420" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="49.145806451612906" fill="#22d3ee" letter-spacing="1">PØLAR</text><text x="400" y="470.784" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="11.8496" fill="#9aa3b2" letter-spacing="1">LEOPARDØ</text></g>
+    <g><text x="400" y="369.216" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="12.696" fill="#22d3ee" letter-spacing="1">Winter Drop</text><text x="400" y="420" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="49.145806451612906" fill="#22d3ee" letter-spacing="1">PØLAR</text><text x="400" y="470.784" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="11.8496" fill="#9aa3b2" letter-spacing="1">LEOPARDØ</text></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#22d3ee">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">PØLAR Frost Tee</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">TEE</text>

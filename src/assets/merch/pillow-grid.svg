@@ -3,17 +3,23 @@
     <radialGradient id="bg" cx="50%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
-      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.28"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    <radialGradient id="halo" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.26"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <linearGradient id="fab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d1830"/><stop offset="55%" stop-color="#140f1f"/><stop offset="100%" stop-color="#0a0712"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="cp"><rect x="288" y="298" width="224" height="224" rx="10"/></clipPath>
   </defs>
   <rect width="800" height="800" fill="url(#bg)"/>
   <rect width="800" height="800" fill="url(#halo)"/>
   <ellipse cx="400" cy="690" rx="230" ry="42" fill="#22d3ee" opacity="0.16"/>
-  <g filter="url(#glow)" opacity="0.7"><circle cx="400" cy="386" r="48" fill="#22d3ee"/><rect x="352" y="350" width="96" height="72" fill="#04050a" opacity="0.5"/><line x1="280" y1="434" x2="520" y2="434" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="452" x2="520" y2="452" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="470" x2="520" y2="470" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="488" x2="520" y2="488" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="506" x2="520" y2="506" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/></g>
-  <g><path d="M260 270 Q400 250 540 270 Q560 410 540 550 Q400 570 260 550 Q240 410 260 270 Z" fill="#16131f" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
-  <g><circle cx="400" cy="386" r="48" fill="#22d3ee"/><rect x="352" y="350" width="96" height="72" fill="#04050a" opacity="0.5"/><line x1="280" y1="434" x2="520" y2="434" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="452" x2="520" y2="452" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="470" x2="520" y2="470" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="488" x2="520" y2="488" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="280" y1="506" x2="520" y2="506" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/></g>
+  <g><path d="M260 270 Q400 250 540 270 Q560 410 540 550 Q400 570 260 550 Q240 410 260 270 Z" fill="url(#fab)" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g clip-path="url(#cp)">
+    <g filter="url(#glow)" opacity="0.9"><circle cx="400" cy="389.392" r="41.21600000000001" fill="#22d3ee"/><rect x="358.784" y="358.48" width="82.43200000000002" height="61.824" fill="#04050a" opacity="0.5"/><line x1="296.96" y1="430.608" x2="503.04" y2="430.608" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="446.064" x2="503.04" y2="446.064" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="461.52" x2="503.04" y2="461.52" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="476.976" x2="503.04" y2="476.976" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="492.432" x2="503.04" y2="492.432" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/></g>
+    <g><circle cx="400" cy="389.392" r="41.21600000000001" fill="#22d3ee"/><rect x="358.784" y="358.48" width="82.43200000000002" height="61.824" fill="#04050a" opacity="0.5"/><line x1="296.96" y1="430.608" x2="503.04" y2="430.608" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="446.064" x2="503.04" y2="446.064" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="461.52" x2="503.04" y2="461.52" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="476.976" x2="503.04" y2="476.976" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/><line x1="296.96" y1="492.432" x2="503.04" y2="492.432" stroke="#3b82f6" stroke-opacity="0.6" stroke-width="2"/></g>
+  </g>
   <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#22d3ee">Ø</tspan></text>
   <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Synthwave Throw Pillow</text>
   <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">THROW PILLOW</text>
