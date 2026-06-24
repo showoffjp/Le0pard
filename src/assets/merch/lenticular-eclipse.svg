@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.28"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#halo)"/>
+  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#ff6a00" opacity="0.16"/>
+  <g filter="url(#glow)" opacity="0.7"><circle cx="400" cy="400" r="93" fill="#04050a" stroke="#ff6a00" stroke-width="7.5"/><circle cx="400" cy="400" r="120" fill="none" stroke="#ff2d00" stroke-opacity="0.5" stroke-width="6"/></g>
+  <g>
+        <rect x="232" y="180" width="336" height="440" rx="6" fill="#0e0b16" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/>
+        <rect x="252" y="200" width="296" height="400" rx="4" fill="#16131f" stroke="#ff6a00" stroke-opacity="0.3"/></g>
+  <g><circle cx="400" cy="400" r="93" fill="#04050a" stroke="#ff6a00" stroke-width="7.5"/><circle cx="400" cy="400" r="120" fill="none" stroke="#ff2d00" stroke-opacity="0.5" stroke-width="6"/></g>
+  <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#ff6a00">Ø</tspan></text>
+  <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Lenticular Eclipse Print</text>
+  <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">LENTICULAR</text>
+</svg>

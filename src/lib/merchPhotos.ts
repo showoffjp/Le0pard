@@ -13,16 +13,24 @@
  *
  * Supported extensions: jpg jpeg png webp avif.
  */
-const modules = import.meta.glob('../assets/merch/*.{jpg,jpeg,png,webp,avif}', {
+const modules = import.meta.glob('../assets/merch/*.{jpg,jpeg,png,webp,avif,svg}', {
   eager: true,
   import: 'default',
 }) as Record<string, string>
 
+// A real raster photo (jpg/png/webp/avif) for an id always wins over a generated
+// .svg sample of the same id — so dropping in a real shot replaces the mockup.
 const byId: Record<string, string> = {}
+const rank: Record<string, number> = {}
 for (const [path, url] of Object.entries(modules)) {
   const file = path.split('/').pop() ?? ''
-  const id = file.replace(/\.(jpe?g|png|webp|avif)$/i, '')
-  if (id) byId[id] = url
+  const id = file.replace(/\.(jpe?g|png|webp|avif|svg)$/i, '')
+  if (!id) continue
+  const pr = /\.svg$/i.test(file) ? 0 : 1
+  if (byId[id] === undefined || pr >= (rank[id] ?? -1)) {
+    byId[id] = url
+    rank[id] = pr
+  }
 }
 
 /** Resolve a product photo by id (undefined when none has been dropped in). */

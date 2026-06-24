@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.28"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#halo)"/>
+  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#a855f7" opacity="0.16"/>
+  <g filter="url(#glow)" opacity="0.7"><circle cx="439" cy="410" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="442.0208338550969" cy="481.81854662341857" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="378.143158490525" cy="438.0201269296959" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="364.7411864613346" cy="381.90985224118646" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="339.3791310558117" cy="371.0204546097359" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="379.721444094759" cy="377.258406608491" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="424.7530221617628" cy="436.20535758163163" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="467.5904438195189" cy="483.63785098500114" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="458.5233964580029" cy="412.524574009005" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><text x="400" y="410" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="20.8" fill="#fff" letter-spacing="1">LEOPARDØ</text></g>
+  <g><path d="M250 250 Q400 230 550 250 L560 560 Q400 600 240 560 Z" fill="#16131f" stroke="#a855f7" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g><circle cx="439" cy="410" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="442.0208338550969" cy="481.81854662341857" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="378.143158490525" cy="438.0201269296959" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="364.7411864613346" cy="381.90985224118646" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="339.3791310558117" cy="371.0204546097359" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="379.721444094759" cy="377.258406608491" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="424.7530221617628" cy="436.20535758163163" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><circle cx="467.5904438195189" cy="483.63785098500114" r="13" fill="none" stroke="#7c5cff" stroke-width="5.2"/><circle cx="458.5233964580029" cy="412.524574009005" r="13" fill="none" stroke="#a855f7" stroke-width="5.2"/><text x="400" y="410" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="20.8" fill="#fff" letter-spacing="1">LEOPARDØ</text></g>
+  <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#a855f7">Ø</tspan></text>
+  <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Leopard Knit Scarf</text>
+  <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">SCARF</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.28"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#halo)"/>
+  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#22d3ee" opacity="0.16"/>
+  <g filter="url(#glow)" opacity="0.7"><path d="M306.9 392.8 L371.4 379.9 L375.7 418.6 L306.9 431.5 Z" fill="#22d3ee" fill-opacity="0.3" stroke="#22d3ee" stroke-width="2.58"/><path d="M453.1 392.8 L388.6 379.9 L384.3 418.6 L453.1 431.5 Z" fill="#3b82f6" fill-opacity="0.3" stroke="#3b82f6" stroke-width="2.58"/></g>
+  <g>
+        <rect x="280" y="300" width="200" height="240" rx="20" fill="#16131f" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2"/>
+        <path d="M480 350 Q560 350 560 430 Q560 500 480 500" fill="none" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="2" stroke-width="16"/></g>
+  <g><path d="M306.9 392.8 L371.4 379.9 L375.7 418.6 L306.9 431.5 Z" fill="#22d3ee" fill-opacity="0.3" stroke="#22d3ee" stroke-width="2.58"/><path d="M453.1 392.8 L388.6 379.9 L384.3 418.6 L453.1 431.5 Z" fill="#3b82f6" fill-opacity="0.3" stroke="#3b82f6" stroke-width="2.58"/></g>
+  <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#22d3ee">Ø</tspan></text>
+  <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Neon Visor Mug</text>
+  <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">11OZ MUG</text>
+</svg>

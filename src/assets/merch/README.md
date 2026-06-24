@@ -16,5 +16,8 @@ src/assets/merch/tumbler-cover.jpg     → DYSTØPIA Insulated Tumbler
 - Vite optimizes + cache-busts each file at build time.
 - An explicit `image: '...'` on a `MerchItem` still wins over the auto-wired file.
 
-Until a photo is added for a product, it shows its generative neon design plate —
-so the store always looks complete.
+This folder ships with a **generated neon mockup** (`<id>.svg`) for every product,
+so the store already looks like a full catalog of product shots. To replace one
+with a real photo, just drop a raster file (`.jpg/.png/.webp/.avif`) with the same
+id — a real photo always wins over the generated `.svg` sample. Regenerate all
+mockups any time with `node scripts/genMerchMockups.mjs`.

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="34%" r="75%">
+      <stop offset="0%" stop-color="#141022"/><stop offset="55%" stop-color="#0a0812"/><stop offset="100%" stop-color="#04050a"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.28"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#halo)"/>
+  <ellipse cx="400" cy="690" rx="230" ry="42" fill="#ff6a00" opacity="0.16"/>
+  <g filter="url(#glow)" opacity="0.7"><text x="400" y="360" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="104.50000000000001" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="343" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="362" cy="293.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="381" cy="274.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="400" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="419" cy="293.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="438" cy="274.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="457" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/></g>
+  <g>
+        <path d="M250 400 Q400 250 560 380 L560 410 L250 420 Z" fill="#16131f" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/>
+        <path d="M250 420 Q360 470 520 440 L560 410 L250 410 Z" fill="#0e0b16" stroke="#ff6a00" stroke-opacity="0.55" stroke-width="2"/></g>
+  <g><text x="400" y="360" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="104.50000000000001" fill="#ff6a00" letter-spacing="1">Ø</text><circle cx="343" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="362" cy="293.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="381" cy="274.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="400" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="419" cy="293.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="438" cy="274.5" r="3.8000000000000003" fill="#ff2d00"/><circle cx="457" cy="312.5" r="3.8000000000000003" fill="#ff2d00"/></g>
+  <text x="40" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="26" letter-spacing="3" fill="#e6e9f2">LEOPARD<tspan fill="#ff6a00">Ø</tspan></text>
+  <text x="40" y="752" font-family="Arial, sans-serif" font-weight="800" font-size="22" fill="#cbd2e0">Flame Trucker</text>
+  <text x="760" y="752" text-anchor="end" font-family="monospace" font-size="14" letter-spacing="2" fill="#6b7280">TRUCKER</text>
+</svg>
