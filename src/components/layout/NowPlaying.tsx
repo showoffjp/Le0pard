@@ -85,7 +85,9 @@ export function NowPlaying() {
   useEffect(() => {
     let raf = 0
     const loop = () => {
-      const bars = barsRef.current
+      // skip the per-frame DOM writes entirely while the dock is hidden (never
+      // started) — no point animating 28 bars off-screen.
+      const bars = useAudio.getState().started ? barsRef.current : null
       if (bars) {
         const children = bars.children
         for (let i = 0; i < children.length; i++) {
@@ -105,6 +107,7 @@ export function NowPlaying() {
 
   return (
     <div
+      style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
       className={cn(
         'pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-3 transition-all duration-500 md:pb-4',
         started ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-24 opacity-0',

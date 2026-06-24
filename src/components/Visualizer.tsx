@@ -32,6 +32,7 @@ export function Visualizer({ className }: { className?: string }) {
     const bars = new Float32Array(BARS)
     let rot = 0
     let raf = 0
+    let inView = true
 
     const dpr = () => Math.min(2, window.devicePixelRatio || 1)
     const resize = () => {
@@ -179,12 +180,23 @@ export function Visualizer({ className }: { className?: string }) {
         ctx.fillRect(0, 0, w, h)
       }
 
-      raf = requestAnimationFrame(loop)
+      raf = inView ? requestAnimationFrame(loop) : 0
     }
+    // Pause the (heavy) draw loop whenever the canvas is scrolled off-screen —
+    // big mobile win, since this only matters inside the Album section.
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting
+        if (inView && !raf) raf = requestAnimationFrame(loop)
+      },
+      { rootMargin: '150px' },
+    )
+    io.observe(canvas)
     raf = requestAnimationFrame(loop)
 
     return () => {
       cancelAnimationFrame(raf)
+      io.disconnect()
       window.removeEventListener('resize', resize)
     }
   }, [])
