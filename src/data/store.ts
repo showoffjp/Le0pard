@@ -110,6 +110,8 @@ export type MerchMotif =
   | 'crest'
   | 'vinyl'
   | 'bundle'
+  | 'mandala'
+  | 'eclipse'
 export type Glow = 'purple' | 'blue' | 'cyan' | 'ember' | 'mix'
 
 export type MerchItem = {
@@ -1096,6 +1098,61 @@ const seasonalMerch: MerchItem[] = [
   },
 ]
 
+/* ── More drops: new product types + two fresh designs ──────────────────────── */
+const extraMerch: MerchItem[] = [
+  // Apparel
+  { id: 'tee-mandala', name: 'Oriental Mandala Tee', category: 'apparel', typeLabel: 'Tee', price: 34, blurb: 'The album’s oriental melodies as a glowing mandala — front and center on black.', motif: 'mandala', glow: 'purple', badge: 'New' },
+  { id: 'tee-eclipse', name: 'Burning Eclipse Tee', category: 'apparel', typeLabel: 'Tee', price: 34, blurb: 'A neon eclipse over a dead sun — the burning future in one mark.', motif: 'eclipse', glow: 'ember' },
+  { id: 'shorts-grid', name: 'Synthwave Mesh Shorts', category: 'apparel', typeLabel: 'Shorts', price: 36, blurb: 'Breathable mesh shorts with the neon-grid horizon down the side.', motif: 'grid', glow: 'cyan' },
+  { id: 'joggers-mono', name: 'LØ Monogram Joggers', category: 'apparel', typeLabel: 'Joggers', price: 58, blurb: 'Tapered fleece joggers with the embroidered LØ monogram at the hip.', motif: 'monogram', glow: 'purple' },
+  { id: 'windbreaker-duality', name: 'Duality Windbreaker', category: 'apparel', typeLabel: 'Windbreaker', price: 74, blurb: 'Packable windbreaker split cool-to-hot across the back — UTØPIA to DYSTØPIA.', motif: 'duality', glow: 'mix', badge: 'Limited' },
+  { id: 'jersey-octagon', name: 'Octagon Baseball Jersey', category: 'apparel', typeLabel: 'Jersey', price: 56, blurb: 'Button-up baseball jersey with the octagon tech-frame across the chest.', motif: 'octagon', glow: 'blue' },
+  { id: 'varsity-crest', name: 'Crest Varsity Jacket', category: 'apparel', typeLabel: 'Varsity Jacket', price: 124, blurb: 'Wool-body varsity with leather sleeves and the LEOPARDØ crest chenille patch.', motif: 'crest', glow: 'ember', badge: 'Limited' },
+
+  // Headwear
+  { id: 'balaclava-leopard', name: 'Leopard Balaclava', category: 'headwear', typeLabel: 'Balaclava', price: 26, blurb: 'Knit balaclava with an all-over neon rosette — for the cold burning future.', motif: 'leopard', glow: 'purple' },
+  { id: 'visor-octagon', name: 'Octagon Sport Visor', category: 'headwear', typeLabel: 'Visor', price: 24, blurb: 'Lightweight sport visor with the octagon mark embroidered front and center.', motif: 'octagon', glow: 'cyan' },
+
+  // Drinkware
+  { id: 'thermos-cover', name: 'DYSTØPIA Thermos', category: 'drinkware', typeLabel: '32oz Thermos', price: 34, blurb: 'Vacuum thermos wrapped in album art — 24h cold, 12h hot.', motif: 'cover', glow: 'mix' },
+  { id: 'flask-flame', name: 'Flame Hip Flask', category: 'drinkware', typeLabel: 'Hip Flask', price: 22, blurb: 'Stainless 6oz flask laser-etched with the ember flame Ø.', motif: 'flame', glow: 'ember' },
+  { id: 'shotglass-octagon', name: 'Octagon Shot Glass Set', category: 'drinkware', typeLabel: 'Shot Set (×4)', price: 18, blurb: 'Four heavy-base shot glasses with the octagon tech-frame.', motif: 'octagon', glow: 'purple' },
+  { id: 'coasters-mandala', name: 'Mandala Coaster Set', category: 'drinkware', typeLabel: 'Coasters (×6)', price: 20, blurb: 'Six cork-back neoprene coasters with the glowing mandala.', motif: 'mandala', glow: 'purple' },
+
+  // Tech
+  { id: 'keycaps-octagon', name: 'Octagon Keycap Set', category: 'tech', typeLabel: 'Keycaps', price: 30, blurb: 'Artisan keycap set in neon violet — escape, enter, and the octagon spacebar.', motif: 'octagon', glow: 'cyan', badge: 'New' },
+  { id: 'charger-orbit', name: 'Orbit Wireless Charger', category: 'tech', typeLabel: 'Charger', price: 34, blurb: '15W wireless pad that lights the orbit rings as it charges.', motif: 'orbit', glow: 'purple' },
+  { id: 'usb-album', name: 'DYSTØPIA USB (Lossless)', category: 'tech', typeLabel: 'USB Drive', price: 24, blurb: 'Etched USB loaded with the full lossless album + art — a physical download.', motif: 'vinyl', glow: 'blue' },
+  { id: 'webcam-octagon', name: 'Octagon Webcam Cover', category: 'tech', typeLabel: 'Webcam Cover', price: 8, blurb: 'Slim sliding webcam cover with the octagon mark.', motif: 'octagon', glow: 'cyan' },
+
+  // Extras
+  { id: 'chain-monogram', name: 'LØ Pendant Chain', category: 'accessory', typeLabel: 'Chain', price: 28, blurb: 'Stainless LØ pendant on an 22" box chain.', motif: 'monogram', glow: 'purple' },
+  { id: 'wallet-leopard', name: 'Leopard Bifold Wallet', category: 'accessory', typeLabel: 'Wallet', price: 32, blurb: 'Vegan-leather bifold with the neon rosette interior.', motif: 'leopard', glow: 'purple' },
+  { id: 'pinset', name: 'Full Pin Set (×6)', category: 'accessory', typeLabel: 'Pin Set', price: 34, blurb: 'Every mark as a hard-enamel pin — octagon, flame, crest, visor, orbit, LØ.', motif: 'crest', glow: 'mix', badge: 'Value' },
+  { id: 'candle-ember', name: 'Ember Soy Candle', category: 'accessory', typeLabel: 'Candle', price: 22, blurb: 'Hand-poured soy candle — smoked amber + cedar, in a frosted violet jar.', motif: 'ember', glow: 'ember' },
+  { id: 'incense-mandala', name: 'Mandala Incense Holder', category: 'accessory', typeLabel: 'Incense', price: 18, blurb: 'Cast incense holder etched with the mandala + a starter pack of sticks.', motif: 'mandala', glow: 'purple' },
+  { id: 'airfreshener-flame', name: 'Flame Air Freshener', category: 'accessory', typeLabel: 'Air Freshener', price: 8, blurb: 'Hang the flame Ø in the whip — ember-spice scent.', motif: 'flame', glow: 'ember' },
+
+  // Home
+  { id: 'neonsign-wordmark', name: 'LEOPARDØ LED Sign', category: 'home', typeLabel: 'LED Sign', price: 89, blurb: 'A real LED neon-style sign of the LEOPARDØ wordmark — USB powered.', motif: 'wordmark', glow: 'purple', badge: 'Limited' },
+  { id: 'rug-orbit', name: 'Orbit Area Rug', category: 'home', typeLabel: 'Area Rug', price: 78, blurb: 'Plush 3×5ft rug with the gyroscope orbit rings glowing on a void field.', motif: 'orbit', glow: 'purple' },
+  { id: 'clock-octagon', name: 'Octagon Wall Clock', category: 'home', typeLabel: 'Wall Clock', price: 38, blurb: 'Silent-sweep wall clock built into the octagon tech-frame.', motif: 'octagon', glow: 'cyan' },
+  { id: 'doormat-skyline', name: 'Skyline Doormat', category: 'home', typeLabel: 'Doormat', price: 34, blurb: 'Coir doormat with the burning skyline — enter the world.', motif: 'skyline', glow: 'ember' },
+  { id: 'mirror-eclipse', name: 'Eclipse LED Mirror', category: 'home', typeLabel: 'LED Mirror', price: 64, blurb: 'Round LED-backlit mirror ringed like a neon eclipse.', motif: 'eclipse', glow: 'ember', badge: 'Limited' },
+
+  // Prints
+  { id: 'postcards', name: 'Art Postcard Set (×8)', category: 'print', typeLabel: 'Postcards', price: 14, blurb: 'Eight mini art prints — one for each key design.', motif: 'mandala', glow: 'cyan' },
+  { id: 'holo-print', name: 'Holographic DYSTØPIA Print', category: 'print', typeLabel: 'Holo Print', price: 30, blurb: 'A foil-holographic print of the duality split — it shifts as you move.', motif: 'duality', glow: 'mix', badge: 'Limited' },
+
+  // Music
+  { id: 'vinyl-7inch', name: 'UTØPIA / DYSTØPIA 7"', category: 'music', typeLabel: '7" Single', price: 14, blurb: 'The two era-defining tracks on a 7" — UTØPIA b/w DYSTØPIA.', motif: 'vinyl', glow: 'cyan' },
+  { id: 'boxset', name: 'DYSTØPIA Collector Box Set', category: 'music', typeLabel: 'Box Set', price: 129, blurb: '2×LP + CD + cassette + art book + pin set in a foil-stamped box.', motif: 'bundle', glow: 'ember', badge: 'Limited' },
+
+  // Bundles
+  { id: 'bundle-vinyl', name: 'Vinyl Lover Bundle', category: 'bundle', typeLabel: 'Bundle', price: 79, blurb: 'The 2×LP + a slipmat + the art print — spin it right.', motif: 'bundle', glow: 'purple', badge: 'Save $9' },
+  { id: 'bundle-tee5', name: 'Build-Your-Own 5 Tee Pack', category: 'bundle', typeLabel: 'Bundle', price: 135, blurb: 'Pick any five tees (Track Series included) and save big.', motif: 'bundle', glow: 'cyan', badge: 'Save $25' },
+]
+
 export const merch: MerchItem[] = [
   ...baseMerch,
   ...themedMerch,
@@ -1103,6 +1160,7 @@ export const merch: MerchItem[] = [
   ...trackPosters,
   ...mantraMerch,
   ...seasonalMerch,
+  ...extraMerch,
 ]
 
 /** A curated "Featured Drops" shelf shown above the grid on the All view. */

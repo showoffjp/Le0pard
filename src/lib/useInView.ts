@@ -9,7 +9,10 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(options?: {
   rootMargin?: string
   once?: boolean
 }) {
-  const { threshold = 0.18, rootMargin = '0px 0px -10% 0px', once = true } = options ?? {}
+  // threshold 0 (trigger as soon as any part enters) so TALL blocks still reveal
+  // on small screens — a coverage threshold can never be met by an element taller
+  // than the viewport, which left whole sections invisible on mobile.
+  const { threshold = 0, rootMargin = '0px 0px -12% 0px', once = true } = options ?? {}
   const ref = useRef<T>(null)
   const [inView, setInView] = useState(false)
 

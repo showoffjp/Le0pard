@@ -255,23 +255,23 @@ export function Store() {
 
       {/* Featured drops — a curated shelf on the All view */}
       {cat === 'all' && featuredMerch.length > 0 && (
-        <Reveal>
-          <div className="mt-9">
+        <div className="mt-9">
+          <Reveal>
             <div className="mb-4 flex items-center gap-3">
               <span className="font-display text-[0.7rem] uppercase tracking-widest3 text-neon-cyan">
                 ★ Featured Drops
               </span>
               <span className="h-px flex-1 bg-gradient-to-r from-neon-purple/40 to-transparent" />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredMerch.map((item, i) => (
-                <Reveal key={item.id} delay={Math.min(i, 7) * 55}>
-                  <MerchCard item={item} />
-                </Reveal>
-              ))}
-            </div>
+          </Reveal>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {featuredMerch.map((item, i) => (
+              <Reveal key={item.id} delay={Math.min(i, 7) * 55}>
+                <MerchCard item={item} />
+              </Reveal>
+            ))}
           </div>
-        </Reveal>
+        </div>
       )}
 
       {/* Full catalog — filterable + paginated */}
