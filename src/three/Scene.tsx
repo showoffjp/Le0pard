@@ -8,6 +8,7 @@ import { NeonGrid } from './NeonGrid'
 import { DataStream } from './DataStream'
 import { DropShock } from './DropShock'
 import { Core } from './Core'
+import { SpectrumRing } from './SpectrumRing'
 import { Rings } from './Rings'
 import { Shards } from './Shards'
 import { Particles } from './Particles'
@@ -62,6 +63,7 @@ export function Scene({ lowPower }: { lowPower: boolean }) {
       <CameraRig />
       <DataStream lowPower={lowPower} />
       <Core lowPower={lowPower} />
+      <SpectrumRing lowPower={lowPower} />
       <DropShock lowPower={lowPower} />
       <Rings />
       <Shards lowPower={lowPower} />
