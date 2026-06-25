@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAudio } from '../store/useAudio'
 import { attachMediaElement } from '../lib/audioReactor'
+import { ambient } from '../lib/audioSignal'
 
 /**
  * The launch film — auto-plays on entry as the deep backdrop (the 3D canvas is
@@ -42,6 +43,17 @@ export function LaunchVideo() {
   const [src] = useState(pickSrc)
   const enabled = !!src
 
+  // Drive the synthetic signal while the muted film plays, so the whole site is
+  // reacting from the moment it loads. The first gesture welds the real analyser
+  // (isLive) and takes over from there.
+  useEffect(() => {
+    if (!enabled) return
+    ambient.active = true
+    return () => {
+      ambient.active = false
+    }
+  }, [enabled])
+
   // Cede to the song player: once a visitor starts a track, stop the film so the
   // two audio sources never fight over the speakers / the analyser.
   useEffect(() => {
@@ -50,6 +62,7 @@ export function LaunchVideo() {
       const el = ref.current
       if (s.started && el && !el.paused) {
         el.pause()
+        ambient.active = false
         setSound(false)
       }
     })
@@ -65,6 +78,7 @@ export function LaunchVideo() {
       wired.current = true
       cleanup()
       await attachMediaElement(el).catch(() => {})
+      ambient.active = false // real analyser (isLive) takes over now
       el.muted = false
       el.play().catch(() => {})
       setSound(true)

@@ -56,6 +56,14 @@ export const signal: Signal = {
 export const BAR_COUNT = 28
 export const spectrum = new Float32Array(BAR_COUNT)
 
+/**
+ * "Ambient" mode: keep the synthetic signal alive even when the audio player
+ * isn't playing — used while the muted launch film plays on entry, so the whole
+ * site is reacting from the moment it loads. The first user gesture welds the
+ * film to the real analyser (isLive()), which then takes over seamlessly.
+ */
+export const ambient = { active: false }
+
 function hash(n: number) {
   let x = (n + 1) * 2654435761
   x = (x ^ (x >>> 15)) >>> 0

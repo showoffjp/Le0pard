@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAudio } from '../store/useAudio'
-import { tickSignal } from './audioSignal'
+import { tickSignal, ambient } from './audioSignal'
 import { isLive, tickLive } from './audioReactor'
 
 /**
@@ -19,7 +19,7 @@ export function useAudioClock() {
         tickLive(now / 1000, dt)
       } else {
         const { playing, trackIndex } = useAudio.getState()
-        tickSignal(now / 1000, dt, playing, trackIndex)
+        tickSignal(now / 1000, dt, playing || ambient.active, trackIndex)
       }
       raf = requestAnimationFrame(loop)
     }
