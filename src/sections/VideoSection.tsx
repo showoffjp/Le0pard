@@ -71,7 +71,7 @@ function GalleryCard({ v, index, onOpen }: { v: Video; index: number; onOpen: ()
               {v.file && (
                 <video
                   ref={vid}
-                  src={v.file}
+                  src={v.preview ?? v.file}
                   muted
                   loop
                   playsInline

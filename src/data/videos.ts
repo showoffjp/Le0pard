@@ -22,6 +22,8 @@ export type Video = {
   driveId?: string
   /** A self-hosted, web-optimized file (src/assets/video/<key>.mp4). Wins over Drive. */
   file?: string
+  /** A tiny muted clip for gallery hover-previews (src/assets/video/preview-<key>.mp4). */
+  preview?: string
 }
 
 // ── Self-hosted assets (web-optimized MP4s + poster frames) ───────────────────
@@ -76,6 +78,7 @@ function film(p: {
     date: p.date,
     driveId: p.driveId,
     file: asset(FILES, p.key),
+    preview: asset(FILES, `preview-${p.key}`),
     cover: asset(POSTERS, p.key) ?? driveThumb(p.driveId),
   }
 }
