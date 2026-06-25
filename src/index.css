@@ -78,6 +78,18 @@
   .neon-cyan   { text-shadow: 0 0 6px rgba(34,211,238,.9), 0 0 22px rgba(34,211,238,.5); }
   .neon-ember  { text-shadow: 0 0 8px rgba(255,106,0,.95), 0 0 26px rgba(255,45,0,.6); }
 
+  /* Dark halo behind text so it stays legible where it overlaps the bright 3D
+     core / neon grid. Invisible over the near-black backdrop (dark-on-dark), so
+     it only kicks in where it's needed. text-shadow renders behind
+     background-clip:text gradients too, so it works on the gradient headings. */
+  .text-readable {
+    text-shadow:
+      0 1px 2px rgba(2, 3, 10, 0.95),
+      0 0 6px rgba(2, 3, 10, 0.92),
+      0 0 14px rgba(2, 3, 10, 0.8),
+      0 0 26px rgba(2, 3, 10, 0.5);
+  }
+
   .gradient-cool {
     background: linear-gradient(100deg, #22d3ee, #3b82f6 38%, #8b5cf6 70%, #a855f7);
     -webkit-background-clip: text;

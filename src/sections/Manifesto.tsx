@@ -12,7 +12,7 @@ export function Manifesto() {
       </Reveal>
       <MaskReveal delay={0.1}>
         <AuroraText className="mt-8 inline-block cursor-default">
-          <blockquote className="aurora-text text-balance font-display text-2xl font-bold leading-tight tracking-tight transition-[transform,filter] duration-500 will-change-transform group-hover:scale-[1.015] group-hover:[animation-duration:4s] md:text-4xl lg:text-5xl">
+          <blockquote className="text-readable aurora-text text-balance font-display text-2xl font-bold leading-tight tracking-tight transition-[transform,filter] duration-500 will-change-transform group-hover:scale-[1.015] group-hover:[animation-duration:4s] md:text-4xl lg:text-5xl">
             Massive cinematic horns and strings smashing straight into those{' '}
             <span className="aurora-accent">heavy 808s</span> and sharp trap beats — soaked in
             hard-hitting melodies that feel like{' '}
