@@ -37,8 +37,17 @@ export function VideoModal({ video, onClose }: { video: Video | null; onClose: (
           </button>
         </div>
         <TechFrame glow="mix" padded={false}>
-          <div className="aspect-video w-full">
-            {src ? (
+          <div className="aspect-video w-full bg-black">
+            {video.file ? (
+              <video
+                src={video.file}
+                poster={video.cover}
+                controls
+                autoPlay
+                playsInline
+                className="h-full w-full"
+              />
+            ) : src ? (
               <iframe
                 title={video.title}
                 src={src}

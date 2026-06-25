@@ -5,7 +5,7 @@ import { site } from './site'
 //  - 'x'        → opens the X/Twitter premiere in a new tab
 //  - 'youtube'  → opens an embedded lightbox (set `embedId`)
 //  - 'vimeo'    → opens an embedded lightbox (set `embedId`)
-//  - 'drive'    → opens an embedded lightbox playing a Google Drive file (set `driveId`)
+//  - 'drive'    → plays a self-hosted file if present, else the Drive /preview embed
 //  - 'soon'     → placeholder card, not yet released
 export type VideoKind = 'x' | 'youtube' | 'vimeo' | 'drive' | 'soon'
 
@@ -20,6 +20,27 @@ export type Video = {
   embedId?: string
   /** Google Drive file id (the long token in /file/d/<id>/view). */
   driveId?: string
+  /** A self-hosted, web-optimized file (src/assets/video/<key>.mp4). Wins over Drive. */
+  file?: string
+}
+
+// ── Self-hosted assets (web-optimized MP4s + poster frames) ───────────────────
+// Drop <key>.mp4 + <key>.jpg in src/assets/video/ and they're used directly,
+// with no dependency on Google Drive's embed player.
+const FILES = import.meta.glob('../assets/video/*.{mp4,webm}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+const POSTERS = import.meta.glob('../assets/video/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+function asset(map: Record<string, string>, key: string): string | undefined {
+  for (const [path, url] of Object.entries(map)) {
+    const base = path.split('/').pop()?.replace(/\.[^.]+$/, '')
+    if (base === key) return url
+  }
+  return undefined
 }
 
 /** A real poster frame straight from the Drive file (needs link-sharing on). */
@@ -27,10 +48,10 @@ export function driveThumb(id: string, w = 1600): string {
   return `https://drive.google.com/thumbnail?id=${id}&sz=w${w}`
 }
 
-/** Fallback poster when a Drive thumbnail can't load (e.g. sharing not yet set). */
+/** Fallback poster when neither a self-hosted nor Drive thumbnail is available. */
 export const POSTER_FALLBACK = dystopia.cover
 
-// ── Drive file ids ────────────────────────────────────────────────────────────
+// ── Drive file ids + their self-hosted asset keys ─────────────────────────────
 const DRIVE = {
   visual1: '1SbjcrJjCF-0RxUHuiXFoPUFq9ba45TWQ',
   visual2: '1eyPOEitMzne6AsO2b3kZqwEH20X78m1x',
@@ -38,20 +59,39 @@ const DRIVE = {
   launch: '1ciDgOEjvL9Vd1AWNwkT2v0vo4i49N3kS',
 }
 
+/** Build a video, preferring the self-hosted file/poster, Drive as fallback. */
+function film(p: {
+  id: string
+  title: string
+  subtitle: string
+  date: string
+  key: string
+  driveId: string
+}): Video {
+  return {
+    id: p.id,
+    title: p.title,
+    subtitle: p.subtitle,
+    kind: 'drive',
+    date: p.date,
+    driveId: p.driveId,
+    file: asset(FILES, p.key),
+    cover: asset(POSTERS, p.key) ?? driveThumb(p.driveId),
+  }
+}
+
 /**
  * The hero of the Video section — the launch film. It also auto-plays on entry
- * and drives the reactive visualizer (see LaunchVideo). Rename the title/subtitle
- * to the real film name any time.
+ * and drives the reactive visualizer (see LaunchVideo). Rename the title any time.
  */
-export const featuredVideo: Video = {
+export const featuredVideo: Video = film({
   id: 'drive-launch-film',
   title: 'DYSTØPIA — Launch Film',
   subtitle: 'Premiere · auto-plays on entry',
-  kind: 'drive',
   date: '2026',
-  cover: driveThumb(DRIVE.launch),
+  key: 'launch',
   driveId: DRIVE.launch,
-}
+})
 
 /** Kept accessible as a secondary action — the X/Twitter premiere. */
 export const officialVideo: Video = {
@@ -64,37 +104,13 @@ export const officialVideo: Video = {
   url: site.links.video,
 }
 
-// ── Gallery (Google Drive embeds) ─────────────────────────────────────────────
-// Each Drive file must be shared "Anyone with the link → Viewer" so both the
-// /preview embed and the poster thumbnail load. Rename titles/subtitles to taste.
+// ── Gallery ───────────────────────────────────────────────────────────────────
+// Self-hosted first (native <video>), Drive /preview as fallback. Rename titles
+// to the real film names any time.
 export const videos: Video[] = [
-  {
-    id: 'drive-visual-1',
-    title: 'DYSTØPIA — Visual I',
-    subtitle: 'The world ignites',
-    kind: 'drive',
-    date: '2026',
-    cover: driveThumb(DRIVE.visual1),
-    driveId: DRIVE.visual1,
-  },
-  {
-    id: 'drive-visual-2',
-    title: 'DYSTØPIA — Visual II',
-    subtitle: 'Descent',
-    kind: 'drive',
-    date: '2026',
-    cover: driveThumb(DRIVE.visual2),
-    driveId: DRIVE.visual2,
-  },
-  {
-    id: 'drive-visual-3',
-    title: 'DYSTØPIA — Visual III',
-    subtitle: 'Aftermath',
-    kind: 'drive',
-    date: '2026',
-    cover: driveThumb(DRIVE.visual3),
-    driveId: DRIVE.visual3,
-  },
+  film({ id: 'drive-visual-1', title: 'DYSTØPIA — Visual I', subtitle: 'The world ignites', date: '2026', key: 'visual1', driveId: DRIVE.visual1 }),
+  film({ id: 'drive-visual-2', title: 'DYSTØPIA — Visual II', subtitle: 'Descent', date: '2026', key: 'visual2', driveId: DRIVE.visual2 }),
+  film({ id: 'drive-visual-3', title: 'DYSTØPIA — Visual III', subtitle: 'Aftermath', date: '2026', key: 'visual3', driveId: DRIVE.visual3 }),
   officialVideo,
 ]
 
