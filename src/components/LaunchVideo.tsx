@@ -95,8 +95,9 @@ export function LaunchVideo() {
     })
   }, [enabled])
 
-  // First user gesture anywhere: resume the AudioContext, weld the film into the
-  // shared analyser (→ the entire reactive site responds to it), and unmute.
+  // First user gesture anywhere: weld the film into the shared analyser so the
+  // site reacts to its real audio, and unmute it. If a track is later played the
+  // AudioEngine re-attaches its own element and the film cedes (pauses).
   useEffect(() => {
     if (!enabled) return
     const start = async () => {
@@ -107,7 +108,7 @@ export function LaunchVideo() {
       await attachMediaElement(el).catch(() => {})
       ambient.active = false // real analyser (isLive) takes over now
       el.muted = false
-      el.play().catch(() => {})
+      void el.play().catch(() => {})
       setSound(true)
     }
     const cleanup = () => {
