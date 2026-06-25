@@ -79,7 +79,11 @@ function TrackRow({
       <span
         className={cn(
           'flex-1 truncate font-display text-base font-semibold uppercase tracking-wide transition-all duration-300 group-hover:translate-x-1 md:text-lg',
-          active ? 'text-neon-purple neon-purple' : bookend ? 'text-white' : 'text-slate-200 group-hover:text-white',
+          active
+            ? 'text-neon-purple neon-purple'
+            : bookend
+              ? 'text-readable text-white'
+              : 'text-readable text-slate-200 group-hover:text-white',
         )}
       >
         {track.title}

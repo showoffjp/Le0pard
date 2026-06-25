@@ -113,7 +113,7 @@ export function Hero() {
       <MagicLayer depth={8}>
         <p
           data-hero
-          className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-300 md:text-lg"
+          className="text-readable mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-slate-300 md:text-lg"
         >
           Cinematic horns and strings smashing into heavy 808s — ancient war drums
           pounding through a burning future.
