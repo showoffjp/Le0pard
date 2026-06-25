@@ -40,6 +40,7 @@ export function LaunchVideo() {
   const ref = useRef<HTMLVideoElement>(null)
   const wired = useRef(false)
   const [sound, setSound] = useState(false)
+  const [nearTop, setNearTop] = useState(true)
   const [src] = useState(pickSrc)
   const enabled = !!src
 
@@ -67,6 +68,7 @@ export function LaunchVideo() {
       const vh = window.innerHeight || 1
       const f = Math.max(0, 1 - window.scrollY / (vh * 0.85))
       el.style.opacity = String(0.06 + f * 0.84)
+      setNearTop(window.scrollY < vh * 0.6)
     }
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(apply)
@@ -139,10 +141,10 @@ export function LaunchVideo() {
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-void/30 via-void/15 to-void/70"
       />
-      {!sound && (
+      {!sound && nearTop && (
         <button
           onClick={() => {}}
-          className="fixed bottom-24 left-1/2 z-40 -translate-x-1/2 animate-pulse rounded-full border border-neon-cyan/50 bg-void/75 px-5 py-2.5 font-mono text-[0.62rem] uppercase tracking-widest2 text-neon-cyan shadow-[0_0_24px_rgba(34,211,238,0.35)] backdrop-blur"
+          className="fixed bottom-24 left-1/2 z-40 -translate-x-1/2 animate-pulse rounded-full border border-neon-cyan/50 bg-void/75 px-5 py-2.5 font-mono text-[0.62rem] uppercase tracking-widest2 text-neon-cyan shadow-[0_0_24px_rgba(34,211,238,0.35)] backdrop-blur transition-opacity"
         >
           ◢ Tap anywhere for sound ◣
         </button>
