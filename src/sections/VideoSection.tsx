@@ -13,6 +13,7 @@ const KIND_LABEL: Record<Video['kind'], string> = {
   x: 'Watch on X ↗',
   youtube: 'Play ▶',
   vimeo: 'Play ▶',
+  drive: 'Play ▶',
   soon: 'Soon',
 }
 

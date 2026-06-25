@@ -9,6 +9,7 @@ import { ScrollHud } from './components/layout/ScrollHud'
 import { NowPlaying } from './components/layout/NowPlaying'
 import { NeonCursor } from './components/layout/NeonCursor'
 import { AudioEngine } from './components/AudioEngine'
+import { LaunchVideo } from './components/LaunchVideo'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { BackgroundVisualizer } from './components/effects/BackgroundVisualizer'
 import { DropFlash } from './components/effects/DropFlash'
@@ -51,6 +52,7 @@ export default function App() {
         <Experience />
       </Suspense>
       <AudioEngine />
+      <LaunchVideo />
       <BackgroundVisualizer />
       <div className="react-bg" aria-hidden="true" />
       <BeatPulse />
