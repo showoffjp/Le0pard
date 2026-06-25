@@ -54,6 +54,31 @@ export function LaunchVideo() {
     }
   }, [enabled])
 
+  // The film is bold in the hero but fades as you scroll past it, so the dark
+  // content sections keep their focus (the film keeps playing + driving the
+  // reactivity underneath — only its visual opacity fades).
+  useEffect(() => {
+    if (!enabled) return
+    let raf = 0
+    const apply = () => {
+      raf = 0
+      const el = ref.current
+      if (!el) return
+      const vh = window.innerHeight || 1
+      const f = Math.max(0, 1 - window.scrollY / (vh * 0.85))
+      el.style.opacity = String(0.06 + f * 0.84)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply)
+    }
+    apply()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [enabled])
+
   // Cede to the song player: once a visitor starts a track, stop the film so the
   // two audio sources never fight over the speakers / the analyser.
   useEffect(() => {
