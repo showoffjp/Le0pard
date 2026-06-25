@@ -17,27 +17,30 @@ import { attachMediaElement } from '../lib/audioReactor'
  * gesture, so the film starts muted and the first tap/click/key anywhere welds
  * it to the analyser, unmutes it, and the whole site begins reacting for real.
  */
-const sources = import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>
-const LAUNCH_SRC = Object.values(sources)[0] as string | undefined
+const one = (glob: Record<string, string>) => Object.values(glob)[0] as string | undefined
+const DESKTOP_SRC = one(import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', { eager: true, import: 'default' }))
+const MOBILE_SRC = one(import.meta.glob('../assets/video/launch-mobile.{mp4,webm}', { eager: true, import: 'default' }))
+const LAUNCH_POSTER = one(import.meta.glob('../assets/video/launch.{jpg,jpeg,png,webp}', { eager: true, import: 'default' }))
 
 /**
  * The launch film plays on entry on EVERY device. Muted autoplay (with
  * playsInline) is permitted by every browser, so we only skip when there's
  * genuinely no file present or no DOM (SSR). The first tap/click/key unmutes it
- * and welds it to the analyser.
+ * and welds it to the analyser. Phones get the lighter `launch-mobile.mp4`
+ * encode when present, so the film plays without the full desktop download.
  */
-function launchAllowed(): boolean {
-  return typeof window !== 'undefined' && !!LAUNCH_SRC
+function pickSrc(): string | undefined {
+  if (typeof window === 'undefined') return undefined
+  if (MOBILE_SRC && window.innerWidth < 768) return MOBILE_SRC
+  return DESKTOP_SRC
 }
 
 export function LaunchVideo() {
   const ref = useRef<HTMLVideoElement>(null)
   const wired = useRef(false)
   const [sound, setSound] = useState(false)
-  const [enabled] = useState(launchAllowed)
+  const [src] = useState(pickSrc)
+  const enabled = !!src
 
   // Cede to the song player: once a visitor starts a track, stop the film so the
   // two audio sources never fight over the speakers / the analyser.
@@ -83,7 +86,8 @@ export function LaunchVideo() {
     <>
       <video
         ref={ref}
-        src={LAUNCH_SRC}
+        src={src}
+        poster={LAUNCH_POSTER}
         autoPlay
         muted
         loop
