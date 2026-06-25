@@ -24,19 +24,13 @@ const sources = import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', {
 const LAUNCH_SRC = Object.values(sources)[0] as string | undefined
 
 /**
- * The launch film is a heavy autoplay asset, so we keep a lighter path for the
- * cases the design language calls out: reduced-motion, data-saver, very slow
- * connections, and small/mobile viewports. There the film stays watchable in
- * the Video gallery (Drive embed) but doesn't auto-download/auto-play.
+ * The launch film plays on entry on EVERY device. Muted autoplay (with
+ * playsInline) is permitted by every browser, so we only skip when there's
+ * genuinely no file present or no DOM (SSR). The first tap/click/key unmutes it
+ * and welds it to the analyser.
  */
 function launchAllowed(): boolean {
-  if (typeof window === 'undefined' || !LAUNCH_SRC) return false
-  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return false
-  const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection
-  if (conn?.saveData) return false
-  if (conn?.effectiveType && /(^|-)2g$/.test(conn.effectiveType)) return false
-  if (window.innerWidth < 768) return false
-  return true
+  return typeof window !== 'undefined' && !!LAUNCH_SRC
 }
 
 export function LaunchVideo() {
@@ -95,12 +89,20 @@ export function LaunchVideo() {
         loop
         playsInline
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 h-full w-full object-cover opacity-[0.6]"
+        className="pointer-events-none fixed inset-0 -z-10 h-full w-full object-cover opacity-90"
+      />
+      {/* keep the hero text readable over the brighter film */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-void/30 via-void/15 to-void/70"
       />
       {!sound && (
-        <div className="pointer-events-none fixed bottom-24 left-1/2 z-40 -translate-x-1/2 animate-pulse rounded-full border border-neon-cyan/40 bg-void/70 px-4 py-2 font-mono text-[0.58rem] uppercase tracking-widest2 text-neon-cyan backdrop-blur">
+        <button
+          onClick={() => {}}
+          className="fixed bottom-24 left-1/2 z-40 -translate-x-1/2 animate-pulse rounded-full border border-neon-cyan/50 bg-void/75 px-5 py-2.5 font-mono text-[0.62rem] uppercase tracking-widest2 text-neon-cyan shadow-[0_0_24px_rgba(34,211,238,0.35)] backdrop-blur"
+        >
           ◢ Tap anywhere for sound ◣
-        </div>
+        </button>
       )}
     </>
   )
