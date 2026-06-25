@@ -23,15 +23,32 @@ const sources = import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', {
 }) as Record<string, string>
 const LAUNCH_SRC = Object.values(sources)[0] as string | undefined
 
+/**
+ * The launch film is a heavy autoplay asset, so we keep a lighter path for the
+ * cases the design language calls out: reduced-motion, data-saver, very slow
+ * connections, and small/mobile viewports. There the film stays watchable in
+ * the Video gallery (Drive embed) but doesn't auto-download/auto-play.
+ */
+function launchAllowed(): boolean {
+  if (typeof window === 'undefined' || !LAUNCH_SRC) return false
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return false
+  const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+  if (conn?.saveData) return false
+  if (conn?.effectiveType && /(^|-)2g$/.test(conn.effectiveType)) return false
+  if (window.innerWidth < 768) return false
+  return true
+}
+
 export function LaunchVideo() {
   const ref = useRef<HTMLVideoElement>(null)
   const wired = useRef(false)
   const [sound, setSound] = useState(false)
+  const [enabled] = useState(launchAllowed)
 
   // Cede to the song player: once a visitor starts a track, stop the film so the
   // two audio sources never fight over the speakers / the analyser.
   useEffect(() => {
-    if (!LAUNCH_SRC) return
+    if (!enabled) return
     return useAudio.subscribe((s) => {
       const el = ref.current
       if (s.started && el && !el.paused) {
@@ -39,12 +56,12 @@ export function LaunchVideo() {
         setSound(false)
       }
     })
-  }, [])
+  }, [enabled])
 
   // First user gesture anywhere: resume the AudioContext, weld the film into the
   // shared analyser (→ the entire reactive site responds to it), and unmute.
   useEffect(() => {
-    if (!LAUNCH_SRC) return
+    if (!enabled) return
     const start = async () => {
       const el = ref.current
       if (wired.current || !el || useAudio.getState().started) return
@@ -64,9 +81,9 @@ export function LaunchVideo() {
     window.addEventListener('keydown', start)
     window.addEventListener('touchstart', start)
     return cleanup
-  }, [])
+  }, [enabled])
 
-  if (!LAUNCH_SRC) return null
+  if (!enabled) return null
 
   return (
     <>
