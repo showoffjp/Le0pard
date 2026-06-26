@@ -10,6 +10,7 @@ import { NowPlaying } from './components/layout/NowPlaying'
 import { NeonCursor } from './components/layout/NeonCursor'
 import { AudioEngine } from './components/AudioEngine'
 import { LaunchVideo } from './components/LaunchVideo'
+import { StructuredData } from './components/StructuredData'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { BackgroundVisualizer } from './components/effects/BackgroundVisualizer'
 import { DropFlash } from './components/effects/DropFlash'
@@ -48,6 +49,7 @@ export default function App() {
         Skip to content
       </a>
       <Loader />
+      <StructuredData />
       <Suspense fallback={null}>
         <Experience />
       </Suspense>
