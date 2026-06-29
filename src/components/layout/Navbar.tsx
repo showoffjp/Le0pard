@@ -6,6 +6,7 @@ import { cn } from '../../lib/cn'
 
 const LINKS = [
   { label: 'Album', id: '#album' },
+  { label: 'Join', id: '#citizen' },
   { label: 'Video', id: '#video' },
   { label: 'Live', id: '#live' },
   { label: 'Store', id: '#store' },

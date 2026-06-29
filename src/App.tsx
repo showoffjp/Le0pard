@@ -19,6 +19,7 @@ import { Hero } from './sections/Hero'
 import { Manifesto } from './sections/Manifesto'
 import { Descent } from './sections/Descent'
 import { Album } from './sections/Album'
+import { Initiation } from './sections/Initiation'
 import { VideoSection } from './sections/VideoSection'
 import { Discography } from './sections/Discography'
 import { Store } from './sections/Store'
@@ -69,6 +70,8 @@ export default function App() {
         <Manifesto />
         <Descent />
         <Album />
+        <SeamDivider label="Initiation" />
+        <Initiation />
         <SeamDivider label="Visuals" />
         <VideoSection />
         <Discography />
