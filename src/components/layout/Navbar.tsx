@@ -8,6 +8,7 @@ const LINKS = [
   { label: 'Album', id: '#album' },
   { label: 'Join', id: '#citizen' },
   { label: 'Video', id: '#video' },
+  { label: 'Drops', id: '#drops' },
   { label: 'Live', id: '#live' },
   { label: 'Store', id: '#store' },
   { label: 'News', id: '#posts' },
