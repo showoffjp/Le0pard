@@ -4,6 +4,7 @@ import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
+import { SignalList } from '../components/ui/SignalList'
 import { cn } from '../lib/cn'
 
 function useCountdown(targetIso: string) {
@@ -141,9 +142,9 @@ export function Transmissions() {
       </div>
 
       <Reveal delay={120}>
-        <p className="mt-8 text-center text-sm text-slate-500">
-          New transmissions drop on the timeline above. Become a citizen to be first through the gate.
-        </p>
+        <div className="mt-12">
+          <SignalList />
+        </div>
       </Reveal>
     </section>
   )
