@@ -66,7 +66,6 @@ export function Initiation() {
   const share = useCallback(async () => {
     const canvas = canvasRef.current
     if (!canvas || !citizen) return
-    setShared(true)
     const text = `I'm a ${citizen.rank} of the ${citizen.faction.name} in DYSTØPIA. Find your faction →`
     const url = window.location.origin
     const file = await new Promise<File | null>((res) =>
@@ -79,9 +78,12 @@ export function Initiation() {
     if (file && nav.canShare?.({ files: [file] })) {
       try {
         await nav.share({ files: [file], text, url })
+        setShared(true)
         return
-      } catch {
-        /* user cancelled — fall through to download */
+      } catch (err) {
+        // User closed the share sheet — respect the cancel, no fallback.
+        if ((err as DOMException | undefined)?.name === 'AbortError') return
+        /* share genuinely failed — fall through to the desktop fallback */
       }
     }
     download()
@@ -90,6 +92,7 @@ export function Initiation() {
       '_blank',
       'noopener,noreferrer',
     )
+    setShared(true)
   }, [citizen, download])
 
   return (
