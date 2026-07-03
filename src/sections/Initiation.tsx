@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
-import { citizenFromHandle, type Citizen } from '../lib/citizen'
+import { citizenFromHandle, isSecretHandle, type Citizen } from '../lib/citizen'
+import { useSecret } from '../store/useSecret'
 import { drawCitizenCard } from '../lib/citizenCard'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { TechFrame } from '../components/ui/TechFrame'
@@ -13,6 +14,7 @@ export function Initiation() {
   const [citizen, setCitizen] = useState<Citizen | null>(null)
   const [shared, setShared] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const unlockSecret = useSecret((s) => s.unlock)
 
   // Returning visitor: restore their citizen ID.
   useEffect(() => {
@@ -39,6 +41,7 @@ export function Initiation() {
     if (!h) return
     setCitizen(citizenFromHandle(h))
     setShared(false)
+    if (isSecretHandle(h)) unlockSecret()
     try {
       localStorage.setItem(STORE_KEY, h)
     } catch {

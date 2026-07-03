@@ -1,5 +1,22 @@
 import { FACTIONS, type Faction } from '../data/factions'
 
+/** Hidden faction granted to anyone who finds the ØMEGA signal. */
+export const OMEGA_FACTION: Faction = {
+  name: 'ØMEGA CIRCLE',
+  glow: 'ember',
+  motto: 'You found the frequency beneath the noise.',
+  sector: 'THE CORE',
+}
+
+// Handles that secretly grant ØMEGA clearance (the artist / album / era names).
+const SECRET_HANDLES = new Set([
+  'LEOPARDØ', 'LEOPARDO', 'DYSTØPIA', 'DYSTOPIA', 'WARSØNG', 'WARSONG', 'ØMEGA', 'OMEGA', 'UTØPIA', 'UTOPIA',
+])
+
+export function isSecretHandle(raw: string): boolean {
+  return SECRET_HANDLES.has(raw.trim().toUpperCase())
+}
+
 /** Stable 32-bit FNV-1a hash so a handle always maps to the same citizen. */
 function hashStr(s: string): number {
   let h = 2166136261 >>> 0
@@ -26,6 +43,15 @@ const RANK = ['INITIATE', 'ØPERATIVE', 'VANGUARD', 'HARBINGER', 'ARCHITECT', 'R
 export function citizenFromHandle(raw: string): Citizen {
   const handle = (raw.trim().toUpperCase().replace(/\s+/g, ' ').slice(0, 18) || 'ANØNYMØUS')
   const h = hashStr(handle)
+  if (isSecretHandle(raw)) {
+    return {
+      handle,
+      faction: OMEGA_FACTION,
+      id: 'Ø-00001',
+      clearance: 'ØMEGA',
+      rank: 'ARCHITECT',
+    }
+  }
   return {
     handle,
     faction: FACTIONS[h % FACTIONS.length],
