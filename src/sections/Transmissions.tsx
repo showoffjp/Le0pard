@@ -5,15 +5,21 @@ import { TechFrame } from '../components/ui/TechFrame'
 import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { SignalList } from '../components/ui/SignalList'
+import { site } from '../data/site'
 import { cn } from '../lib/cn'
 
 function useCountdown(targetIso: string) {
   const target = useMemo(() => new Date(targetIso).getTime(), [targetIso])
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000)
+    // Already past the target → nothing to count; don't tick forever.
+    if (target - Date.now() <= 0) return
+    const id = setInterval(() => {
+      setNow(Date.now())
+      if (target - Date.now() <= 0) clearInterval(id)
+    }, 1000)
     return () => clearInterval(id)
-  }, [])
+  }, [target])
   const diff = Math.max(0, target - now)
   return {
     d: Math.floor(diff / 86400000),
@@ -42,6 +48,9 @@ function Cell({ value, label }: { value: number; label: string }) {
 function DropCard({ drop }: { drop: Drop }) {
   const cd = useCountdown(drop.date)
   const isLive = drop.status === 'live' || cd.done
+  // A drop can flip live by date before its link is wired in drops.ts — fall
+  // back to the artist page so the CTA is never dead at the drop moment.
+  const href = drop.href ?? site.links.bandcampArtist
   return (
     <TechFrame glow={drop.glow} padded={false} className="h-full">
       <div className="flex h-full flex-col p-5">
@@ -73,8 +82,8 @@ function DropCard({ drop }: { drop: Drop }) {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{drop.blurb}</p>
         <div className="mt-4">
           {isLive ? (
-            <NeonButton href={drop.href} newTab={!!drop.href?.startsWith('http')} className="px-5 py-2">
-              {drop.href?.startsWith('#') ? 'Open ▸' : 'Listen ▸'}
+            <NeonButton href={href} newTab={href.startsWith('http')} className="px-5 py-2">
+              {drop.href ? (drop.href.startsWith('#') ? 'Open ▸' : 'Listen ▸') : 'Receive ▸'}
             </NeonButton>
           ) : (
             <div className="font-mono text-sm tabular-nums text-slate-300">
@@ -116,7 +125,12 @@ export function Transmissions() {
             </div>
             <div className="relative shrink-0">
               {cd.done ? (
-                <NeonButton href={next.href} variant="ember" newTab className="px-7 py-3">
+                <NeonButton
+                  href={next.href ?? site.links.bandcampArtist}
+                  variant="ember"
+                  newTab={(next.href ?? site.links.bandcampArtist).startsWith('http')}
+                  className="px-7 py-3"
+                >
                   Receive ▸
                 </NeonButton>
               ) : (

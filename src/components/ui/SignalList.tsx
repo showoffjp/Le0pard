@@ -39,7 +39,13 @@ export function SignalList() {
 
   const submit = async (e?: FormEvent) => {
     e?.preventDefault()
-    if (!email || status === 'loading') return
+    if (status === 'loading') return
+    // The CTA is a plain button (not type=submit), so native email validation
+    // never runs on click — validate here so both entry paths agree.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setStatus('err')
+      return
+    }
     setStatus('loading')
     try {
       const body = new FormData()
@@ -87,7 +93,7 @@ export function SignalList() {
       )}
       {status === 'err' && (
         <p className="mt-3 font-mono text-[0.65rem] uppercase tracking-widest2 text-neon-ember">
-          Signal lost — try again.
+          Signal lost — check the address and try again.
         </p>
       )}
     </div>
