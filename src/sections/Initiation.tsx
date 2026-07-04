@@ -13,6 +13,9 @@ export function Initiation() {
   const [handle, setHandle] = useState('')
   const [citizen, setCitizen] = useState<Citizen | null>(null)
   const [shared, setShared] = useState(false)
+  // Card actions stay hidden until the async draw (font load) has finished, so
+  // a fast click can't export a blank canvas.
+  const [cardReady, setCardReady] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const unlockSecret = useSecret((s) => s.unlock)
 
@@ -32,7 +35,9 @@ export function Initiation() {
 
   // Redraw the card whenever the citizen changes.
   useEffect(() => {
-    if (citizen && canvasRef.current) void drawCitizenCard(canvasRef.current, citizen)
+    if (!citizen || !canvasRef.current) return
+    setCardReady(false)
+    void drawCitizenCard(canvasRef.current, citizen).then(() => setCardReady(true))
   }, [citizen])
 
   const initiate = (e?: FormEvent) => {
@@ -135,14 +140,16 @@ export function Initiation() {
                   {citizen.faction.name}
                 </p>
                 <p className="mt-1 text-sm italic text-slate-400">“{citizen.faction.motto}”</p>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <NeonButton onClick={share} variant="ember" className="px-6 py-2.5">
-                    {shared ? 'Shared ✓ · Share again' : 'Broadcast ▸'}
-                  </NeonButton>
-                  <NeonButton onClick={download} variant="ghost" className="px-6 py-2.5">
-                    Download card
-                  </NeonButton>
-                </div>
+                {cardReady && (
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    <NeonButton onClick={share} variant="ember" className="px-6 py-2.5">
+                      {shared ? 'Shared ✓ · Share again' : 'Broadcast ▸'}
+                    </NeonButton>
+                    <NeonButton onClick={download} variant="ghost" className="px-6 py-2.5">
+                      Download card
+                    </NeonButton>
+                  </div>
+                )}
               </div>
             )}
           </div>

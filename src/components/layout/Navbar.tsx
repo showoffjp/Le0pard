@@ -55,7 +55,9 @@ export function Navbar() {
             LEOPARD<span className="text-neon-purple neon-purple">Ø</span>
           </button>
 
-          <div className="hidden items-center gap-8 md:flex">
+          {/* 9 tracked-out Orbitron links don't fit between md and lg — the full
+              row only appears from lg, and the Play button from xl. */}
+          <div className="hidden items-center gap-4 lg:flex xl:gap-8">
             {LINKS.map((l) => (
               <button
                 key={l.id}
@@ -68,14 +70,14 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden xl:block">
             <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play</NeonButton>
           </div>
 
           <button
             aria-label="Menu"
             onClick={() => setOpen((v) => !v)}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
           >
             <span
               className={cn(
@@ -94,25 +96,29 @@ export function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile overlay */}
+      {/* Mobile overlay — z-[48]: above the dock (z-40) + ØMEGA badge (z-45),
+          below the navbar (z-50) so the close toggle stays reachable. Scrolls
+          when the menu is taller than the viewport (small phones / landscape). */}
       <div
         className={cn(
-          'fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-void/95 backdrop-blur-xl transition-all duration-500 md:hidden',
+          'fixed inset-0 z-[48] overflow-y-auto bg-void/95 backdrop-blur-xl transition-all duration-500 lg:hidden',
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         )}
       >
-        <div className="hud-grid absolute inset-0 opacity-30" />
-        {LINKS.map((l) => (
-          <button
-            key={l.id}
-            onClick={() => go(l.id)}
-            className="relative font-display text-3xl font-bold uppercase tracking-widest text-slate-200 hover:text-neon-purple"
-          >
-            {l.label}
-          </button>
-        ))}
-        <div className="relative mt-4">
-          <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play DYSTØPIA</NeonButton>
+        <div className="hud-grid pointer-events-none fixed inset-0 opacity-30" />
+        <div className="relative mx-auto flex min-h-full w-fit flex-col items-center justify-center gap-6 py-24">
+          {LINKS.map((l) => (
+            <button
+              key={l.id}
+              onClick={() => go(l.id)}
+              className="relative font-display text-3xl font-bold uppercase tracking-widest text-slate-200 hover:text-neon-purple"
+            >
+              {l.label}
+            </button>
+          ))}
+          <div className="relative mt-4">
+            <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play DYSTØPIA</NeonButton>
+          </div>
         </div>
       </div>
     </>
