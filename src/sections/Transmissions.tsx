@@ -6,6 +6,7 @@ import { NeonButton } from '../components/ui/NeonButton'
 import { Reveal } from '../components/ui/Reveal'
 import { SignalList } from '../components/ui/SignalList'
 import { site } from '../data/site'
+import { useExperience } from '../store/useExperience'
 import { cn } from '../lib/cn'
 
 function useCountdown(targetIso: string) {
@@ -34,8 +35,9 @@ const pad = (n: number) => String(n).padStart(2, '0')
 
 function Cell({ value, label }: { value: number; label: string }) {
   return (
-    <div className="clip-tech-sm flex min-w-[64px] flex-col items-center bg-void/60 px-3 py-2.5 md:min-w-[88px] md:px-5 md:py-3.5">
-      <span className="font-display text-3xl font-black tabular-nums text-white md:text-5xl">
+    // flex-1/min-w-0 below md so four cells always fit a narrow phone.
+    <div className="clip-tech-sm flex min-w-0 flex-1 flex-col items-center bg-void/60 px-2 py-2.5 md:min-w-[88px] md:flex-none md:px-5 md:py-3.5">
+      <span className="font-display text-2xl font-black tabular-nums text-white md:text-5xl">
         {pad(value)}
       </span>
       <span className="mt-1 font-mono text-[0.5rem] uppercase tracking-widest2 text-slate-500 md:text-[0.6rem]">
@@ -47,7 +49,9 @@ function Cell({ value, label }: { value: number; label: string }) {
 
 function DropCard({ drop }: { drop: Drop }) {
   const cd = useCountdown(drop.date)
+  const scrollTo = useExperience((s) => s.scrollTo)
   const isLive = drop.status === 'live' || cd.done
+  const inPage = !!drop.href?.startsWith('#')
   // A drop can flip live by date before its link is wired in drops.ts — fall
   // back to the artist page so the CTA is never dead at the drop moment.
   const href = drop.href ?? site.links.bandcampArtist
@@ -82,9 +86,17 @@ function DropCard({ drop }: { drop: Drop }) {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{drop.blurb}</p>
         <div className="mt-4">
           {isLive ? (
-            <NeonButton href={href} newTab={href.startsWith('http')} className="px-5 py-2">
-              {drop.href ? (drop.href.startsWith('#') ? 'Open ▸' : 'Listen ▸') : 'Receive ▸'}
-            </NeonButton>
+            inPage ? (
+              // In-page targets go through the same Lenis smooth-scroll as the
+              // nav, instead of a raw anchor jump.
+              <NeonButton onClick={() => scrollTo(drop.href!)} className="px-5 py-2">
+                Open ▸
+              </NeonButton>
+            ) : (
+              <NeonButton href={href} newTab={href.startsWith('http')} className="px-5 py-2">
+                {drop.href ? 'Listen ▸' : 'Receive ▸'}
+              </NeonButton>
+            )
           ) : (
             <div className="font-mono text-sm tabular-nums text-slate-300">
               <span className="text-slate-500">UNLOCKS IN </span>
@@ -123,7 +135,7 @@ export function Transmissions() {
               </h3>
               <p className="mt-1 max-w-md text-sm text-slate-400">{next.blurb}</p>
             </div>
-            <div className="relative shrink-0">
+            <div className="relative w-full shrink-0 md:w-auto">
               {cd.done ? (
                 <NeonButton
                   href={next.href ?? site.links.bandcampArtist}
@@ -134,7 +146,7 @@ export function Transmissions() {
                   Receive ▸
                 </NeonButton>
               ) : (
-                <div className="flex gap-2 md:gap-3">
+                <div className="mx-auto flex w-full max-w-sm gap-1.5 md:w-auto md:max-w-none md:gap-3">
                   <Cell value={cd.d} label="Days" />
                   <Cell value={cd.h} label="Hrs" />
                   <Cell value={cd.m} label="Min" />

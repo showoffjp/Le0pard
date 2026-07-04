@@ -41,7 +41,10 @@ const RANK = ['INITIATE', 'ØPERATIVE', 'VANGUARD', 'HARBINGER', 'ARCHITECT', 'R
 
 /** Deterministically sort a handle into a faction + registration details. */
 export function citizenFromHandle(raw: string): Citizen {
-  const handle = (raw.trim().toUpperCase().replace(/\s+/g, ' ').slice(0, 18) || 'ANØNYMØUS')
+  // Slice by code points (Array.from), not UTF-16 units — toUpperCase() can
+  // expand length (ß→SS) and a unit-slice could split an emoji surrogate pair.
+  const handle =
+    Array.from(raw.trim().toUpperCase().replace(/\s+/g, ' ')).slice(0, 18).join('') || 'ANØNYMØUS'
   const h = hashStr(handle)
   if (isSecretHandle(raw)) {
     return {

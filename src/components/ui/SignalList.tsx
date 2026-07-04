@@ -49,7 +49,7 @@ export function SignalList() {
     setStatus('loading')
     try {
       const body = new FormData()
-      body.append('email', email)
+      body.append('email', email.trim())
       const res = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { Accept: 'application/json' },

@@ -178,8 +178,8 @@ export async function drawCitizenCard(canvas: HTMLCanvasElement, c: Citizen): Pr
     ctx.fillText(value, x, y + 44)
   })
 
-  // ── barcode + footer ──
-  let bx = cx - 230
+  // ── barcode + footer ── (46 bars advance 324px total → start at cx-160 to center)
+  let bx = cx - 160
   for (let i = 0; i < 46; i++) {
     const w = (i % 3 ? 2 : 5)
     ctx.fillStyle = i % 4 === 0 ? a : '#cbd2e0'

@@ -42,6 +42,9 @@ export function LaunchVideo() {
   const [sound, setSound] = useState(false)
   const [nearTop, setNearTop] = useState(true)
   const [src] = useState(pickSrc)
+  // Once the song player has started, the film has ceded — the "tap for sound"
+  // prompt would be a dead control, so it's gated on this too.
+  const trackStarted = useAudio((s) => s.started)
   const enabled = !!src
 
   // Drive the synthetic signal while the muted film plays, so the whole site is
@@ -142,7 +145,7 @@ export function LaunchVideo() {
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-void/30 via-void/15 to-void/70"
       />
-      {!sound && nearTop && (
+      {!sound && nearTop && !trackStarted && (
         <button
           onClick={() => {}}
           className="fixed bottom-24 left-1/2 z-40 -translate-x-1/2 animate-pulse rounded-full border border-neon-cyan/50 bg-void/75 px-5 py-2.5 font-mono text-[0.62rem] uppercase tracking-widest2 text-neon-cyan shadow-[0_0_24px_rgba(34,211,238,0.35)] backdrop-blur transition-opacity"
