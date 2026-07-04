@@ -1,7 +1,9 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { MathUtils } from 'three'
 import { useExperience } from '../store/useExperience'
+import { useAudio } from '../store/useAudio'
 import { signal } from '../lib/audioSignal'
+import { trackScene } from '../lib/trackScene'
 
 /**
  * Choreographs the camera along the scroll: a slow dolly toward the core that
@@ -17,8 +19,16 @@ export function CameraRig() {
 
     // bob to the beat + punch toward the core on the drop
     const targetZ = 9 - progress * 3.4 - signal.beat * 0.32 - signal.drop * 0.9
-    const targetY = 0.3 + progress * 1.7 + Math.sin(t * 0.2) * 0.08 + signal.bass * 0.06
-    const targetX = Math.sin(progress * Math.PI) * 1.3
+    let targetY = 0.3 + progress * 1.7 + Math.sin(t * 0.2) * 0.08 + signal.bass * 0.06
+    let targetX = Math.sin(progress * Math.PI) * 1.3
+
+    // each playing track drifts the camera on its own slow orbit phase
+    const lev = signal.level
+    if (lev > 0.01 && !useExperience.getState().reducedMotion) {
+      const sc = trackScene(useAudio.getState().trackIndex)
+      targetX += Math.sin(t * 0.07 + sc.orbit) * 0.6 * lev
+      targetY += Math.sin(t * 0.11 + sc.orbit * 2) * 0.18 * lev
+    }
 
     const px = pointer.x * 0.85
     const py = -pointer.y * 0.55
