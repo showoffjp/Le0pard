@@ -3,7 +3,9 @@ import { useFrame } from '@react-three/fiber'
 import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing'
 import { Vector2, MathUtils } from 'three'
 import { useExperience } from '../store/useExperience'
+import { useAudio } from '../store/useAudio'
 import { signal } from '../lib/audioSignal'
+import { trackScene } from '../lib/trackScene'
 
 /**
  * Postprocessing stack. Bloom is the soul of the neon look; its intensity
@@ -17,9 +19,11 @@ export function Effects({ lowPower }: { lowPower: boolean }) {
   useFrame((_, dt) => {
     const { progress } = useExperience.getState()
     if (bloomRef.current) {
-      // bloom flares hard on the drop, climbs across the journey
+      // bloom flares hard on the drop, climbs across the journey — with a
+      // per-track lean so each song has its own glow signature
       const target =
-        0.8 + progress * 0.9 + signal.beat * 0.3 + signal.energy * 0.25 + signal.drop * 1.7 + signal.impact * 0.5
+        0.8 + progress * 0.9 + signal.beat * 0.3 + signal.energy * 0.25 + signal.drop * 1.7 + signal.impact * 0.5 +
+        trackScene(useAudio.getState().trackIndex).bloom * signal.level
       bloomRef.current.intensity = MathUtils.damp(bloomRef.current.intensity, target, 8, dt)
     }
     if (caRef.current) {
