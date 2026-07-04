@@ -36,10 +36,11 @@ export const drops: Drop[] = [
   {
     id: 'visuals-vol1',
     title: 'Per-Track Visuals — Vol. I',
-    kind: 'Film',
-    date: '2026-08-15T20:00:00Z',
-    status: 'locked',
-    blurb: 'A 3D scene for every track. The world deepens.',
+    kind: 'World',
+    date: '2026-07-04T20:00:00Z',
+    status: 'live',
+    blurb: 'A 3D scene for every track — play any song and the whole world shifts with it. Live now.',
+    href: '#album',
     glow: 'cyan',
   },
   {
