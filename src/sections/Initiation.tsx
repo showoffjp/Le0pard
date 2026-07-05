@@ -72,7 +72,8 @@ export function Initiation() {
     const canvas = canvasRef.current
     if (!canvas || !citizen) return
     const text = `I'm a ${citizen.rank} of the ${citizen.faction.name} in DYSTØPIA. Find your faction →`
-    const url = window.location.origin
+    // The link carries the sharer's handle so arrivals get a personalized summons.
+    const url = `${window.location.origin}/?via=${encodeURIComponent(citizen.handle)}`
     const file = await new Promise<File | null>((res) =>
       canvas.toBlob(
         (b) => res(b ? new File([b], 'dystopia-citizen.png', { type: 'image/png' }) : null),
