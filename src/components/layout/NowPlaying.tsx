@@ -81,6 +81,36 @@ export function NowPlaying() {
     if (duration <= 0) return
     seek(Math.max(0, Math.min(duration, currentTime + sec)))
   }
+  // keyboard operation for the slider (arrows / page / home-end)
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (duration <= 0) return
+    let handled = true
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        nudge(-5)
+        break
+      case 'ArrowRight':
+      case 'ArrowUp':
+        nudge(5)
+        break
+      case 'PageDown':
+        nudge(-15)
+        break
+      case 'PageUp':
+        nudge(15)
+        break
+      case 'Home':
+        seek(0)
+        break
+      case 'End':
+        seek(duration)
+        break
+      default:
+        handled = false
+    }
+    if (handled) e.preventDefault()
+  }
 
   useEffect(() => {
     let raf = 0
@@ -125,12 +155,14 @@ export function NowPlaying() {
             onPointerMove={onPointerMove}
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
+            onKeyDown={onKeyDown}
             role="slider"
+            tabIndex={0}
             aria-label="Seek"
             aria-valuemin={0}
             aria-valuemax={Math.max(0, Math.round(duration))}
             aria-valuenow={Math.round(currentTime)}
-            className="group relative flex h-4 flex-1 cursor-pointer touch-none items-center"
+            className="group relative flex h-4 flex-1 cursor-pointer touch-none items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-neon-purple/70"
           >
             <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
               <div

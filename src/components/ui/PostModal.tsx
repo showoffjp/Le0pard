@@ -1,23 +1,15 @@
-import { useEffect } from 'react'
+import { useRef } from 'react'
 import type { Post } from '../../data/posts'
 import { useExperience } from '../../store/useExperience'
+import { useDialog } from '../../lib/useDialog'
 import { TechFrame } from './TechFrame'
 import { NeonButton } from './NeonButton'
 
 /** In-page reader for a news post with a full body. */
 export function PostModal({ post, onClose }: { post: Post | null; onClose: () => void }) {
   const scrollTo = useExperience((s) => s.scrollTo)
-
-  useEffect(() => {
-    if (!post) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [post, onClose])
+  const panelRef = useRef<HTMLDivElement>(null)
+  useDialog(!!post, onClose, panelRef)
 
   if (!post) return null
   const cta = post.cta
@@ -31,7 +23,12 @@ export function PostModal({ post, onClose }: { post: Post | null; onClose: () =>
       aria-modal="true"
       aria-label={post.title}
     >
-      <div className="relative w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative w-full max-w-2xl outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           onClick={onClose}
           aria-label="Close"

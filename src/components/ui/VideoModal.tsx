@@ -1,19 +1,12 @@
-import { useEffect } from 'react'
+import { useRef } from 'react'
 import { embedUrl, type Video } from '../../data/videos'
+import { useDialog } from '../../lib/useDialog'
 import { TechFrame } from './TechFrame'
 
 /** Lightbox for embeddable videos (YouTube/Vimeo). */
 export function VideoModal({ video, onClose }: { video: Video | null; onClose: () => void }) {
-  useEffect(() => {
-    if (!video) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [video, onClose])
+  const panelRef = useRef<HTMLDivElement>(null)
+  useDialog(!!video, onClose, panelRef)
 
   if (!video) return null
   const src = embedUrl(video)
@@ -22,8 +15,16 @@ export function VideoModal({ video, onClose }: { video: Video | null; onClose: (
     <div
       className="fixed inset-0 z-[90] flex items-center justify-center bg-void/85 p-4 backdrop-blur-md"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${video.title} video`}
     >
-      <div className="w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className="w-full max-w-4xl outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="mb-3 flex items-center justify-between">
           <h3 className="font-display text-sm font-bold uppercase tracking-widest2 text-white">
             {video.title}

@@ -78,12 +78,14 @@ const keys = Object.keys(utopia) as (keyof typeof utopia)[]
 /** Mutates and returns `out` to avoid per-frame allocations. */
 export function samplePalette(progress: number, out: Palette): Palette {
   const p = Math.min(1, Math.max(0, progress))
+  // Plain index loop, not keys.forEach(cb): the arrow closure would allocate on
+  // every call and this runs several times per frame across the useFrame loops.
   if (p < 0.5) {
     const t = p / 0.5
-    keys.forEach((k) => lerpKey(k, utopia, transition, t, out))
+    for (let i = 0; i < keys.length; i++) lerpKey(keys[i], utopia, transition, t, out)
   } else {
     const t = (p - 0.5) / 0.5
-    keys.forEach((k) => lerpKey(k, transition, dystopia, t, out))
+    for (let i = 0; i < keys.length; i++) lerpKey(keys[i], transition, dystopia, t, out)
   }
   return out
 }

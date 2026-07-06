@@ -145,7 +145,7 @@ export function Store() {
   return (
     <section id="store" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="06" kicker="Own The Signal" title="Store" />
+        <SectionHeading index="07" kicker="Own The Signal" title="Store" />
       </Reveal>
 
       {/* ── Music: lossless FLAC ─────────────────────────────────────────── */}
@@ -310,7 +310,7 @@ export function Store() {
             className="w-full rounded-full border border-white/12 bg-white/[0.04] py-2 pl-9 pr-3 font-mono text-xs uppercase tracking-widest2 text-slate-200 outline-none transition placeholder:text-slate-600 focus:border-neon-purple/60 focus:ring-1 focus:ring-neon-purple/40"
           />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-[0.55rem] uppercase tracking-widest2 text-slate-500">Sort</span>
           {SORTS.map((s) => (
             <button
@@ -321,7 +321,7 @@ export function Store() {
               }}
               aria-pressed={sortBy === s.id}
               className={cn(
-                'clip-tech-sm px-2.5 py-1 font-display text-[0.55rem] uppercase tracking-widest2 transition',
+                'clip-tech-sm inline-flex min-h-8 items-center justify-center px-3 py-1 font-display text-[0.55rem] uppercase tracking-widest2 transition',
                 sortBy === s.id
                   ? 'bg-gradient-to-r from-neon-violet to-neon-blue text-white'
                   : 'bg-white/[0.04] text-slate-400 ring-1 ring-white/12 hover:text-white',

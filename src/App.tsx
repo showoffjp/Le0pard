@@ -13,6 +13,7 @@ import { LaunchVideo } from './components/LaunchVideo'
 import { StructuredData } from './components/StructuredData'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { SecretUnlock } from './components/effects/SecretUnlock'
+import { Summons } from './components/effects/Summons'
 import { BackgroundVisualizer } from './components/effects/BackgroundVisualizer'
 import { DropFlash } from './components/effects/DropFlash'
 import { SeamDivider } from './components/ui/SeamDivider'
@@ -93,6 +94,7 @@ export default function App() {
 
       <Footer />
       <SecretUnlock />
+      <Summons />
     </>
   )
 }

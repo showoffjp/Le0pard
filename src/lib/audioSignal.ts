@@ -75,12 +75,15 @@ export type TrackParams = { bpm: number; bassWeight: number; trebleWeight: numbe
 /** Deterministic per-track character so every song drives a distinct vibe. */
 export function trackParams(index: number): TrackParams {
   const h = hash(index < 0 ? 0 : index)
+  // Unsigned shifts (>>>): h is a uint32, and a signed >> would ToInt32 it
+  // negative for any hash ≥ 2^31, making the % results negative and pushing the
+  // weights below their documented floors for ~half the tracks (track 0 included).
   return {
     bpm: 80 + (h % 68), // 80..147
-    bassWeight: 0.85 + ((h >> 3) % 30) / 100, // 0.85..1.14
-    trebleWeight: 0.7 + ((h >> 7) % 50) / 100, // 0.70..1.19
-    drive: 0.82 + ((h >> 11) % 38) / 100, // 0.82..1.19
-    phrase: (h >> 5) % 2 === 0 ? 16 : 8, // beats per phrase → drop cadence
+    bassWeight: 0.85 + ((h >>> 3) % 30) / 100, // 0.85..1.14
+    trebleWeight: 0.7 + ((h >>> 7) % 50) / 100, // 0.70..1.19
+    drive: 0.82 + ((h >>> 11) % 38) / 100, // 0.82..1.19
+    phrase: (h >>> 5) % 2 === 0 ? 16 : 8, // beats per phrase → drop cadence
   }
 }
 
@@ -156,31 +159,35 @@ let bassSlow = 0 // slow average (build-up)
 let macroAvg = 0 // ~0.7s loudness
 let baseAvg = 0 // ~11s loudness baseline
 
+/** Average of an FFT band, normalized 0..1. Module-scope so the per-frame live
+ *  tick doesn't allocate a fresh closure on every call. */
+function bandAvg(data: Uint8Array, n: number, lo: number, hi: number) {
+  const a = Math.max(0, lo)
+  const b = Math.min(n - 1, hi)
+  let s = 0
+  for (let i = a; i <= b; i++) s += data[i]
+  return s / ((b - a + 1) * 255)
+}
+
+/** Peak of an FFT band, normalized 0..1. */
+function bandPeak(data: Uint8Array, n: number, lo: number, hi: number) {
+  const a = Math.max(0, lo)
+  const b = Math.min(n - 1, hi)
+  let m = 0
+  for (let i = a; i <= b; i++) if (data[i] > m) m = data[i]
+  return m / 255
+}
+
 /** LIVE source — real frequency analysis with onset-based drop detection. */
 export function tickLiveFromAnalyser(analyser: AnalyserNode, data: Uint8Array, dt: number) {
   analyser.getByteFrequencyData(data as Uint8Array<ArrayBuffer>)
   const n = data.length
-  const band = (lo: number, hi: number) => {
-    const a = Math.max(0, lo)
-    const b = Math.min(n - 1, hi)
-    let s = 0
-    for (let i = a; i <= b; i++) s += data[i]
-    return s / ((b - a + 1) * 255)
-  }
-
-  const bandMax = (lo: number, hi: number) => {
-    const a = Math.max(0, lo)
-    const b = Math.min(n - 1, hi)
-    let m = 0
-    for (let i = a; i <= b; i++) if (data[i] > m) m = data[i]
-    return m / 255
-  }
 
   // Peak SUB-bass (where the kick/drop lives) — punchy and absolute (no AGC) so
   // quiet parts stay quiet and loud drops genuinely stand out.
-  const bass = clamp01(bandMax(1, 5) * 1.25)
-  const mid = clamp01(band(9, 60) * 1.1)
-  const treble = clamp01(band(61, 200) * 1.2)
+  const bass = clamp01(bandPeak(data, n, 1, 5) * 1.25)
+  const mid = clamp01(bandAvg(data, n, 9, 60) * 1.1)
+  const treble = clamp01(bandAvg(data, n, 61, 200) * 1.2)
   const energy = clamp01(bass * 0.9 + mid * 0.06 + treble * 0.04)
 
   signal.level = damp(signal.level, energy > 0.06 ? 1 : 0, 3, dt)

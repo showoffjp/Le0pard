@@ -22,9 +22,15 @@ const KIND_LABEL: Record<Video['kind'], string> = {
   soon: 'Soon',
 }
 
-// If a Drive poster can't load (sharing not set yet), fall back to the cover.
+// If a Drive poster can't load (sharing not set yet), fall back to the cover —
+// exactly once. A src comparison would never match (img.src reads back as an
+// absolute URL, POSTER_FALLBACK is root-relative), so if the fallback itself
+// fails it would loop forever; a dataset flag guarantees a single swap.
 const onPosterError = (e: SyntheticEvent<HTMLImageElement>) => {
-  if (e.currentTarget.src !== POSTER_FALLBACK) e.currentTarget.src = POSTER_FALLBACK
+  const img = e.currentTarget
+  if (img.dataset.posterFallback) return
+  img.dataset.posterFallback = '1'
+  img.src = POSTER_FALLBACK
 }
 
 /** A gallery card. Self-hosted films play a muted preview on hover (desktop). */
@@ -134,7 +140,7 @@ export function VideoSection() {
   return (
     <section id="video" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="04" kicker="Motion" title="Films" accent="heat" />
+        <SectionHeading index="03" kicker="Motion" title="Films" accent="heat" />
       </Reveal>
 
       {/* ── Featured: the launch film ───────────────────────────────────────── */}

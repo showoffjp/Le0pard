@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { merchBuyUrl, formatPrice, type MerchItem } from '../../data/store'
 import { merchPhoto } from '../../lib/merchPhotos'
+import { useDialog } from '../../lib/useDialog'
 import { TechFrame } from './TechFrame'
 import { NeonButton } from './NeonButton'
 import { MotifGraphic } from './MerchMotifArt'
@@ -18,18 +19,13 @@ function sizesFor(item: MerchItem): string[] | null {
 /** Quick-view lightbox for a merch product — big art, full details, Buy. */
 export function MerchModal({ item, onClose }: { item: MerchItem | null; onClose: () => void }) {
   const [size, setSize] = useState<string | null>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  useDialog(!!item, onClose, panelRef)
 
+  // Reset the chosen size each time a different product opens.
   useEffect(() => {
-    if (!item) return
-    setSize(null)
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [item, onClose])
+    if (item) setSize(null)
+  }, [item])
 
   if (!item) return null
   const sizes = sizesFor(item)
@@ -43,7 +39,12 @@ export function MerchModal({ item, onClose }: { item: MerchItem | null; onClose:
       aria-modal="true"
       aria-label={`${item.name} details`}
     >
-      <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative w-full max-w-3xl outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           onClick={onClose}
           aria-label="Close"

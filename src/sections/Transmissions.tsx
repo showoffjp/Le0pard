@@ -117,7 +117,7 @@ export function Transmissions() {
   return (
     <section id="drops" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="03" kicker="The Vault" title="Transmissions" accent="heat" />
+        <SectionHeading index="05" kicker="The Vault" title="Transmissions" accent="heat" />
       </Reveal>
 
       {/* next-drop countdown */}

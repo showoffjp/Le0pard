@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useExperience } from '../store/useExperience'
+import { cn } from '../lib/cn'
 
 /**
  * A sticky, scroll-scrubbed interlude: the word UTØPIA dissolves and DYSTØPIA
@@ -44,7 +45,12 @@ export function Descent() {
         <div className="relative mt-5 flex items-center justify-center">
           <h2
             data-utopia
-            className="gradient-cool absolute font-display text-[clamp(2.6rem,14vw,11rem)] font-black uppercase leading-none tracking-tight"
+            className={cn(
+              'gradient-cool absolute font-display text-[clamp(2.6rem,14vw,11rem)] font-black uppercase leading-none tracking-tight',
+              // With no scroll animation, UTØPIA would sit on top of DYSTØPIA and
+              // render as garble — resolve straight to the end state (DYSTØPIA only).
+              reduced && 'opacity-0',
+            )}
           >
             UTØPIA
           </h2>

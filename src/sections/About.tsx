@@ -16,7 +16,7 @@ export function About() {
   return (
     <section id="about" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="07" kicker="The Artist" title="LEOPARDØ" />
+        <SectionHeading index="09" kicker="The Artist" title="LEOPARDØ" />
       </Reveal>
 
       <div className="grid gap-10 md:grid-cols-[1.5fr_1fr] md:gap-14">

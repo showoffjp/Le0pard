@@ -36,7 +36,10 @@ export function Particles({ lowPower }: { lowPower: boolean }) {
     const t = state.clock.elapsedTime
 
     if (dustRef.current) {
-      dustRef.current.rotation.y = t * (0.012 + signal.energy * 0.12 + signal.drop * 0.4)
+      // Integrate the spin (like every other rotator here) so a signal-driven rate
+      // change nudges angular velocity smoothly — assigning t * rate would snap the
+      // whole field by Δrate * elapsedTime whenever the beat/drop moves.
+      dustRef.current.rotation.y += dt * (0.012 + signal.energy * 0.12 + signal.drop * 0.4)
     }
 
     if (emberRef.current) {
