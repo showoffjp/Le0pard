@@ -14,7 +14,7 @@ export function Live() {
   return (
     <section id="live" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="05" kicker="On Stage" title="Live" accent="heat" />
+        <SectionHeading index="06" kicker="On Stage" title="Live" accent="heat" />
       </Reveal>
 
       {has ? (

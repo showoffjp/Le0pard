@@ -116,6 +116,39 @@ export function Album() {
     const ratio = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width))
     if (duration > 0) seek(ratio * duration)
   }
+  const nudge = (sec: number) => {
+    if (duration <= 0) return
+    seek(Math.max(0, Math.min(duration, currentTime + sec)))
+  }
+  const onSeekKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (duration <= 0) return
+    let handled = true
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        nudge(-5)
+        break
+      case 'ArrowRight':
+      case 'ArrowUp':
+        nudge(5)
+        break
+      case 'PageDown':
+        nudge(-15)
+        break
+      case 'PageUp':
+        nudge(15)
+        break
+      case 'Home':
+        seek(0)
+        break
+      case 'End':
+        seek(duration)
+        break
+      default:
+        handled = false
+    }
+    if (handled) e.preventDefault()
+  }
 
   const stats = [
     { k: 'Tracks', v: String(dystopia.tracks.length) },
@@ -164,7 +197,14 @@ export function Album() {
                   </div>
                   <div
                     onClick={onSeek}
-                    className="mt-2 h-2 cursor-pointer overflow-hidden rounded-full bg-white/10"
+                    onKeyDown={onSeekKey}
+                    role="slider"
+                    tabIndex={0}
+                    aria-label="Seek"
+                    aria-valuemin={0}
+                    aria-valuemax={Math.max(0, Math.round(duration))}
+                    aria-valuenow={Math.round(currentTime)}
+                    className="mt-2 h-2 cursor-pointer overflow-hidden rounded-full bg-white/10 outline-none focus-visible:ring-2 focus-visible:ring-neon-purple/70"
                   >
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-neon-cyan via-neon-violet to-neon-purple"

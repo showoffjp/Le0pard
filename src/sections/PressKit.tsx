@@ -28,7 +28,7 @@ export function PressKit() {
   return (
     <section id="press" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="08" kicker="EPK · For Media" title="Press Kit" accent="heat" />
+        <SectionHeading index="10" kicker="EPK · For Media" title="Press Kit" accent="heat" />
       </Reveal>
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
@@ -108,7 +108,7 @@ export function PressKit() {
                 Bandcamp
               </NeonButton>
               <NeonButton href={site.links.video} variant="ghost" newTab>
-                X / Twitter
+                Latest on X ↗
               </NeonButton>
             </div>
           </TechFrame>

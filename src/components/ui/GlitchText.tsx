@@ -14,7 +14,7 @@ export function GlitchText({ children, className }: { children: ReactNode; class
       </span>
       <span
         aria-hidden
-        className="absolute inset-0 z-0 -translate-x-[2px] text-neon-magenta/60 mix-blend-screen animate-flicker"
+        className="absolute inset-0 z-0 -translate-x-[2px] text-neon-purple/60 mix-blend-screen animate-flicker"
         style={{ animationDelay: '0.18s' }}
       >
         {children}

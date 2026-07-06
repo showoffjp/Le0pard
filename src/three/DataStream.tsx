@@ -24,6 +24,7 @@ const fragmentShader = /* glsl */ `
   uniform float uTime;
   uniform float uEnergy;
   uniform float uProgress;
+  uniform float uDim;
   uniform vec3  uColorA;
   uniform vec3  uColorB;
 
@@ -61,6 +62,10 @@ const fragmentShader = /* glsl */ `
     // Audio + scroll drive overall brightness
     intensity *= 0.32 + uEnergy * 0.95 + uProgress * 0.45;
 
+    // Low-power tier dims the whole curtain (a raw ShaderMaterial ignores the
+    // material opacity prop, so the dimming has to live in the shader).
+    intensity *= uDim;
+
     vec3 color = mix(uColorA, uColorB, clamp(uv.y + sin(uTime * 0.2) * 0.12, 0.0, 1.0));
     gl_FragColor = vec4(color * intensity, intensity);
   }
@@ -74,10 +79,11 @@ export function DataStream({ lowPower }: { lowPower: boolean }) {
       uTime: { value: 0 },
       uEnergy: { value: 0 },
       uProgress: { value: 0 },
+      uDim: { value: lowPower ? 0.6 : 1 },
       uColorA: { value: new Color('#22d3ee') },
       uColorB: { value: new Color('#a855f7') },
     }),
-    [],
+    [lowPower],
   )
 
   useFrame((state) => {
@@ -103,7 +109,6 @@ export function DataStream({ lowPower }: { lowPower: boolean }) {
         depthTest={false}
         blending={AdditiveBlending}
         side={DoubleSide}
-        opacity={lowPower ? 0.6 : 1}
       />
     </mesh>
   )

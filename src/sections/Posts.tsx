@@ -23,7 +23,7 @@ export function Posts() {
   return (
     <section id="posts" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="06" kicker="Signals from the Front" title="News & Drops" />
+        <SectionHeading index="08" kicker="Signals from the Front" title="News & Drops" />
       </Reveal>
 
       {/* Featured promo */}

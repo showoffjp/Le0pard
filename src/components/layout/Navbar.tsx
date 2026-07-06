@@ -75,7 +75,9 @@ export function Navbar() {
           </div>
 
           <button
-            aria-label="Menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
             className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
           >
@@ -100,9 +102,13 @@ export function Navbar() {
           below the navbar (z-50) so the close toggle stays reachable. Scrolls
           when the menu is taller than the viewport (small phones / landscape). */}
       <div
+        id="mobile-menu"
+        aria-hidden={!open}
         className={cn(
           'fixed inset-0 z-[48] overflow-y-auto bg-void/95 backdrop-blur-xl transition-all duration-500 lg:hidden',
-          open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+          // `invisible` when closed takes the menu buttons out of the tab order
+          // (opacity/pointer-events alone leave them keyboard-focusable).
+          open ? 'pointer-events-auto visible opacity-100' : 'pointer-events-none invisible opacity-0',
         )}
       >
         <div className="hud-grid pointer-events-none fixed inset-0 opacity-30" />

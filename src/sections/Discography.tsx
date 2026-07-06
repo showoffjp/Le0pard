@@ -7,7 +7,7 @@ export function Discography() {
   return (
     <section id="discography" className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:px-8">
       <Reveal>
-        <SectionHeading index="05" kicker="The Catalog" title="Discography" />
+        <SectionHeading index="04" kicker="The Catalog" title="Discography" />
       </Reveal>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

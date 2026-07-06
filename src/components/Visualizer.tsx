@@ -117,7 +117,10 @@ export function Visualizer({ className }: { className?: string }) {
         const len = (0.04 + mag) * maxLen * (0.35 + I * 0.95 + bass * 0.3) + drop * maxLen * 1.0
         const col = neonColor(i / BARS, 0.9)
         const glow = neonColor(i / BARS, 0.16)
-        for (const sgn of [1, -1]) {
+        // index loop, not `for (const sgn of [1,-1])`: that literal would allocate
+        // an array on every one of the 96 bars, every frame, in this draw loop.
+        for (let si = 0; si < 2; si++) {
+          const sgn = si === 0 ? 1 : -1
           const ang = -Math.PI / 2 + sgn * ((i / BARS) * Math.PI) + rot * sgn
           const ca = Math.cos(ang)
           const sa = Math.sin(ang)

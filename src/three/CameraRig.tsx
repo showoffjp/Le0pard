@@ -13,7 +13,7 @@ export function CameraRig() {
   const { camera } = useThree()
 
   useFrame((state, delta) => {
-    const { progress, pointer } = useExperience.getState()
+    const { progress, pointer, reducedMotion } = useExperience.getState()
     const dt = Math.min(delta, 0.05)
     const t = state.clock.elapsedTime
 
@@ -24,7 +24,7 @@ export function CameraRig() {
 
     // each playing track drifts the camera on its own slow orbit phase
     const lev = signal.level
-    if (lev > 0.01 && !useExperience.getState().reducedMotion) {
+    if (lev > 0.01 && !reducedMotion) {
       const sc = trackScene(useAudio.getState().trackIndex)
       targetX += Math.sin(t * 0.07 + sc.orbit) * 0.6 * lev
       targetY += Math.sin(t * 0.11 + sc.orbit * 2) * 0.18 * lev
@@ -37,16 +37,19 @@ export function CameraRig() {
     camera.position.y = MathUtils.damp(camera.position.y, targetY + py, 2.4, dt)
     camera.position.z = MathUtils.damp(camera.position.z, targetZ, 2.4, dt)
 
-    // drop kick — a sharp, decaying camera shake on impact
+    // drop kick — a sharp, decaying camera shake on impact (skip for reduced motion)
     const k = signal.drop
-    if (k > 0.001) {
+    if (k > 0.001 && !reducedMotion) {
       camera.position.x += Math.sin(t * 57.3) * 0.42 * k
       camera.position.y += Math.cos(t * 61.7) * 0.32 * k
     }
     camera.lookAt(0, 0.3 + progress * 0.6, 0)
 
-    // cinematic roll + FOV breathing (applied after lookAt)
-    camera.rotation.z = Math.sin(progress * Math.PI * 2) * 0.05 + pointer.x * 0.02 + Math.sin(t * 49.1) * 0.07 * k
+    // cinematic roll + FOV breathing (applied after lookAt). The high-frequency
+    // shake term rides along only when reduced motion is off; the gentle scroll
+    // roll + pointer tilt stay so the framing still feels composed.
+    const rollShake = reducedMotion ? 0 : Math.sin(t * 49.1) * 0.07 * k
+    camera.rotation.z = Math.sin(progress * Math.PI * 2) * 0.05 + pointer.x * 0.02 + rollShake
     const cam = camera as unknown as { fov?: number; updateProjectionMatrix?: () => void }
     if (typeof cam.fov === 'number' && cam.updateProjectionMatrix) {
       const targetFov = 50 + signal.energy * 3.5 - progress * 3
