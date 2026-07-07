@@ -61,14 +61,27 @@ const DRIVE = {
   launch: '1ciDgOEjvL9Vd1AWNwkT2v0vo4i49N3kS',
 }
 
-/** Build a video, preferring the self-hosted file/poster, Drive as fallback. */
+/**
+ * Build a video. Source precedence for each asset: an explicit hosted URL wins,
+ * then the self-hosted file in src/assets/video/<key>.*, then Drive.
+ *
+ * To use a CDN-hosted film (Cloudflare R2, Vercel Blob, …) instead of committing
+ * a large file to the repo, pass its absolute URL as `fileUrl` (+ `previewUrl` /
+ * `coverUrl`). `driveId` is optional — omit it for a film that isn't on Drive.
+ */
 function film(p: {
   id: string
   title: string
   subtitle: string
   date: string
   key: string
-  driveId: string
+  driveId?: string
+  /** Absolute URL of a hosted MP4 (overrides the local <key>.mp4). */
+  fileUrl?: string
+  /** Absolute URL of a hosted hover-preview clip. */
+  previewUrl?: string
+  /** Absolute URL of a hosted poster frame. */
+  coverUrl?: string
 }): Video {
   return {
     id: p.id,
@@ -77,9 +90,9 @@ function film(p: {
     kind: 'drive',
     date: p.date,
     driveId: p.driveId,
-    file: asset(FILES, p.key),
-    preview: asset(FILES, `preview-${p.key}`),
-    cover: asset(POSTERS, p.key) ?? driveThumb(p.driveId),
+    file: p.fileUrl ?? asset(FILES, p.key),
+    preview: p.previewUrl ?? asset(FILES, `preview-${p.key}`),
+    cover: p.coverUrl ?? asset(POSTERS, p.key) ?? (p.driveId ? driveThumb(p.driveId) : POSTER_FALLBACK),
   }
 }
 
