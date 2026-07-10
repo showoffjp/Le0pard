@@ -124,9 +124,9 @@ export const officialVideo: Video = {
 // Self-hosted first (native <video>), Drive /preview as fallback. Rename titles
 // to the real film names any time.
 export const videos: Video[] = [
-  film({ id: 'drive-visual-1', title: 'DYSTØPIA — Visual I', subtitle: 'The world ignites', date: '2026', key: 'visual1', driveId: DRIVE.visual1 }),
-  film({ id: 'drive-visual-2', title: 'DYSTØPIA — Visual II', subtitle: 'Descent', date: '2026', key: 'visual2', driveId: DRIVE.visual2 }),
-  film({ id: 'drive-visual-3', title: 'DYSTØPIA — Visual III', subtitle: 'Aftermath', date: '2026', key: 'visual3', driveId: DRIVE.visual3 }),
+  film({ id: 'drive-visual-1', title: 'ØBTAIN', subtitle: 'The world ignites', date: '2026', key: 'visual1', driveId: DRIVE.visual1 }),
+  film({ id: 'drive-visual-2', title: 'CLØSURE', subtitle: 'Descent', date: '2026', key: 'visual2', driveId: DRIVE.visual2 }),
+  film({ id: 'drive-visual-3', title: 'FACTIØN', subtitle: 'Aftermath', date: '2026', key: 'visual3', driveId: DRIVE.visual3 }),
   officialVideo,
 ]
 
