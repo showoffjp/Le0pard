@@ -19,9 +19,18 @@ import { ambient } from '../lib/audioSignal'
  * it to the analyser, unmutes it, and the whole site begins reacting for real.
  */
 const one = (glob: Record<string, string>) => Object.values(glob)[0] as string | undefined
-const DESKTOP_SRC = one(import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', { eager: true, import: 'default' }))
-const MOBILE_SRC = one(import.meta.glob('../assets/video/launch-mobile.{mp4,webm}', { eager: true, import: 'default' }))
-const LAUNCH_POSTER = one(import.meta.glob('../assets/video/launch.{jpg,jpeg,png,webp}', { eager: true, import: 'default' }))
+// A hosted URL (VITE_LAUNCH_VIDEO_URL) wins over a file committed to
+// src/assets/video/ — so the launch film can live on a CDN (R2 / Vercel Blob)
+// instead of bloating the repo. For the analyser to read a cross-origin film,
+// the video element sets crossOrigin="anonymous" AND the host must send
+// Access-Control-Allow-Origin (same-origin local files need neither).
+const ENV = import.meta.env
+const DESKTOP_SRC =
+  ENV.VITE_LAUNCH_VIDEO_URL || one(import.meta.glob('../assets/video/launch.{mp4,webm,mov,m4v}', { eager: true, import: 'default' }))
+const MOBILE_SRC =
+  ENV.VITE_LAUNCH_VIDEO_MOBILE_URL || one(import.meta.glob('../assets/video/launch-mobile.{mp4,webm}', { eager: true, import: 'default' }))
+const LAUNCH_POSTER =
+  ENV.VITE_LAUNCH_POSTER_URL || one(import.meta.glob('../assets/video/launch.{jpg,jpeg,png,webp}', { eager: true, import: 'default' }))
 
 /**
  * The launch film plays on entry on EVERY device. Muted autoplay (with
@@ -133,6 +142,7 @@ export function LaunchVideo() {
         ref={ref}
         src={src}
         poster={LAUNCH_POSTER}
+        crossOrigin="anonymous"
         autoPlay
         muted
         loop

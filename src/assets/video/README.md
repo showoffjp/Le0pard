@@ -40,3 +40,35 @@ ffmpeg -i master.mov \
 ```
 
 Then `npm run build` — Vite hashes + serves it automatically.
+
+## Big file? Host it on a CDN instead of committing it
+
+Committing large videos bloats the git history permanently. For anything big,
+host it externally and point the site at the URL — nothing lands in the repo.
+
+**Launch film (reactive backdrop)** — set an env var (see `.env.example`):
+
+```
+VITE_LAUNCH_VIDEO_URL=https://<your-cdn>/launch.mp4
+```
+
+The URL wins over any local `launch.mp4`. Because the film feeds the audio
+analyser, the host **must** send an `Access-Control-Allow-Origin` header — the
+`<video>` loads with `crossOrigin="anonymous"`. Cloudflare R2 and Vercel Blob
+both support this; Google Drive / YouTube do **not** (so they can't be the
+reactive source, only gallery embeds).
+
+**Gallery films** (click-to-watch in the lightbox) have no CORS rule — pass a
+hosted URL straight into `src/data/videos.ts`:
+
+```ts
+film({
+  id: 'visual-4', title: 'DYSTØPIA — Visual IV', subtitle: '…', date: '2026',
+  key: 'visual4',
+  fileUrl: 'https://<your-cdn>/visual4.mp4',   // hosted; nothing in the repo
+  coverUrl: 'https://<your-cdn>/visual4.jpg',  // optional poster
+})
+```
+
+`fileUrl` / `previewUrl` / `coverUrl` override the local-file lookup, and
+`driveId` is optional. Encode the same way as above (H.264 mp4, `+faststart`).
