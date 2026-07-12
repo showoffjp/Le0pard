@@ -55,9 +55,11 @@ export function Loader() {
         <div className="mb-2 font-mono text-[0.65rem] uppercase tracking-widest3 text-neon-cyan/70">
           Booting experience
         </div>
-        <h1 className="gradient-cool font-display text-5xl font-black uppercase tracking-tight md:text-7xl">
+        {/* Boot splash, not the page heading — the Hero's "DYSTØPIA" is the one
+            canonical <h1>. A transient <div> keeps a clean single-h1 hierarchy. */}
+        <div className="gradient-cool font-display text-5xl font-black uppercase tracking-tight md:text-7xl">
           LEOPARD<span className="text-neon-purple">Ø</span>
-        </h1>
+        </div>
         <div className="mt-2 font-display text-xs uppercase tracking-widest3 text-slate-500">
           D Y S T Ø P I A
         </div>
