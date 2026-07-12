@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useExperience } from '../../store/useExperience'
 
 const isCoarse =
   typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches
@@ -10,6 +11,9 @@ export function NeonCursor() {
 
   useEffect(() => {
     if (isCoarse) return
+    // Reduced motion: the ring tracks the pointer instantly instead of trailing
+    // with inertia, so there's no decorative lag/motion — the glow still shows.
+    const reduced = useExperience.getState().reducedMotion
     let mx = window.innerWidth / 2
     let my = window.innerHeight / 2
     let rx = mx
@@ -19,21 +23,24 @@ export function NeonCursor() {
       mx = e.clientX
       my = e.clientY
       if (dot.current) dot.current.style.transform = `translate(${mx}px, ${my}px)`
+      if (reduced && ring.current) ring.current.style.transform = `translate(${mx}px, ${my}px)`
     }
     window.addEventListener('pointermove', onMove, { passive: true })
 
     let raf = 0
-    const loop = () => {
-      rx += (mx - rx) * 0.18
-      ry += (my - ry) * 0.18
-      if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`
+    if (!reduced) {
+      const loop = () => {
+        rx += (mx - rx) * 0.18
+        ry += (my - ry) * 0.18
+        if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`
+        raf = requestAnimationFrame(loop)
+      }
       raf = requestAnimationFrame(loop)
     }
-    raf = requestAnimationFrame(loop)
 
     return () => {
       window.removeEventListener('pointermove', onMove)
-      cancelAnimationFrame(raf)
+      if (raf) cancelAnimationFrame(raf)
     }
   }, [])
 
