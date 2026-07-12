@@ -11,6 +11,7 @@ import { NeonCursor } from './components/layout/NeonCursor'
 import { AudioEngine } from './components/AudioEngine'
 import { LaunchVideo } from './components/LaunchVideo'
 import { StructuredData } from './components/StructuredData'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { BeatPulse } from './components/effects/BeatPulse'
 import { SecretUnlock } from './components/effects/SecretUnlock'
 import { Summons } from './components/effects/Summons'
@@ -54,9 +55,14 @@ export default function App() {
       </a>
       <Loader />
       <StructuredData />
-      <Suspense fallback={null}>
-        <Experience />
-      </Suspense>
+      {/* A WebGL failure (old GPU, lost context, shader error) or a failed 3D
+          chunk load must not blank the whole site — degrade to the static
+          .react-bg backdrop and keep all the content usable. */}
+      <ErrorBoundary label="3D world">
+        <Suspense fallback={null}>
+          <Experience />
+        </Suspense>
+      </ErrorBoundary>
       <AudioEngine />
       <LaunchVideo />
       <BackgroundVisualizer />
