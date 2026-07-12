@@ -68,11 +68,12 @@ function GalleryCard({ v, index, onOpen }: { v: Video; index: number; onOpen: ()
                 src={v.cover}
                 onError={onPosterError}
                 alt={v.title}
+                loading="lazy"
+                decoding="async"
                 className={cn(
                   'h-full w-full object-cover transition-transform duration-700 group-hover:scale-110',
                   v.kind === 'soon' ? 'opacity-30 grayscale' : 'opacity-70',
                 )}
-                loading="lazy"
               />
               {v.file && (
                 <video
@@ -157,6 +158,7 @@ export function VideoSection() {
               alt={`${featuredVideo.title} poster`}
               className="absolute inset-0 h-full w-full scale-105 object-cover opacity-70 transition-transform duration-[1.4s] ease-out group-hover:scale-110"
               loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-void/45 to-void/10" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(4,5,10,0.55))]" />

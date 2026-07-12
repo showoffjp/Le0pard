@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { signal } from '../../lib/audioSignal'
+import { useExperience } from '../../store/useExperience'
 
 /**
  * Full-screen neon edge-glow that breathes with the beat — sells the "the whole
@@ -9,6 +10,10 @@ export function BeatPulse() {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Reduced motion: skip the beat/drop pulsing entirely (a full-screen glow that
+    // flashes on the drop is exactly the motion prefers-reduced-motion asks us to
+    // drop). The element stays at its static opacity:0 — invisible.
+    if (useExperience.getState().reducedMotion) return
     let raf = 0
     const loop = () => {
       const el = ref.current
