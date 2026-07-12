@@ -18,12 +18,15 @@ export function AudioEngine() {
   const setMeta = useAudio((s) => s.setMeta)
   const clearSeek = useAudio((s) => s.clearSeek)
 
-  // Swap the source whenever the track changes.
+  // Swap the source whenever the track changes. Setting `src` already re-runs the
+  // media load algorithm, so no explicit el.load() — an explicit load() makes
+  // Chromium eagerly buffer the whole file even with preload="none", which pulled
+  // the first track (~3.7 MB) on every page load before anyone pressed play. Now
+  // it only fetches when playback actually starts (below, or on the play toggle).
   useEffect(() => {
     const el = ref.current
     if (!el) return
     el.src = trackAudioUrl(dystopia.tracks[trackIndex])
-    el.load()
     if (useAudio.getState().playing) el.play().catch(() => {})
   }, [trackIndex])
 
@@ -54,7 +57,12 @@ export function AudioEngine() {
   return (
     <audio
       ref={ref}
-      preload="auto"
+      // "none", not "auto": don't fetch any track audio until the visitor
+      // actually presses play (the reactive launch film already carries the
+      // opening moment). "auto" was eagerly pulling the whole first track
+      // (~3.7 MB) on every page load; "metadata" still fetched the full MP3 on
+      // servers without range support. The file streams in on demand at play.
+      preload="none"
       onEnded={() => next()}
       onTimeUpdate={(e) => setMeta({ currentTime: e.currentTarget.currentTime })}
       onLoadedMetadata={(e) => setMeta({ duration: e.currentTarget.duration })}
