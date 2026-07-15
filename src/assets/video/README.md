@@ -1,5 +1,19 @@
 # Launch film — drop the video here
 
+> **Importing new masters? Use the one-command pipeline instead of hand-running
+> ffmpeg** — it emits every file below at the right settings (web encode,
+> poster, hover-preview, optional mobile variant), named so the site wires them
+> automatically:
+>
+> ```bash
+> node scripts/prepMedia.mjs video ~/Masters/UTOPIA_FINAL.mov launch --mobile
+> node scripts/prepMedia.mjs video ~/Masters/OBTAIN.mov visual1
+> node scripts/prepMedia.mjs audio "~/Masters/01 UTOPIA.wav" 1
+> ```
+>
+> Run it with no arguments for full usage (including batching a whole album).
+> Requires ffmpeg on PATH, or set `FFMPEG_DIR` to a static build's folder.
+
 Drop an optimized web video named **`launch.mp4`** (and optionally `launch.webm`)
 into this folder and it becomes the site's launch film:
 
