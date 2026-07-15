@@ -31,6 +31,10 @@ npm run dev        # local dev (http://localhost:5173)
 npm run build      # production build → dist/
 npm run preview    # serve the build
 npm run typecheck  # tsc --noEmit  (run before committing)
+
+# Import raw song/film masters (emits web video + poster + preview / numbered MP3s):
+node scripts/prepMedia.mjs video <master> <key> [--mobile]
+node scripts/prepMedia.mjs audio <master> <trackNumber>
 ```
 
 Verify visual changes with a headless screenshot (Playwright + SwiftShader WebGL) when
