@@ -1,7 +1,58 @@
 import { useEffect, useRef } from 'react'
 import { useAudio } from '../store/useAudio'
 import { dystopia, trackAudioUrl } from '../data/music'
+import { site } from '../data/site'
 import { attachMediaElement } from '../lib/audioReactor'
+
+/**
+ * OS-level "now playing" integration (Media Session API): lock-screen artwork,
+ * track metadata, and hardware/notification transport controls — so playing the
+ * album on a phone behaves like a real streaming app. Feature-detected; every
+ * setActionHandler is individually try-wrapped because browsers throw on action
+ * names they don't support yet.
+ */
+function updateMediaSession(trackIndex: number, playing: boolean) {
+  if (!('mediaSession' in navigator)) return
+  const ms = navigator.mediaSession
+  const track = dystopia.tracks[trackIndex]
+  try {
+    ms.metadata = new MediaMetadata({
+      title: track.title,
+      artist: site.artist,
+      album: dystopia.title,
+      artwork: [
+        { src: '/img/dystopia-cover-350.jpg', sizes: '350x350', type: 'image/jpeg' },
+        { src: '/img/dystopia-cover-700.jpg', sizes: '700x700', type: 'image/jpeg' },
+        { src: '/img/dystopia-cover.jpg', sizes: '1200x1198', type: 'image/jpeg' },
+      ],
+    })
+    ms.playbackState = playing ? 'playing' : 'paused'
+  } catch {
+    /* metadata is progressive enhancement — never let it break playback */
+  }
+}
+
+function bindMediaSessionActions() {
+  if (!('mediaSession' in navigator)) return
+  const ms = navigator.mediaSession
+  const s = () => useAudio.getState()
+  const actions: [MediaSessionAction, MediaSessionActionHandler][] = [
+    ['play', () => s().toggle()],
+    ['pause', () => s().pause()],
+    ['previoustrack', () => s().prev()],
+    ['nexttrack', () => s().next()],
+    ['seekto', (d) => { if (d.seekTime != null) s().seek(d.seekTime) }],
+    ['seekbackward', (d) => s().seek(Math.max(0, s().currentTime - (d.seekOffset ?? 10)))],
+    ['seekforward', (d) => s().seek(Math.min(s().duration || Infinity, s().currentTime + (d.seekOffset ?? 10)))],
+  ]
+  for (const [action, handler] of actions) {
+    try {
+      ms.setActionHandler(action, handler)
+    } catch {
+      /* action not supported in this browser — skip it */
+    }
+  }
+}
 
 /**
  * The single on-site audio player + analyser feed. One hidden <audio> element
@@ -44,6 +95,14 @@ export function AudioEngine() {
       el.pause()
     }
   }, [playing])
+
+  // OS "now playing": transport handlers once, metadata on every track/state change.
+  useEffect(() => {
+    bindMediaSessionActions()
+  }, [])
+  useEffect(() => {
+    updateMediaSession(trackIndex, playing)
+  }, [trackIndex, playing])
 
   // Apply seek requests from the UI.
   useEffect(() => {
