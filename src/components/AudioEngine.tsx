@@ -1,8 +1,22 @@
 import { useEffect, useRef } from 'react'
-import { useAudio } from '../store/useAudio'
+import { useAudio, RESUME_KEY } from '../store/useAudio'
 import { dystopia, trackAudioUrl } from '../data/music'
 import { site } from '../data/site'
 import { attachMediaElement } from '../lib/audioReactor'
+
+/** Last-visit resume point, read once at boot. Only worth honoring when it's
+ *  meaningfully into the track (a sub-5s point may as well start clean). */
+function readResumePoint(): { i: number; t: number } | null {
+  try {
+    const raw = localStorage.getItem(RESUME_KEY)
+    if (!raw) return null
+    const { i, t } = JSON.parse(raw) as { i?: number; t?: number }
+    if (!Number.isInteger(i) || typeof t !== 'number' || !Number.isFinite(t)) return null
+    return t > 5 ? { i: i as number, t } : null
+  } catch {
+    return null
+  }
+}
 
 /**
  * OS-level "now playing" integration (Media Session API): lock-screen artwork,
@@ -68,6 +82,14 @@ export function AudioEngine() {
   const next = useAudio((s) => s.next)
   const setMeta = useAudio((s) => s.setMeta)
   const clearSeek = useAudio((s) => s.clearSeek)
+  // "Pick up where you left off": consumed on the first loadedmetadata of the
+  // remembered track, dropped the moment the visitor navigates to another one.
+  const resume = useRef(readResumePoint())
+  const lastSave = useRef(0)
+  // Next-track prefetch: a detached Audio element warms the HTTP cache while the
+  // current track finishes, so the src swap on `ended` starts near-instantly.
+  const prefetched = useRef(-1)
+  const prefetchEl = useRef<HTMLAudioElement | null>(null)
 
   // Swap the source whenever the track changes. Setting `src` already re-runs the
   // media load algorithm, so no explicit el.load() — an explicit load() makes
@@ -79,6 +101,10 @@ export function AudioEngine() {
     if (!el) return
     el.src = trackAudioUrl(dystopia.tracks[trackIndex])
     if (useAudio.getState().playing) el.play().catch(() => {})
+    // A different track than the remembered one → the resume point is stale.
+    if (resume.current && resume.current.i !== trackIndex) resume.current = null
+    prefetched.current = -1
+    prefetchEl.current = null
   }, [trackIndex])
 
   // Play / pause, and attach the analyser on first play (inside the gesture).
@@ -123,8 +149,46 @@ export function AudioEngine() {
       // servers without range support. The file streams in on demand at play.
       preload="none"
       onEnded={() => next()}
-      onTimeUpdate={(e) => setMeta({ currentTime: e.currentTarget.currentTime })}
-      onLoadedMetadata={(e) => setMeta({ duration: e.currentTarget.duration })}
+      onTimeUpdate={(e) => {
+        const el = e.currentTarget
+        const t = el.currentTime
+        setMeta({ currentTime: t })
+        // Remember the spot (throttled) so a returning visitor resumes mid-album.
+        if (t - lastSave.current > 3 || t < lastSave.current) {
+          lastSave.current = t
+          try {
+            localStorage.setItem(RESUME_KEY, JSON.stringify({ i: trackIndex, t: Math.floor(t) }))
+          } catch {
+            /* storage blocked */
+          }
+        }
+        // Inside the final 20s: warm the next track so the handoff doesn't gap.
+        const nextIndex = (trackIndex + 1) % dystopia.tracks.length
+        if (
+          el.duration > 0 &&
+          el.duration - t < 20 &&
+          prefetched.current !== nextIndex &&
+          useAudio.getState().playing
+        ) {
+          prefetched.current = nextIndex
+          const warm = new Audio()
+          warm.preload = 'auto'
+          warm.src = trackAudioUrl(dystopia.tracks[nextIndex])
+          prefetchEl.current = warm
+        }
+      }}
+      onLoadedMetadata={(e) => {
+        const el = e.currentTarget
+        setMeta({ duration: el.duration })
+        // First load of the remembered track → jump back to where they left off
+        // (unless that's inside the final seconds, where resuming is pointless).
+        const r = resume.current
+        if (r && r.i === trackIndex && el.currentTime < 1 && r.t < el.duration - 5) {
+          el.currentTime = r.t
+          setMeta({ currentTime: r.t })
+        }
+        resume.current = null
+      }}
     />
   )
 }

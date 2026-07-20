@@ -28,8 +28,22 @@ type AudioState = {
 const count = dystopia.tracks.length
 const fresh = (i: number, s: AudioState) => i !== s.trackIndex
 
+/** Where the player left off last visit (AudioEngine saves this while playing). */
+export const RESUME_KEY = 'leopardo-player-v1'
+
+function savedTrackIndex(): number {
+  try {
+    const raw = localStorage.getItem(RESUME_KEY)
+    if (!raw) return 0
+    const i = Number((JSON.parse(raw) as { i?: number }).i)
+    return Number.isInteger(i) && i >= 0 && i < count ? i : 0
+  } catch {
+    return 0
+  }
+}
+
 export const useAudio = create<AudioState>((set) => ({
-  trackIndex: 0,
+  trackIndex: savedTrackIndex(),
   playing: false,
   started: false,
   currentTime: 0,
