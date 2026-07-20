@@ -71,7 +71,7 @@ export function Navbar() {
           </div>
 
           <div className="hidden xl:block">
-            <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play</NeonButton>
+            <NeonButton onClick={() => { play(); go('#album') }}>▶ Play</NeonButton>
           </div>
 
           <button
@@ -123,7 +123,7 @@ export function Navbar() {
             </button>
           ))}
           <div className="relative mt-4">
-            <NeonButton onClick={() => { play(0); go('#album') }}>▶ Play DYSTØPIA</NeonButton>
+            <NeonButton onClick={() => { play(); go('#album') }}>▶ Play DYSTØPIA</NeonButton>
           </div>
         </div>
       </div>

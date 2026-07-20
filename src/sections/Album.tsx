@@ -173,7 +173,7 @@ export function Album() {
                   <Visualizer className="absolute inset-0 h-full w-full" />
                   <button
                     aria-label={playing ? 'Pause' : 'Play'}
-                    onClick={() => (started ? toggle() : play(0))}
+                    onClick={() => (started ? toggle() : play())}
                     className="absolute inset-0 grid place-items-center"
                   >
                     <span className="react-pop grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-neon-violet to-neon-blue text-xl text-white shadow-[0_0_44px_rgba(124,58,237,.7)] transition hover:scale-110">
@@ -243,7 +243,9 @@ export function Album() {
             </div>
 
             <div className="mt-9 flex flex-wrap gap-4">
-              <NeonButton variant="ember" onClick={() => play(0)}>
+              {/* No explicit index: resumes the remembered track for returning
+                  visitors (identical to track 1 on a first visit). */}
+              <NeonButton variant="ember" onClick={() => play()}>
                 ▶ Play Album
               </NeonButton>
               <NeonButton variant="ghost" href={dystopia.bandcampUrl} newTab>
