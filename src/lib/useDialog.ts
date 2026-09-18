@@ -28,8 +28,21 @@ export function useDialog(
     const prevFocus = document.activeElement as HTMLElement | null
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    // Move focus into the panel itself so assistive tech enters the dialog.
-    container?.focus()
+    // Move focus into the panel so assistive tech enters the dialog. A
+    // conditionally-mounted panel is focusable at once, but an always-mounted one
+    // revealed through a visibility transition (the mobile nav) isn't for a frame
+    // or two — so retry across frames until the focus actually lands.
+    let focusRaf = 0
+    let tries = 0
+    const tryFocus = () => {
+      const c = containerRef.current
+      if (!c) return
+      c.focus()
+      if (document.activeElement !== c && !c.contains(document.activeElement) && tries++ < 30) {
+        focusRaf = requestAnimationFrame(tryFocus)
+      }
+    }
+    focusRaf = requestAnimationFrame(tryFocus)
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -59,6 +72,7 @@ export function useDialog(
 
     window.addEventListener('keydown', onKey)
     return () => {
+      cancelAnimationFrame(focusRaf)
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
       prevFocus?.focus?.()

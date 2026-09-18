@@ -74,7 +74,9 @@ export default function App() {
       <ScrollHud />
       <NowPlaying />
 
-      <main id="experience-content" className="relative z-10">
+      {/* tabIndex=-1 so the skip link actually moves keyboard/AT focus here,
+          not just the scroll position. */}
+      <main id="experience-content" tabIndex={-1} className="relative z-10 outline-none">
         <Hero />
         <Manifesto />
         <Descent />

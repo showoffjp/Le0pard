@@ -4,6 +4,19 @@ import { dystopia, trackAudioUrl } from '../data/music'
 import { site } from '../data/site'
 import { attachMediaElement } from '../lib/audioReactor'
 
+/** Stop a detached prefetch element from buffering and release it — dropping the
+ *  reference alone lets the in-flight download run on until GC. */
+function abortAudio(el: HTMLAudioElement | null) {
+  if (!el) return
+  try {
+    el.pause()
+    el.removeAttribute('src')
+    el.load()
+  } catch {
+    /* noop */
+  }
+}
+
 /** Last-visit resume point, read once at boot. Only worth honoring when it's
  *  meaningfully into the track (a sub-5s point may as well start clean). */
 function readResumePoint(): { i: number; t: number } | null {
@@ -51,7 +64,9 @@ function bindMediaSessionActions() {
   const ms = navigator.mediaSession
   const s = () => useAudio.getState()
   const actions: [MediaSessionAction, MediaSessionActionHandler][] = [
-    ['play', () => s().toggle()],
+    // Map play/pause to the explicit setters, not toggle() — if the OS play
+    // state ever desyncs from ours, a lock-screen "play" must play, never pause.
+    ['play', () => s().play()],
     ['pause', () => s().pause()],
     ['previoustrack', () => s().prev()],
     ['nexttrack', () => s().next()],
@@ -103,9 +118,14 @@ export function AudioEngine() {
     if (useAudio.getState().playing) el.play().catch(() => {})
     // A different track than the remembered one → the resume point is stale.
     if (resume.current && resume.current.i !== trackIndex) resume.current = null
+    // Cancel any in-flight next-track prefetch — this swap supersedes it.
+    abortAudio(prefetchEl.current)
     prefetched.current = -1
     prefetchEl.current = null
   }, [trackIndex])
+
+  // Belt-and-suspenders: abort a pending prefetch if the engine unmounts.
+  useEffect(() => () => abortAudio(prefetchEl.current), [])
 
   // Play / pause, and attach the analyser on first play (inside the gesture).
   useEffect(() => {

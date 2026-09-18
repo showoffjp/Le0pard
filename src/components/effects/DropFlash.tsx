@@ -20,7 +20,9 @@ export function DropFlash() {
       const d = signal.drop
       const { reducedMotion: reduced, lowPower } = useExperience.getState()
       const el = ref.current
-      if (el) el.style.opacity = String(Math.min(0.5, d * 0.5))
+      // Reduced motion: no drop flash either (a full-screen neon flash on the bass
+      // drop is the same photosensitivity concern as the page shake below).
+      if (el) el.style.opacity = reduced ? '0' : String(Math.min(0.5, d * 0.5))
 
       if (main) {
         if (reduced) {

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useSecret } from '../../store/useSecret'
 import { useAudio } from '../../store/useAudio'
+import { useDialog } from '../../lib/useDialog'
 import { NeonButton } from '../ui/NeonButton'
 import { TechFrame } from '../ui/TechFrame'
 import { site } from '../../data/site'
@@ -51,22 +52,9 @@ export function SecretUnlock() {
     return () => window.removeEventListener('keydown', onKey)
   }, [unlock])
 
-  // Escape to close + scroll lock + focus in/restore while the overlay is open.
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && hide()
-    window.addEventListener('keydown', onKey)
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    const prevFocus = document.activeElement as HTMLElement | null
-    panelRef.current?.focus()
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      // Restore (not clear) so a modal underneath keeps its scroll lock.
-      document.body.style.overflow = prevOverflow
-      prevFocus?.focus?.()
-    }
-  }, [open, hide])
+  // Escape + scroll lock + focus in/restore AND a proper Tab trap, all via the
+  // shared dialog hook (the manual version here predated it and never trapped).
+  useDialog(open, hide, panelRef)
 
   return (
     <>
