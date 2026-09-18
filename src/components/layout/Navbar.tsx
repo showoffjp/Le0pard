@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useExperience } from '../../store/useExperience'
 import { useAudio } from '../../store/useAudio'
+import { useDialog } from '../../lib/useDialog'
 import { NeonButton } from '../ui/NeonButton'
 import { cn } from '../../lib/cn'
 
@@ -21,6 +22,14 @@ export function Navbar() {
   const play = useAudio((s) => s.play)
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  // Stable onClose — an inline arrow would be a new value each render, thrashing
+  // useDialog's effect (each teardown yanks focus back to the toggle).
+  const closeMenu = useCallback(() => setOpen(false), [])
+
+  // Full-screen mobile menu open: Escape closes, focus is trapped inside and
+  // returns to the toggle on close (shared dialog behavior).
+  useDialog(open, closeMenu, menuRef)
 
   useEffect(() => {
     let last = false
@@ -103,9 +112,11 @@ export function Navbar() {
           when the menu is taller than the viewport (small phones / landscape). */}
       <div
         id="mobile-menu"
+        ref={menuRef}
+        tabIndex={-1}
         aria-hidden={!open}
         className={cn(
-          'fixed inset-0 z-[48] overflow-y-auto bg-void/95 backdrop-blur-xl transition-all duration-500 lg:hidden',
+          'fixed inset-0 z-[48] overflow-y-auto bg-void/95 outline-none backdrop-blur-xl transition-all duration-500 lg:hidden',
           // `invisible` when closed takes the menu buttons out of the tab order
           // (opacity/pointer-events alone leave them keyboard-focusable).
           open ? 'pointer-events-auto visible opacity-100' : 'pointer-events-none invisible opacity-0',
